@@ -1,0 +1,1057 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACCEPT_RETRY_DELAY	constants.py	/^ACCEPT_RETRY_DELAY = 1$/;"	v
+ALL_COMPLETED	tasks.py	/^ALL_COMPLETED = concurrent.futures.ALL_COMPLETED$/;"	v
+AbstractChildWatcher	unix_events.py	/^class AbstractChildWatcher:$/;"	c	inherits:
+AbstractEventLoop	events.py	/^class AbstractEventLoop:$/;"	c	inherits:
+AbstractEventLoopPolicy	events.py	/^class AbstractEventLoopPolicy:$/;"	c	inherits:
+AbstractServer	events.py	/^class AbstractServer:$/;"	c	inherits:
+BUFSIZE	windows_utils.py	/^BUFSIZE = 8192$/;"	v
+BaseChildWatcher	unix_events.py	/^class BaseChildWatcher(AbstractChildWatcher):$/;"	c	inherits:AbstractChildWatcher
+BaseDefaultEventLoopPolicy	events.py	/^class BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):$/;"	c	inherits:AbstractEventLoopPolicy
+BaseEventLoop	base_events.py	/^class BaseEventLoop(events.AbstractEventLoop):$/;"	c	inherits:events.AbstractEventLoop
+BaseProactorEventLoop	proactor_events.py	/^class BaseProactorEventLoop(base_events.BaseEventLoop):$/;"	c	inherits:base_events.BaseEventLoop
+BaseProtocol	protocols.py	/^class BaseProtocol:$/;"	c	inherits:
+BaseSelectorEventLoop	selector_events.py	/^class BaseSelectorEventLoop(base_events.BaseEventLoop):$/;"	c	inherits:base_events.BaseEventLoop
+BaseSubprocessTransport	base_subprocess.py	/^class BaseSubprocessTransport(transports.SubprocessTransport):$/;"	c	inherits:transports.SubprocessTransport
+BaseTransport	transports.py	/^class BaseTransport:$/;"	c	inherits:
+BoundedSemaphore	locks.py	/^class BoundedSemaphore(Semaphore):$/;"	c	inherits:Semaphore
+BufferedProtocol	protocols.py	/^class BufferedProtocol(BaseProtocol):$/;"	c	inherits:BaseProtocol
+CONNECT_PIPE_INIT_DELAY	windows_events.py	/^CONNECT_PIPE_INIT_DELAY = 0.001$/;"	v
+CONNECT_PIPE_MAX_DELAY	windows_events.py	/^CONNECT_PIPE_MAX_DELAY = 0.100$/;"	v
+CancelledError	base_futures.py	/^CancelledError = concurrent.futures.CancelledError$/;"	v
+CancelledError	futures.py	/^CancelledError = base_futures.CancelledError$/;"	v
+Condition	locks.py	/^class Condition(_ContextManagerMixin):$/;"	c	inherits:_ContextManagerMixin
+CoroWrapper	coroutines.py	/^class CoroWrapper:$/;"	c	inherits:
+DEBUG_STACK_DEPTH	constants.py	/^DEBUG_STACK_DEPTH = 10$/;"	v
+DEVNULL	subprocess.py	/^DEVNULL = subprocess.DEVNULL$/;"	v
+DatagramProtocol	protocols.py	/^class DatagramProtocol(BaseProtocol):$/;"	c	inherits:BaseProtocol
+DatagramTransport	transports.py	/^class DatagramTransport(BaseTransport):$/;"	c	inherits:BaseTransport
+DefaultEventLoopPolicy	unix_events.py	/^DefaultEventLoopPolicy = _UnixDefaultEventLoopPolicy$/;"	v
+DefaultEventLoopPolicy	windows_events.py	/^DefaultEventLoopPolicy = WindowsSelectorEventLoopPolicy$/;"	v
+ERROR_CONNECTION_ABORTED	windows_events.py	/^ERROR_CONNECTION_ABORTED = 1236$/;"	v
+ERROR_CONNECTION_REFUSED	windows_events.py	/^ERROR_CONNECTION_REFUSED = 1225$/;"	v
+Error	base_futures.py	/^Error = concurrent.futures._base.Error$/;"	v
+Event	locks.py	/^class Event:$/;"	c	inherits:
+FALLBACK	constants.py	/^    FALLBACK = enum.auto()$/;"	v	class:_SendfileMode
+FIRST_COMPLETED	tasks.py	/^FIRST_COMPLETED = concurrent.futures.FIRST_COMPLETED$/;"	v
+FIRST_EXCEPTION	tasks.py	/^FIRST_EXCEPTION = concurrent.futures.FIRST_EXCEPTION$/;"	v
+FastChildWatcher	unix_events.py	/^class FastChildWatcher(BaseChildWatcher):$/;"	c	inherits:BaseChildWatcher
+FlowControlMixin	streams.py	/^class FlowControlMixin(protocols.Protocol):$/;"	c	inherits:protocols.Protocol
+Future	futures.py	/^class Future:$/;"	c	inherits:
+Handle	events.py	/^class Handle:$/;"	c	inherits:
+INFINITE	windows_events.py	/^INFINITE = 0xffffffff$/;"	v
+IncompleteReadError	streams.py	/^class IncompleteReadError(EOFError):$/;"	c	inherits:EOFError
+InvalidStateError	base_futures.py	/^class InvalidStateError(Error):$/;"	c	inherits:Error
+InvalidStateError	futures.py	/^InvalidStateError = base_futures.InvalidStateError$/;"	v
+IocpProactor	windows_events.py	/^class IocpProactor:$/;"	c	inherits:
+LOG_THRESHOLD_FOR_CONNLOST_WRITES	constants.py	/^LOG_THRESHOLD_FOR_CONNLOST_WRITES = 5$/;"	v
+LifoQueue	queues.py	/^class LifoQueue(Queue):$/;"	c	inherits:Queue
+LimitOverrunError	streams.py	/^class LimitOverrunError(Exception):$/;"	c	inherits:Exception
+Lock	locks.py	/^class Lock(_ContextManagerMixin):$/;"	c	inherits:_ContextManagerMixin
+MAXIMUM_SELECT_TIMEOUT	base_events.py	/^MAXIMUM_SELECT_TIMEOUT = 24 * 3600$/;"	v
+NULL	windows_events.py	/^NULL = 0$/;"	v
+PIPE	subprocess.py	/^PIPE = subprocess.PIPE$/;"	v
+PIPE	windows_utils.py	/^PIPE = subprocess.PIPE$/;"	v
+PipeHandle	windows_utils.py	/^class PipeHandle:$/;"	c	inherits:
+PipeServer	windows_events.py	/^class PipeServer(object):$/;"	c	inherits:object
+Popen	windows_utils.py	/^class Popen(subprocess.Popen):$/;"	c	inherits:subprocess.Popen
+PriorityQueue	queues.py	/^class PriorityQueue(Queue):$/;"	c	inherits:Queue
+ProactorEventLoop	windows_events.py	/^class ProactorEventLoop(proactor_events.BaseProactorEventLoop):$/;"	c	inherits:proactor_events.BaseProactorEventLoop
+Process	subprocess.py	/^class Process:$/;"	c	inherits:
+Protocol	protocols.py	/^class Protocol(BaseProtocol):$/;"	c	inherits:BaseProtocol
+Queue	queues.py	/^class Queue:$/;"	c	inherits:
+QueueEmpty	queues.py	/^class QueueEmpty(Exception):$/;"	c	inherits:Exception
+QueueFull	queues.py	/^class QueueFull(Exception):$/;"	c	inherits:Exception
+ReadSubprocessPipeProto	base_subprocess.py	/^                              protocols.Protocol):$/;"	c	inherits:WriteSubprocessPipeProto,                               protocols.Protocol
+ReadTransport	transports.py	/^class ReadTransport(BaseTransport):$/;"	c	inherits:BaseTransport
+SENDFILE_FALLBACK_READBUFFER_SIZE	constants.py	/^SENDFILE_FALLBACK_READBUFFER_SIZE = 1024 * 256$/;"	v
+SSLProtocol	sslproto.py	/^class SSLProtocol(protocols.Protocol):$/;"	c	inherits:protocols.Protocol
+SSL_HANDSHAKE_TIMEOUT	constants.py	/^SSL_HANDSHAKE_TIMEOUT = 60.0$/;"	v
+STACK_DEBUG	futures.py	/^STACK_DEBUG = logging.DEBUG - 1  # heavy-duty debugging$/;"	v
+STDOUT	subprocess.py	/^STDOUT = subprocess.STDOUT$/;"	v
+STDOUT	windows_utils.py	/^STDOUT = subprocess.STDOUT$/;"	v
+SafeChildWatcher	unix_events.py	/^class SafeChildWatcher(BaseChildWatcher):$/;"	c	inherits:BaseChildWatcher
+SelectorEventLoop	unix_events.py	/^SelectorEventLoop = _UnixSelectorEventLoop$/;"	v
+SelectorEventLoop	windows_events.py	/^SelectorEventLoop = _WindowsSelectorEventLoop$/;"	v
+Semaphore	locks.py	/^class Semaphore(_ContextManagerMixin):$/;"	c	inherits:_ContextManagerMixin
+SendfileNotAvailableError	events.py	/^class SendfileNotAvailableError(RuntimeError):$/;"	c	inherits:RuntimeError
+Server	base_events.py	/^class Server(events.AbstractServer):$/;"	c	inherits:events.AbstractServer
+StreamReader	streams.py	/^class StreamReader:$/;"	c	inherits:
+StreamReaderProtocol	streams.py	/^class StreamReaderProtocol(FlowControlMixin, protocols.Protocol):$/;"	c	inherits:FlowControlMixin, protocols.Protocol
+StreamWriter	streams.py	/^class StreamWriter:$/;"	c	inherits:
+SubprocessProtocol	protocols.py	/^class SubprocessProtocol(BaseProtocol):$/;"	c	inherits:BaseProtocol
+SubprocessStreamProtocol	subprocess.py	/^                               protocols.SubprocessProtocol):$/;"	c	inherits:streams.FlowControlMixin,                                protocols.SubprocessProtocol
+SubprocessTransport	transports.py	/^class SubprocessTransport(BaseTransport):$/;"	c	inherits:BaseTransport
+TRY_NATIVE	constants.py	/^    TRY_NATIVE = enum.auto()$/;"	v	class:_SendfileMode
+Task	tasks.py	/^class Task(futures._PyFuture):  # Inherit Python Task implementation$/;"	c	inherits:futures._PyFuture
+TimeoutError	base_futures.py	/^TimeoutError = concurrent.futures.TimeoutError$/;"	v
+TimeoutError	futures.py	/^TimeoutError = base_futures.TimeoutError$/;"	v
+TimerHandle	events.py	/^class TimerHandle(Handle):$/;"	c	inherits:Handle
+Transport	transports.py	/^class Transport(ReadTransport, WriteTransport):$/;"	c	inherits:ReadTransport, WriteTransport
+UNSUPPORTED	constants.py	/^    UNSUPPORTED = enum.auto()$/;"	v	class:_SendfileMode
+WindowsProactorEventLoopPolicy	windows_events.py	/^class WindowsProactorEventLoopPolicy(events.BaseDefaultEventLoopPolicy):$/;"	c	inherits:events.BaseDefaultEventLoopPolicy
+WindowsSelectorEventLoopPolicy	windows_events.py	/^class WindowsSelectorEventLoopPolicy(events.BaseDefaultEventLoopPolicy):$/;"	c	inherits:events.BaseDefaultEventLoopPolicy
+WriteSubprocessPipeProto	base_subprocess.py	/^class WriteSubprocessPipeProto(protocols.BaseProtocol):$/;"	c	inherits:protocols.BaseProtocol
+WriteTransport	transports.py	/^class WriteTransport(BaseTransport):$/;"	c	inherits:BaseTransport
+_BaseWaitHandleFuture	windows_events.py	/^class _BaseWaitHandleFuture(futures.Future):$/;"	c	inherits:futures.Future
+_CANCELLED	base_futures.py	/^_CANCELLED = 'CANCELLED'$/;"	v
+_CANCELLED	futures.py	/^_CANCELLED = base_futures._CANCELLED$/;"	v
+_COROUTINE_TYPES	coroutines.py	/^_COROUTINE_TYPES = (types.CoroutineType, types.GeneratorType,$/;"	v
+_ContextManager	locks.py	/^class _ContextManager:$/;"	c	inherits:
+_ContextManagerMixin	locks.py	/^class _ContextManagerMixin:$/;"	c	inherits:
+_DEBUG	coroutines.py	/^_DEBUG = _is_debug_mode()$/;"	v
+_DEFAULT_LIMIT	streams.py	/^_DEFAULT_LIMIT = 2 ** 16  # 64 KiB$/;"	v
+_DO_HANDSHAKE	sslproto.py	/^_DO_HANDSHAKE = "DO_HANDSHAKE"$/;"	v
+_FINISHED	base_futures.py	/^_FINISHED = 'FINISHED'$/;"	v
+_FINISHED	futures.py	/^_FINISHED = base_futures._FINISHED$/;"	v
+_FlowControlMixin	transports.py	/^class _FlowControlMixin(Transport):$/;"	c	inherits:Transport
+_GatheringFuture	tasks.py	/^class _GatheringFuture(futures.Future):$/;"	c	inherits:futures.Future
+_HAS_IPv6	base_events.py	/^_HAS_IPv6 = hasattr(socket, 'AF_INET6')$/;"	v
+_Local	events.py	/^    class _Local(threading.local):$/;"	c	class:BaseDefaultEventLoopPolicy	inherits:threading.local
+_MIN_CANCELLED_TIMER_HANDLES_FRACTION	base_events.py	/^_MIN_CANCELLED_TIMER_HANDLES_FRACTION = 0.5$/;"	v
+_MIN_SCHEDULED_TIMER_HANDLES	base_events.py	/^_MIN_SCHEDULED_TIMER_HANDLES = 100$/;"	v
+_OverlappedFuture	windows_events.py	/^class _OverlappedFuture(futures.Future):$/;"	c	inherits:futures.Future
+_PENDING	base_futures.py	/^_PENDING = 'PENDING'$/;"	v
+_PENDING	futures.py	/^_PENDING = base_futures._PENDING$/;"	v
+_ProactorBasePipeTransport	proactor_events.py	/^                                 transports.BaseTransport):$/;"	c	inherits:transports._FlowControlMixin,                                  transports.BaseTransport
+_ProactorBaseWritePipeTransport	proactor_events.py	/^                                      transports.WriteTransport):$/;"	c	inherits:_ProactorBasePipeTransport,                                       transports.WriteTransport
+_ProactorDuplexPipeTransport	proactor_events.py	/^                                   transports.Transport):$/;"	c	inherits:_ProactorReadPipeTransport,                                    _ProactorBaseWritePipeTransport,                                    transports.Transport
+_ProactorReadPipeTransport	proactor_events.py	/^                                 transports.ReadTransport):$/;"	c	inherits:_ProactorBasePipeTransport,                                  transports.ReadTransport
+_ProactorSocketTransport	proactor_events.py	/^                               transports.Transport):$/;"	c	inherits:_ProactorReadPipeTransport,                                _ProactorBaseWritePipeTransport,                                transports.Transport
+_ProactorWritePipeTransport	proactor_events.py	/^class _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):$/;"	c	inherits:_ProactorBaseWritePipeTransport
+_PyFuture	futures.py	/^_PyFuture = Future$/;"	v
+_PyTask	tasks.py	/^_PyTask = Task$/;"	v
+_RunningLoop	events.py	/^class _RunningLoop(threading.local):$/;"	c	inherits:threading.local
+_SHUTDOWN	sslproto.py	/^_SHUTDOWN = "SHUTDOWN"$/;"	v
+_SSLPipe	sslproto.py	/^class _SSLPipe(object):$/;"	c	inherits:object
+_SSLProtocolTransport	sslproto.py	/^                            transports.Transport):$/;"	c	inherits:transports._FlowControlMixin,                             transports.Transport
+_SelectorDatagramTransport	selector_events.py	/^class _SelectorDatagramTransport(_SelectorTransport):$/;"	c	inherits:_SelectorTransport
+_SelectorSocketTransport	selector_events.py	/^class _SelectorSocketTransport(_SelectorTransport):$/;"	c	inherits:_SelectorTransport
+_SelectorTransport	selector_events.py	/^                         transports.Transport):$/;"	c	inherits:transports._FlowControlMixin,                          transports.Transport
+_SendfileFallbackProtocol	base_events.py	/^class _SendfileFallbackProtocol(protocols.Protocol):$/;"	c	inherits:protocols.Protocol
+_SendfileMode	constants.py	/^class _SendfileMode(enum.Enum):$/;"	c	inherits:enum.Enum
+_UNWRAPPED	sslproto.py	/^_UNWRAPPED = "UNWRAPPED"$/;"	v
+_UnixDefaultEventLoopPolicy	unix_events.py	/^class _UnixDefaultEventLoopPolicy(events.BaseDefaultEventLoopPolicy):$/;"	c	inherits:events.BaseDefaultEventLoopPolicy
+_UnixReadPipeTransport	unix_events.py	/^class _UnixReadPipeTransport(transports.ReadTransport):$/;"	c	inherits:transports.ReadTransport
+_UnixSelectorEventLoop	unix_events.py	/^class _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):$/;"	c	inherits:selector_events.BaseSelectorEventLoop
+_UnixSubprocessTransport	unix_events.py	/^class _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):$/;"	c	inherits:base_subprocess.BaseSubprocessTransport
+_UnixWritePipeTransport	unix_events.py	/^                              transports.WriteTransport):$/;"	c	inherits:transports._FlowControlMixin,                               transports.WriteTransport
+_WRAPPED	sslproto.py	/^_WRAPPED = "WRAPPED"$/;"	v
+_WaitCancelFuture	windows_events.py	/^class _WaitCancelFuture(_BaseWaitHandleFuture):$/;"	c	inherits:_BaseWaitHandleFuture
+_WaitHandleFuture	windows_events.py	/^class _WaitHandleFuture(_BaseWaitHandleFuture):$/;"	c	inherits:_BaseWaitHandleFuture
+_WindowsSelectorEventLoop	windows_events.py	/^class _WindowsSelectorEventLoop(selector_events.BaseSelectorEventLoop):$/;"	c	inherits:selector_events.BaseSelectorEventLoop
+_WindowsSubprocessTransport	windows_events.py	/^class _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):$/;"	c	inherits:base_subprocess.BaseSubprocessTransport
+__acquire_ctx	locks.py	/^    async def __acquire_ctx(self):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__aenter__	events.py	/^    async def __aenter__(self):$/;"	m	class:AbstractServer	file:	access:private
+__aenter__	locks.py	/^    async def __aenter__(self):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__aexit__	events.py	/^    async def __aexit__(self, *exc):$/;"	m	class:AbstractServer	file:	access:private
+__aexit__	locks.py	/^    async def __aexit__(self, exc_type, exc, tb):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__aiter__	streams.py	/^    def __aiter__(self):$/;"	m	class:StreamReader	file:	access:private
+__all__	__init__.py	/^__all__ = (base_events.__all__ +$/;"	v
+__all__	base_events.py	/^__all__ = 'BaseEventLoop',$/;"	v
+__all__	base_futures.py	/^__all__ = ()$/;"	v
+__all__	coroutines.py	/^__all__ = 'coroutine', 'iscoroutinefunction', 'iscoroutine'$/;"	v
+__all__	events.py	/^__all__ = ($/;"	v
+__all__	futures.py	/^__all__ = ($/;"	v
+__all__	locks.py	/^__all__ = ('Lock', 'Event', 'Condition', 'Semaphore', 'BoundedSemaphore')$/;"	v
+__all__	proactor_events.py	/^__all__ = 'BaseProactorEventLoop',$/;"	v
+__all__	protocols.py	/^__all__ = ($/;"	v
+__all__	queues.py	/^__all__ = ('Queue', 'PriorityQueue', 'LifoQueue', 'QueueFull', 'QueueEmpty')$/;"	v
+__all__	runners.py	/^__all__ = 'run',$/;"	v
+__all__	selector_events.py	/^__all__ = 'BaseSelectorEventLoop',$/;"	v
+__all__	streams.py	/^__all__ = ($/;"	v
+__all__	subprocess.py	/^__all__ = 'create_subprocess_exec', 'create_subprocess_shell'$/;"	v
+__all__	tasks.py	/^__all__ = ($/;"	v
+__all__	transports.py	/^__all__ = ($/;"	v
+__all__	unix_events.py	/^__all__ = ($/;"	v
+__all__	windows_events.py	/^__all__ = ($/;"	v
+__all__	windows_utils.py	/^__all__ = 'pipe', 'Popen', 'PIPE', 'PipeHandle'$/;"	v
+__anext__	streams.py	/^    async def __anext__(self):$/;"	m	class:StreamReader	file:	access:private
+__await__	coroutines.py	/^    def __await__(self):$/;"	m	class:CoroWrapper	file:	access:private
+__await__	futures.py	/^    def __await__(self):$/;"	m	class:Future	file:	access:private
+__await__	locks.py	/^    def __await__(self):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__del__	base_events.py	/^    def __del__(self):$/;"	m	class:BaseEventLoop	file:	access:private
+__del__	base_subprocess.py	/^    def __del__(self):$/;"	m	class:BaseSubprocessTransport	file:	access:private
+__del__	coroutines.py	/^    def __del__(self):$/;"	m	class:CoroWrapper	file:	access:private
+__del__	futures.py	/^    def __del__(self):$/;"	m	class:Future	file:	access:private
+__del__	proactor_events.py	/^    def __del__(self):$/;"	m	class:_ProactorBasePipeTransport	file:	access:private
+__del__	selector_events.py	/^    def __del__(self):$/;"	m	class:_SelectorTransport	file:	access:private
+__del__	sslproto.py	/^    def __del__(self):$/;"	m	class:_SSLProtocolTransport	file:	access:private
+__del__	streams.py	/^    def __del__(self):$/;"	m	class:StreamReaderProtocol	file:	access:private
+__del__	tasks.py	/^    def __del__(self):$/;"	m	class:Task	file:	access:private
+__del__	unix_events.py	/^    def __del__(self):$/;"	m	class:_UnixReadPipeTransport	file:	access:private
+__del__	unix_events.py	/^    def __del__(self):$/;"	m	class:_UnixWritePipeTransport	file:	access:private
+__del__	windows_events.py	/^    __del__ = close$/;"	v	class:PipeServer
+__del__	windows_events.py	/^    def __del__(self):$/;"	m	class:IocpProactor	file:	access:private
+__del__	windows_utils.py	/^    def __del__(self):$/;"	m	class:PipeHandle	file:	access:private
+__enter__	locks.py	/^    def __enter__(self):$/;"	m	class:_ContextManager	file:	access:private
+__enter__	locks.py	/^    def __enter__(self):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__enter__	unix_events.py	/^    def __enter__(self):$/;"	m	class:AbstractChildWatcher	file:	access:private
+__enter__	unix_events.py	/^    def __enter__(self):$/;"	m	class:FastChildWatcher	file:	access:private
+__enter__	unix_events.py	/^    def __enter__(self):$/;"	m	class:SafeChildWatcher	file:	access:private
+__enter__	windows_utils.py	/^    def __enter__(self):$/;"	m	class:PipeHandle	file:	access:private
+__eq__	events.py	/^    def __eq__(self, other):$/;"	m	class:TimerHandle	file:	access:private
+__exit__	locks.py	/^    def __exit__(self, *args):$/;"	m	class:_ContextManager	file:	access:private
+__exit__	locks.py	/^    def __exit__(self, *args):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__exit__	unix_events.py	/^    def __exit__(self, a, b, c):$/;"	m	class:AbstractChildWatcher	file:	access:private
+__exit__	unix_events.py	/^    def __exit__(self, a, b, c):$/;"	m	class:FastChildWatcher	file:	access:private
+__exit__	unix_events.py	/^    def __exit__(self, a, b, c):$/;"	m	class:SafeChildWatcher	file:	access:private
+__exit__	windows_utils.py	/^    def __exit__(self, t, v, tb):$/;"	m	class:PipeHandle	file:	access:private
+__ge__	events.py	/^    def __ge__(self, other):$/;"	m	class:TimerHandle	file:	access:private
+__gt__	events.py	/^    def __gt__(self, other):$/;"	m	class:TimerHandle	file:	access:private
+__hash__	events.py	/^    def __hash__(self):$/;"	m	class:TimerHandle	file:	access:private
+__init__	base_events.py	/^    def __init__(self):$/;"	m	class:BaseEventLoop	access:public
+__init__	base_events.py	/^    def __init__(self, loop, sockets, protocol_factory, ssl_context, backlog,$/;"	m	class:Server	access:public
+__init__	base_events.py	/^    def __init__(self, transp):$/;"	m	class:_SendfileFallbackProtocol	access:public
+__init__	base_subprocess.py	/^    def __init__(self, loop, protocol, args, shell,$/;"	m	class:BaseSubprocessTransport	access:public
+__init__	base_subprocess.py	/^    def __init__(self, proc, fd):$/;"	m	class:WriteSubprocessPipeProto	access:public
+__init__	coroutines.py	/^    def __init__(self, gen, func=None):$/;"	m	class:CoroWrapper	access:public
+__init__	events.py	/^    def __init__(self):$/;"	m	class:BaseDefaultEventLoopPolicy	access:public
+__init__	events.py	/^    def __init__(self, callback, args, loop, context=None):$/;"	m	class:Handle	access:public
+__init__	events.py	/^    def __init__(self, when, callback, args, loop, context=None):$/;"	m	class:TimerHandle	access:public
+__init__	futures.py	/^    def __init__(self, *, loop=None):$/;"	m	class:Future	access:public
+__init__	locks.py	/^    def __init__(self, *, loop=None):$/;"	m	class:Event	access:public
+__init__	locks.py	/^    def __init__(self, *, loop=None):$/;"	m	class:Lock	access:public
+__init__	locks.py	/^    def __init__(self, lock):$/;"	m	class:_ContextManager	access:public
+__init__	locks.py	/^    def __init__(self, lock=None, *, loop=None):$/;"	m	class:Condition	access:public
+__init__	locks.py	/^    def __init__(self, value=1, *, loop=None):$/;"	m	class:BoundedSemaphore	access:public
+__init__	locks.py	/^    def __init__(self, value=1, *, loop=None):$/;"	m	class:Semaphore	access:public
+__init__	proactor_events.py	/^    def __init__(self, *args, **kw):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+__init__	proactor_events.py	/^    def __init__(self, *args, **kw):$/;"	m	class:_ProactorWritePipeTransport	access:public
+__init__	proactor_events.py	/^    def __init__(self, loop, sock, protocol, waiter=None,$/;"	m	class:_ProactorBasePipeTransport	access:public
+__init__	proactor_events.py	/^    def __init__(self, loop, sock, protocol, waiter=None,$/;"	m	class:_ProactorReadPipeTransport	access:public
+__init__	proactor_events.py	/^    def __init__(self, loop, sock, protocol, waiter=None,$/;"	m	class:_ProactorSocketTransport	access:public
+__init__	proactor_events.py	/^    def __init__(self, proactor):$/;"	m	class:BaseProactorEventLoop	access:public
+__init__	queues.py	/^    def __init__(self, maxsize=0, *, loop=None):$/;"	m	class:Queue	access:public
+__init__	selector_events.py	/^    def __init__(self, loop, sock, protocol, address=None,$/;"	m	class:_SelectorDatagramTransport	access:public
+__init__	selector_events.py	/^    def __init__(self, loop, sock, protocol, extra=None, server=None):$/;"	m	class:_SelectorTransport	access:public
+__init__	selector_events.py	/^    def __init__(self, loop, sock, protocol, waiter=None,$/;"	m	class:_SelectorSocketTransport	access:public
+__init__	selector_events.py	/^    def __init__(self, selector=None):$/;"	m	class:BaseSelectorEventLoop	access:public
+__init__	sslproto.py	/^    def __init__(self, context, server_side, server_hostname=None):$/;"	m	class:_SSLPipe	access:public
+__init__	sslproto.py	/^    def __init__(self, loop, app_protocol, sslcontext, waiter,$/;"	m	class:SSLProtocol	access:public
+__init__	sslproto.py	/^    def __init__(self, loop, ssl_protocol):$/;"	m	class:_SSLProtocolTransport	access:public
+__init__	streams.py	/^    def __init__(self, limit=_DEFAULT_LIMIT, loop=None):$/;"	m	class:StreamReader	access:public
+__init__	streams.py	/^    def __init__(self, loop=None):$/;"	m	class:FlowControlMixin	access:public
+__init__	streams.py	/^    def __init__(self, message, consumed):$/;"	m	class:LimitOverrunError	access:public
+__init__	streams.py	/^    def __init__(self, partial, expected):$/;"	m	class:IncompleteReadError	access:public
+__init__	streams.py	/^    def __init__(self, stream_reader, client_connected_cb=None, loop=None):$/;"	m	class:StreamReaderProtocol	access:public
+__init__	streams.py	/^    def __init__(self, transport, protocol, reader, loop):$/;"	m	class:StreamWriter	access:public
+__init__	subprocess.py	/^    def __init__(self, limit, loop):$/;"	m	class:SubprocessStreamProtocol	access:public
+__init__	subprocess.py	/^    def __init__(self, transport, protocol, loop):$/;"	m	class:Process	access:public
+__init__	tasks.py	/^    def __init__(self, children, *, loop=None):$/;"	m	class:_GatheringFuture	access:public
+__init__	tasks.py	/^    def __init__(self, coro, *, loop=None):$/;"	m	class:Task	access:public
+__init__	transports.py	/^    def __init__(self, extra=None):$/;"	m	class:BaseTransport	access:public
+__init__	transports.py	/^    def __init__(self, extra=None, loop=None):$/;"	m	class:_FlowControlMixin	access:public
+__init__	unix_events.py	/^    def __init__(self):$/;"	m	class:BaseChildWatcher	access:public
+__init__	unix_events.py	/^    def __init__(self):$/;"	m	class:FastChildWatcher	access:public
+__init__	unix_events.py	/^    def __init__(self):$/;"	m	class:_UnixDefaultEventLoopPolicy	access:public
+__init__	unix_events.py	/^    def __init__(self, loop, pipe, protocol, waiter=None, extra=None):$/;"	m	class:_UnixReadPipeTransport	access:public
+__init__	unix_events.py	/^    def __init__(self, loop, pipe, protocol, waiter=None, extra=None):$/;"	m	class:_UnixWritePipeTransport	access:public
+__init__	unix_events.py	/^    def __init__(self, selector=None):$/;"	m	class:_UnixSelectorEventLoop	access:public
+__init__	windows_events.py	/^    def __init__(self, address):$/;"	m	class:PipeServer	access:public
+__init__	windows_events.py	/^    def __init__(self, concurrency=0xffffffff):$/;"	m	class:IocpProactor	access:public
+__init__	windows_events.py	/^    def __init__(self, ov, *, loop=None):$/;"	m	class:_OverlappedFuture	access:public
+__init__	windows_events.py	/^    def __init__(self, ov, event, wait_handle, *, loop=None):$/;"	m	class:_WaitCancelFuture	access:public
+__init__	windows_events.py	/^    def __init__(self, ov, handle, wait_handle, *, loop=None):$/;"	m	class:_BaseWaitHandleFuture	access:public
+__init__	windows_events.py	/^    def __init__(self, ov, handle, wait_handle, proactor, *, loop=None):$/;"	m	class:_WaitHandleFuture	access:public
+__init__	windows_events.py	/^    def __init__(self, proactor=None):$/;"	m	class:ProactorEventLoop	access:public
+__init__	windows_utils.py	/^    def __init__(self, args, stdin=None, stdout=None, stderr=None, **kwds):$/;"	m	class:Popen	access:public
+__init__	windows_utils.py	/^    def __init__(self, handle):$/;"	m	class:PipeHandle	access:public
+__iter__	coroutines.py	/^    def __iter__(self):$/;"	m	class:CoroWrapper	file:	access:private
+__iter__	futures.py	/^    __iter__ = __await__  # make compatible with 'yield from'.$/;"	v	class:Future
+__iter__	locks.py	/^    def __iter__(self):$/;"	m	class:_ContextManagerMixin	file:	access:private
+__le__	events.py	/^    def __le__(self, other):$/;"	m	class:TimerHandle	file:	access:private
+__log_traceback	futures.py	/^    __log_traceback = False$/;"	v	class:Future
+__lt__	events.py	/^    def __lt__(self, other):$/;"	m	class:TimerHandle	file:	access:private
+__ne__	events.py	/^    def __ne__(self, other):$/;"	m	class:TimerHandle	file:	access:private
+__next__	coroutines.py	/^    def __next__(self):$/;"	m	class:CoroWrapper	file:	access:private
+__reduce__	streams.py	/^    def __reduce__(self):$/;"	m	class:IncompleteReadError	file:	access:private
+__reduce__	streams.py	/^    def __reduce__(self):$/;"	m	class:LimitOverrunError	file:	access:private
+__repr__	base_events.py	/^    def __repr__(self):$/;"	m	class:BaseEventLoop	file:	access:private
+__repr__	base_events.py	/^    def __repr__(self):$/;"	m	class:Server	file:	access:private
+__repr__	base_subprocess.py	/^    def __repr__(self):$/;"	m	class:BaseSubprocessTransport	file:	access:private
+__repr__	base_subprocess.py	/^    def __repr__(self):$/;"	m	class:WriteSubprocessPipeProto	file:	access:private
+__repr__	coroutines.py	/^    def __repr__(self):$/;"	m	class:CoroWrapper	file:	access:private
+__repr__	events.py	/^    def __repr__(self):$/;"	m	class:Handle	file:	access:private
+__repr__	futures.py	/^    def __repr__(self):$/;"	m	class:Future	file:	access:private
+__repr__	locks.py	/^    def __repr__(self):$/;"	m	class:Condition	file:	access:private
+__repr__	locks.py	/^    def __repr__(self):$/;"	m	class:Event	file:	access:private
+__repr__	locks.py	/^    def __repr__(self):$/;"	m	class:Lock	file:	access:private
+__repr__	locks.py	/^    def __repr__(self):$/;"	m	class:Semaphore	file:	access:private
+__repr__	proactor_events.py	/^    def __repr__(self):$/;"	m	class:_ProactorBasePipeTransport	file:	access:private
+__repr__	queues.py	/^    def __repr__(self):$/;"	m	class:Queue	file:	access:private
+__repr__	selector_events.py	/^    def __repr__(self):$/;"	m	class:_SelectorTransport	file:	access:private
+__repr__	streams.py	/^    def __repr__(self):$/;"	m	class:StreamReader	file:	access:private
+__repr__	streams.py	/^    def __repr__(self):$/;"	m	class:StreamWriter	file:	access:private
+__repr__	subprocess.py	/^    def __repr__(self):$/;"	m	class:Process	file:	access:private
+__repr__	subprocess.py	/^    def __repr__(self):$/;"	m	class:SubprocessStreamProtocol	file:	access:private
+__repr__	unix_events.py	/^    def __repr__(self):$/;"	m	class:_UnixReadPipeTransport	file:	access:private
+__repr__	unix_events.py	/^    def __repr__(self):$/;"	m	class:_UnixWritePipeTransport	file:	access:private
+__repr__	windows_events.py	/^    def __repr__(self):$/;"	m	class:IocpProactor	file:	access:private
+__repr__	windows_utils.py	/^    def __repr__(self):$/;"	m	class:PipeHandle	file:	access:private
+__schedule_callbacks	futures.py	/^    def __schedule_callbacks(self):$/;"	m	class:Future	file:	access:private
+__sleep0	tasks.py	/^def __sleep0():$/;"	f	file:	access:private
+__slots__	events.py	/^    __slots__ = ('_callback', '_args', '_cancelled', '_loop',$/;"	v	class:Handle
+__slots__	events.py	/^    __slots__ = ['_scheduled', '_when']$/;"	v	class:TimerHandle
+__step	tasks.py	/^    def __step(self, exc=None):$/;"	m	class:Task	file:	access:private
+__str__	queues.py	/^    def __str__(self):$/;"	m	class:Queue	file:	access:private
+__wakeup	tasks.py	/^    def __wakeup(self, future):$/;"	m	class:Task	file:	access:private
+_abort	sslproto.py	/^    def _abort(self):$/;"	m	class:SSLProtocol	access:public
+_accept_connection	selector_events.py	/^    def _accept_connection($/;"	m	class:BaseSelectorEventLoop	access:public
+_accept_connection2	selector_events.py	/^    async def _accept_connection2($/;"	m	class:BaseSelectorEventLoop	access:public
+_add_callback	base_events.py	/^    def _add_callback(self, handle):$/;"	m	class:BaseEventLoop	access:public
+_add_callback_signalsafe	base_events.py	/^    def _add_callback_signalsafe(self, handle):$/;"	m	class:BaseEventLoop	access:public
+_add_reader	selector_events.py	/^    def _add_reader(self, fd, callback, *args):$/;"	m	class:BaseSelectorEventLoop	access:public
+_add_reader	selector_events.py	/^    def _add_reader(self, fd, callback, *args):$/;"	m	class:_SelectorTransport	access:public
+_add_writer	selector_events.py	/^    def _add_writer(self, fd, callback, *args):$/;"	m	class:BaseSelectorEventLoop	access:public
+_all_tasks	tasks.py	/^_all_tasks = weakref.WeakSet()$/;"	v
+_all_tasks_compat	tasks.py	/^def _all_tasks_compat(loop=None):$/;"	f	access:public
+_asyncgen_finalizer_hook	base_events.py	/^    def _asyncgen_finalizer_hook(self, agen):$/;"	m	class:BaseEventLoop	access:public
+_asyncgen_firstiter_hook	base_events.py	/^    def _asyncgen_firstiter_hook(self, agen):$/;"	m	class:BaseEventLoop	access:public
+_asyncio_future_blocking	futures.py	/^    _asyncio_future_blocking = False$/;"	v	class:Future
+_attach	base_events.py	/^    def _attach(self):$/;"	m	class:Server	access:public
+_buffer_factory	selector_events.py	/^    _buffer_factory = bytearray  # Constructs initial value for self._buffer.$/;"	v	class:_SelectorTransport
+_buffer_factory	selector_events.py	/^    _buffer_factory = collections.deque$/;"	v	class:_SelectorDatagramTransport
+_call	base_subprocess.py	/^    def _call(self, cb, *data):$/;"	m	class:BaseSubprocessTransport	access:public
+_call_check_cancel	futures.py	/^    def _call_check_cancel(destination):$/;"	f	function:_chain_future	access:public
+_call_connection_lost	base_subprocess.py	/^    def _call_connection_lost(self, exc):$/;"	m	class:BaseSubprocessTransport	access:public
+_call_connection_lost	proactor_events.py	/^    def _call_connection_lost(self, exc):$/;"	m	class:_ProactorBasePipeTransport	access:public
+_call_connection_lost	selector_events.py	/^    def _call_connection_lost(self, exc):$/;"	m	class:_SelectorSocketTransport	access:public
+_call_connection_lost	selector_events.py	/^    def _call_connection_lost(self, exc):$/;"	m	class:_SelectorTransport	access:public
+_call_connection_lost	unix_events.py	/^    def _call_connection_lost(self, exc):$/;"	m	class:_UnixReadPipeTransport	access:public
+_call_connection_lost	unix_events.py	/^    def _call_connection_lost(self, exc):$/;"	m	class:_UnixWritePipeTransport	access:public
+_call_set_state	futures.py	/^    def _call_set_state(source):$/;"	f	function:_chain_future	access:public
+_call_soon	base_events.py	/^    def _call_soon(self, callback, args, context):$/;"	m	class:BaseEventLoop	access:public
+_cancel_all_tasks	runners.py	/^def _cancel_all_tasks(loop):$/;"	f	access:public
+_cancel_and_wait	tasks.py	/^async def _cancel_and_wait(fut, loop):$/;"	f	access:public
+_cancel_overlapped	windows_events.py	/^    def _cancel_overlapped(self):$/;"	m	class:_OverlappedFuture	access:public
+_chain_future	futures.py	/^def _chain_future(source, destination):$/;"	f	access:public
+_check_callback	base_events.py	/^    def _check_callback(self, callback, method):$/;"	m	class:BaseEventLoop	access:public
+_check_closed	base_events.py	/^    def _check_closed(self):$/;"	m	class:BaseEventLoop	access:public
+_check_closed	windows_events.py	/^    def _check_closed(self):$/;"	m	class:IocpProactor	access:public
+_check_handshake_timeout	sslproto.py	/^    def _check_handshake_timeout(self):$/;"	m	class:SSLProtocol	access:public
+_check_proc	base_subprocess.py	/^    def _check_proc(self):$/;"	m	class:BaseSubprocessTransport	access:public
+_check_sendfile_params	base_events.py	/^    def _check_sendfile_params(self, sock, file, offset, count):$/;"	m	class:BaseEventLoop	access:public
+_check_signal	unix_events.py	/^    def _check_signal(self, sig):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_check_thread	base_events.py	/^    def _check_thread(self):$/;"	m	class:BaseEventLoop	access:public
+_child_watcher_callback	unix_events.py	/^    def _child_watcher_callback(self, pid, returncode, transp):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_close	unix_events.py	/^    def _close(self, exc):$/;"	m	class:_UnixReadPipeTransport	access:public
+_close	unix_events.py	/^    def _close(self, exc=None):$/;"	m	class:_UnixWritePipeTransport	access:public
+_close_self_pipe	proactor_events.py	/^    def _close_self_pipe(self):$/;"	m	class:BaseProactorEventLoop	access:public
+_close_self_pipe	selector_events.py	/^    def _close_self_pipe(self):$/;"	m	class:BaseSelectorEventLoop	access:public
+_compute_returncode	unix_events.py	/^    def _compute_returncode(self, status):$/;"	m	class:BaseChildWatcher	access:public
+_connect_pipes	base_subprocess.py	/^    async def _connect_pipes(self, waiter):$/;"	m	class:BaseSubprocessTransport	access:public
+_copy_future_state	futures.py	/^def _copy_future_state(source, dest):$/;"	f	access:public
+_create_connection_transport	base_events.py	/^    async def _create_connection_transport($/;"	m	class:BaseEventLoop	access:public
+_create_server_getaddrinfo	base_events.py	/^    async def _create_server_getaddrinfo(self, host, port, family, flags):$/;"	m	class:BaseEventLoop	access:public
+_create_transport_context	sslproto.py	/^def _create_transport_context(server_side, server_hostname):$/;"	f	access:public
+_current_tasks	tasks.py	/^_current_tasks = {}$/;"	v
+_data_received	proactor_events.py	/^    def _data_received(self, data):$/;"	m	class:_ProactorReadPipeTransport	access:public
+_detach	base_events.py	/^    def _detach(self):$/;"	m	class:Server	access:public
+_do_waitpid	unix_events.py	/^    def _do_waitpid(self, expected_pid):$/;"	m	class:BaseChildWatcher	access:public
+_do_waitpid	unix_events.py	/^    def _do_waitpid(self, expected_pid):$/;"	m	class:SafeChildWatcher	access:public
+_do_waitpid_all	unix_events.py	/^    def _do_waitpid_all(self):$/;"	m	class:BaseChildWatcher	access:public
+_do_waitpid_all	unix_events.py	/^    def _do_waitpid_all(self):$/;"	m	class:FastChildWatcher	access:public
+_do_waitpid_all	unix_events.py	/^    def _do_waitpid_all(self):$/;"	m	class:SafeChildWatcher	access:public
+_done_callback	tasks.py	/^    def _done_callback(fut):$/;"	f	function:gather	access:public
+_drain_helper	streams.py	/^    async def _drain_helper(self):$/;"	m	class:FlowControlMixin	access:public
+_ensure_fd_no_transport	selector_events.py	/^    def _ensure_fd_no_transport(self, fd):$/;"	m	class:BaseSelectorEventLoop	access:public
+_ensure_resolved	base_events.py	/^    async def _ensure_resolved(self, address, *,$/;"	m	class:BaseEventLoop	access:public
+_enter_task	tasks.py	/^def _enter_task(loop, task):$/;"	f	access:public
+_eof_received	proactor_events.py	/^    def _eof_received(self):$/;"	m	class:_ProactorReadPipeTransport	access:public
+_event_loop_policy	events.py	/^_event_loop_policy = None$/;"	v
+_exception	futures.py	/^    _exception = None$/;"	v	class:Future
+_fatal_error	proactor_events.py	/^    def _fatal_error(self, exc, message='Fatal error on pipe transport'):$/;"	m	class:_ProactorBasePipeTransport	access:public
+_fatal_error	selector_events.py	/^    def _fatal_error(self, exc, message='Fatal error on transport'):$/;"	m	class:_SelectorTransport	access:public
+_fatal_error	sslproto.py	/^    def _fatal_error(self, exc, message='Fatal error on transport'):$/;"	m	class:SSLProtocol	access:public
+_fatal_error	unix_events.py	/^    def _fatal_error(self, exc, message='Fatal error on pipe transport'):$/;"	m	class:_UnixReadPipeTransport	access:public
+_fatal_error	unix_events.py	/^    def _fatal_error(self, exc, message='Fatal error on pipe transport'):$/;"	m	class:_UnixWritePipeTransport	access:public
+_feed_data_to_buffered_proto	protocols.py	/^def _feed_data_to_buffered_proto(proto, data):$/;"	f	access:public
+_feed_stdin	subprocess.py	/^    async def _feed_stdin(self, input):$/;"	m	class:Process	access:public
+_finalize	sslproto.py	/^    def _finalize(self):$/;"	m	class:SSLProtocol	access:public
+_force_close	proactor_events.py	/^    def _force_close(self, exc):$/;"	m	class:_ProactorBasePipeTransport	access:public
+_force_close	selector_events.py	/^    def _force_close(self, exc):$/;"	m	class:_SelectorTransport	access:public
+_format	queues.py	/^    def _format(self):$/;"	m	class:Queue	access:public
+_format_args_and_kwargs	format_helpers.py	/^def _format_args_and_kwargs(args, kwargs):$/;"	f	access:public
+_format_callback	format_helpers.py	/^def _format_callback(func, args, kwargs, suffix=''):$/;"	f	access:public
+_format_callback_source	format_helpers.py	/^def _format_callback_source(func, args):$/;"	f	access:public
+_format_callbacks	base_futures.py	/^def _format_callbacks(cb):$/;"	f	access:public
+_format_coroutine	coroutines.py	/^def _format_coroutine(coro):$/;"	f	access:public
+_format_handle	base_events.py	/^def _format_handle(handle):$/;"	f	access:public
+_format_pipe	base_events.py	/^def _format_pipe(fd):$/;"	f	access:public
+_future_repr_info	base_futures.py	/^def _future_repr_info(future):$/;"	f	access:public
+_get	queues.py	/^    def _get(self):$/;"	m	class:LifoQueue	access:public
+_get	queues.py	/^    def _get(self):$/;"	m	class:Queue	access:public
+_get	queues.py	/^    def _get(self, heappop=heapq.heappop):$/;"	m	class:PriorityQueue	access:public
+_get_accept_socket	windows_events.py	/^    def _get_accept_socket(self, family):$/;"	m	class:IocpProactor	access:public
+_get_extra_info	sslproto.py	/^    def _get_extra_info(self, name, default=None):$/;"	m	class:SSLProtocol	access:public
+_get_function_source	format_helpers.py	/^def _get_function_source(func):$/;"	f	access:public
+_get_loop	futures.py	/^def _get_loop(fut):$/;"	f	access:public
+_get_running_loop	events.py	/^def _get_running_loop():$/;"	f	access:public
+_get_unconnected_pipe	windows_events.py	/^    def _get_unconnected_pipe(self):$/;"	m	class:PipeServer	access:public
+_getaddrinfo_debug	base_events.py	/^    def _getaddrinfo_debug(self, host, port, family, type, proto, flags):$/;"	m	class:BaseEventLoop	access:public
+_handle_signal	unix_events.py	/^    def _handle_signal(self, sig):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_init	queues.py	/^    def _init(self, maxsize):$/;"	m	class:LifoQueue	access:public
+_init	queues.py	/^    def _init(self, maxsize):$/;"	m	class:PriorityQueue	access:public
+_init	queues.py	/^    def _init(self, maxsize):$/;"	m	class:Queue	access:public
+_init_event_loop_policy	events.py	/^def _init_event_loop_policy():$/;"	f	access:public
+_init_watcher	unix_events.py	/^    def _init_watcher(self):$/;"	m	class:_UnixDefaultEventLoopPolicy	access:public
+_inner_done_callback	tasks.py	/^    def _inner_done_callback(inner):$/;"	f	function:shield	access:public
+_ipaddr_info	base_events.py	/^def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):$/;"	f	access:public
+_is_coroutine	coroutines.py	/^_is_coroutine = object()$/;"	v
+_is_debug_mode	coroutines.py	/^def _is_debug_mode():$/;"	f	access:public
+_iscoroutine_typecache	coroutines.py	/^_iscoroutine_typecache = set()$/;"	v
+_leave_task	tasks.py	/^def _leave_task(loop, task):$/;"	f	access:public
+_lock	events.py	/^_lock = threading.Lock()$/;"	v
+_log_destroy_pending	tasks.py	/^    _log_destroy_pending = True$/;"	v	class:Task
+_log_subprocess	base_events.py	/^    def _log_subprocess(self, msg, stdin, stdout, stderr):$/;"	m	class:BaseEventLoop	access:public
+_log_traceback	futures.py	/^    def _log_traceback(self):$/;"	m	class:Future	access:public
+_log_traceback	futures.py	/^    def _log_traceback(self, val):$/;"	m	class:Future	access:public
+_loop	events.py	/^        _loop = None$/;"	v	class:BaseDefaultEventLoopPolicy._Local
+_loop	futures.py	/^    _loop = None$/;"	v	class:Future
+_loop_factory	events.py	/^    _loop_factory = None$/;"	v	class:BaseDefaultEventLoopPolicy
+_loop_factory	unix_events.py	/^    _loop_factory = _UnixSelectorEventLoop$/;"	v	class:_UnixDefaultEventLoopPolicy
+_loop_factory	windows_events.py	/^    _loop_factory = ProactorEventLoop$/;"	v	class:WindowsProactorEventLoopPolicy
+_loop_factory	windows_events.py	/^    _loop_factory = SelectorEventLoop$/;"	v	class:WindowsSelectorEventLoopPolicy
+_loop_reading	proactor_events.py	/^    def _loop_reading(self, fut=None):$/;"	m	class:_ProactorReadPipeTransport	access:public
+_loop_self_reading	proactor_events.py	/^    def _loop_self_reading(self, f=None):$/;"	m	class:BaseProactorEventLoop	access:public
+_loop_writing	proactor_events.py	/^    def _loop_writing(self, f=None, data=None):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+_make_datagram_transport	base_events.py	/^    def _make_datagram_transport(self, sock, protocol,$/;"	m	class:BaseEventLoop	access:public
+_make_datagram_transport	selector_events.py	/^    def _make_datagram_transport(self, sock, protocol,$/;"	m	class:BaseSelectorEventLoop	access:public
+_make_duplex_pipe_transport	proactor_events.py	/^    def _make_duplex_pipe_transport(self, sock, protocol, waiter=None,$/;"	m	class:BaseProactorEventLoop	access:public
+_make_empty_waiter	proactor_events.py	/^    def _make_empty_waiter(self):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+_make_empty_waiter	selector_events.py	/^    def _make_empty_waiter(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_make_read_pipe_transport	base_events.py	/^    def _make_read_pipe_transport(self, pipe, protocol, waiter=None,$/;"	m	class:BaseEventLoop	access:public
+_make_read_pipe_transport	proactor_events.py	/^    def _make_read_pipe_transport(self, sock, protocol, waiter=None,$/;"	m	class:BaseProactorEventLoop	access:public
+_make_read_pipe_transport	unix_events.py	/^    def _make_read_pipe_transport(self, pipe, protocol, waiter=None,$/;"	m	class:_UnixSelectorEventLoop	access:public
+_make_self_pipe	proactor_events.py	/^    def _make_self_pipe(self):$/;"	m	class:BaseProactorEventLoop	access:public
+_make_self_pipe	selector_events.py	/^    def _make_self_pipe(self):$/;"	m	class:BaseSelectorEventLoop	access:public
+_make_socket_transport	base_events.py	/^    def _make_socket_transport(self, sock, protocol, waiter=None, *,$/;"	m	class:BaseEventLoop	access:public
+_make_socket_transport	proactor_events.py	/^    def _make_socket_transport(self, sock, protocol, waiter=None,$/;"	m	class:BaseProactorEventLoop	access:public
+_make_socket_transport	selector_events.py	/^    def _make_socket_transport(self, sock, protocol, waiter=None, *,$/;"	m	class:BaseSelectorEventLoop	access:public
+_make_ssl_transport	base_events.py	/^    def _make_ssl_transport($/;"	m	class:BaseEventLoop	access:public
+_make_ssl_transport	proactor_events.py	/^    def _make_ssl_transport($/;"	m	class:BaseProactorEventLoop	access:public
+_make_ssl_transport	selector_events.py	/^    def _make_ssl_transport($/;"	m	class:BaseSelectorEventLoop	access:public
+_make_subprocess_transport	base_events.py	/^    async def _make_subprocess_transport(self, protocol, args, shell,$/;"	m	class:BaseEventLoop	access:public
+_make_subprocess_transport	unix_events.py	/^    async def _make_subprocess_transport(self, protocol, args, shell,$/;"	m	class:_UnixSelectorEventLoop	access:public
+_make_subprocess_transport	windows_events.py	/^    async def _make_subprocess_transport(self, protocol, args, shell,$/;"	m	class:ProactorEventLoop	access:public
+_make_write_pipe_transport	base_events.py	/^    def _make_write_pipe_transport(self, pipe, protocol, waiter=None,$/;"	m	class:BaseEventLoop	access:public
+_make_write_pipe_transport	proactor_events.py	/^    def _make_write_pipe_transport(self, sock, protocol, waiter=None,$/;"	m	class:BaseProactorEventLoop	access:public
+_make_write_pipe_transport	unix_events.py	/^    def _make_write_pipe_transport(self, pipe, protocol, waiter=None,$/;"	m	class:_UnixSelectorEventLoop	access:public
+_maybe_close_transport	subprocess.py	/^    def _maybe_close_transport(self):$/;"	m	class:SubprocessStreamProtocol	access:public
+_maybe_pause_protocol	transports.py	/^    def _maybe_pause_protocol(self):$/;"	m	class:_FlowControlMixin	access:public
+_maybe_resume_protocol	transports.py	/^    def _maybe_resume_protocol(self):$/;"	m	class:_FlowControlMixin	access:public
+_maybe_resume_transport	streams.py	/^    def _maybe_resume_transport(self):$/;"	m	class:StreamReader	access:public
+_mmap_counter	windows_utils.py	/^_mmap_counter = itertools.count()$/;"	v
+_noop	subprocess.py	/^    async def _noop(self):$/;"	m	class:Process	access:public
+_on_completion	tasks.py	/^    def _on_completion(f):$/;"	f	function:_wait	access:public
+_on_completion	tasks.py	/^    def _on_completion(f):$/;"	f	function:as_completed	access:public
+_on_handshake_complete	sslproto.py	/^    def _on_handshake_complete(self, handshake_exc):$/;"	m	class:SSLProtocol	access:public
+_on_timeout	tasks.py	/^    def _on_timeout():$/;"	f	function:as_completed	access:public
+_outer_done_callback	tasks.py	/^    def _outer_done_callback(outer):$/;"	f	function:shield	access:public
+_pipe_closed	proactor_events.py	/^    def _pipe_closed(self, fut):$/;"	m	class:_ProactorWritePipeTransport	access:public
+_pipe_connection_lost	base_subprocess.py	/^    def _pipe_connection_lost(self, fd, exc):$/;"	m	class:BaseSubprocessTransport	access:public
+_pipe_data_received	base_subprocess.py	/^    def _pipe_data_received(self, fd, data):$/;"	m	class:BaseSubprocessTransport	access:public
+_poll	windows_events.py	/^    def _poll(self):$/;"	m	class:_BaseWaitHandleFuture	access:public
+_poll	windows_events.py	/^    def _poll(self, timeout=None):$/;"	m	class:IocpProactor	access:public
+_process_events	base_events.py	/^    def _process_events(self, event_list):$/;"	m	class:BaseEventLoop	access:public
+_process_events	proactor_events.py	/^    def _process_events(self, event_list):$/;"	m	class:BaseProactorEventLoop	access:public
+_process_events	selector_events.py	/^    def _process_events(self, event_list):$/;"	m	class:BaseSelectorEventLoop	access:public
+_process_exited	base_subprocess.py	/^    def _process_exited(self, returncode):$/;"	m	class:BaseSubprocessTransport	access:public
+_process_self_data	selector_events.py	/^    def _process_self_data(self, data):$/;"	m	class:BaseSelectorEventLoop	access:public
+_process_self_data	unix_events.py	/^    def _process_self_data(self, data):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_process_write_backlog	sslproto.py	/^    def _process_write_backlog(self):$/;"	m	class:SSLProtocol	access:public
+_protocol_paused	sslproto.py	/^    def _protocol_paused(self):$/;"	m	class:_SSLProtocolTransport	access:public
+_put	queues.py	/^    def _put(self, item):$/;"	m	class:LifoQueue	access:public
+_put	queues.py	/^    def _put(self, item):$/;"	m	class:Queue	access:public
+_put	queues.py	/^    def _put(self, item, heappush=heapq.heappush):$/;"	m	class:PriorityQueue	access:public
+_py__get_running_loop	events.py	/^_py__get_running_loop = _get_running_loop$/;"	v
+_py__set_running_loop	events.py	/^_py__set_running_loop = _set_running_loop$/;"	v
+_py_enter_task	tasks.py	/^_py_enter_task = _enter_task$/;"	v
+_py_get_event_loop	events.py	/^_py_get_event_loop = get_event_loop$/;"	v
+_py_get_running_loop	events.py	/^_py_get_running_loop = get_running_loop$/;"	v
+_py_leave_task	tasks.py	/^_py_leave_task = _leave_task$/;"	v
+_py_register_task	tasks.py	/^_py_register_task = _register_task$/;"	v
+_py_unregister_task	tasks.py	/^_py_unregister_task = _unregister_task$/;"	v
+_read_from_self	selector_events.py	/^    def _read_from_self(self):$/;"	m	class:BaseSelectorEventLoop	access:public
+_read_ready	selector_events.py	/^    def _read_ready(self):$/;"	m	class:_SelectorDatagramTransport	access:public
+_read_ready	selector_events.py	/^    def _read_ready(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_read_ready	unix_events.py	/^    def _read_ready(self):$/;"	m	class:_UnixReadPipeTransport	access:public
+_read_ready	unix_events.py	/^    def _read_ready(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+_read_ready__data_received	selector_events.py	/^    def _read_ready__data_received(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_read_ready__get_buffer	selector_events.py	/^    def _read_ready__get_buffer(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_read_ready__on_eof	selector_events.py	/^    def _read_ready__on_eof(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_read_stream	subprocess.py	/^    async def _read_stream(self, fd):$/;"	m	class:Process	access:public
+_register	windows_events.py	/^    def _register(self, ov, obj, callback):$/;"	m	class:IocpProactor	access:public
+_register_task	tasks.py	/^def _register_task(task):$/;"	f	access:public
+_register_with_iocp	windows_events.py	/^    def _register_with_iocp(self, obj):$/;"	m	class:IocpProactor	access:public
+_release_waiter	tasks.py	/^def _release_waiter(waiter, *args):$/;"	f	access:public
+_remove_reader	selector_events.py	/^    def _remove_reader(self, fd):$/;"	m	class:BaseSelectorEventLoop	access:public
+_remove_writer	selector_events.py	/^    def _remove_writer(self, fd):$/;"	m	class:BaseSelectorEventLoop	access:public
+_repr_info	events.py	/^    def _repr_info(self):$/;"	m	class:Handle	access:public
+_repr_info	events.py	/^    def _repr_info(self):$/;"	m	class:TimerHandle	access:public
+_repr_info	futures.py	/^    _repr_info = base_futures._future_repr_info$/;"	v	class:Future
+_repr_info	tasks.py	/^    def _repr_info(self):$/;"	m	class:Task	access:public
+_repr_info	windows_events.py	/^    def _repr_info(self):$/;"	m	class:_BaseWaitHandleFuture	access:public
+_repr_info	windows_events.py	/^    def _repr_info(self):$/;"	m	class:_OverlappedFuture	access:public
+_reset_empty_waiter	proactor_events.py	/^    def _reset_empty_waiter(self):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+_reset_empty_waiter	selector_events.py	/^    def _reset_empty_waiter(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_result	futures.py	/^    _result = None$/;"	v	class:Future
+_result	windows_events.py	/^    def _result(self, value):$/;"	m	class:IocpProactor	access:public
+_run	events.py	/^    def _run(self):$/;"	m	class:Handle	access:public
+_run_once	base_events.py	/^    def _run_once(self):$/;"	m	class:BaseEventLoop	access:public
+_run_until_complete_cb	base_events.py	/^def _run_until_complete_cb(fut):$/;"	f	access:public
+_running_loop	events.py	/^_running_loop = _RunningLoop()$/;"	v
+_sendfile_compatible	proactor_events.py	/^    _sendfile_compatible = constants._SendfileMode.TRY_NATIVE$/;"	v	class:_ProactorSocketTransport
+_sendfile_compatible	selector_events.py	/^    _sendfile_compatible = constants._SendfileMode.TRY_NATIVE$/;"	v	class:_SelectorSocketTransport
+_sendfile_compatible	sslproto.py	/^    _sendfile_compatible = constants._SendfileMode.FALLBACK$/;"	v	class:_SSLProtocolTransport
+_sendfile_fallback	base_events.py	/^    async def _sendfile_fallback(self, transp, file, offset, count):$/;"	m	class:BaseEventLoop	access:public
+_sendfile_native	base_events.py	/^    async def _sendfile_native(self, transp, file, offset, count):$/;"	m	class:BaseEventLoop	access:public
+_sendfile_native	proactor_events.py	/^    async def _sendfile_native(self, transp, file, offset, count):$/;"	m	class:BaseProactorEventLoop	access:public
+_sendfile_native	selector_events.py	/^    async def _sendfile_native(self, transp, file, offset, count):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sendto_ready	selector_events.py	/^    def _sendto_ready(self):$/;"	m	class:_SelectorDatagramTransport	access:public
+_server_pipe_handle	windows_events.py	/^    def _server_pipe_handle(self, first):$/;"	m	class:PipeServer	access:public
+_set_app_protocol	sslproto.py	/^    def _set_app_protocol(self, app_protocol):$/;"	m	class:SSLProtocol	access:public
+_set_called	events.py	/^        _set_called = False$/;"	v	class:BaseDefaultEventLoopPolicy._Local
+_set_concurrent_future_state	futures.py	/^def _set_concurrent_future_state(concurrent, source):$/;"	f	access:public
+_set_coroutine_origin_tracking	base_events.py	/^    def _set_coroutine_origin_tracking(self, enabled):$/;"	m	class:BaseEventLoop	access:public
+_set_extra	proactor_events.py	/^    def _set_extra(self, sock):$/;"	m	class:_ProactorBasePipeTransport	access:public
+_set_extra	proactor_events.py	/^    def _set_extra(self, sock):$/;"	m	class:_ProactorSocketTransport	access:public
+_set_nodelay	base_events.py	/^    def _set_nodelay(sock):$/;"	f	access:public
+_set_result_unless_cancelled	futures.py	/^def _set_result_unless_cancelled(fut, result):$/;"	f	access:public
+_set_reuseport	base_events.py	/^def _set_reuseport(sock):$/;"	f	access:public
+_set_running_loop	events.py	/^def _set_running_loop(loop):$/;"	f	access:public
+_set_state	futures.py	/^    def _set_state(future, other):$/;"	f	function:_chain_future	access:public
+_set_write_buffer_limits	transports.py	/^    def _set_write_buffer_limits(self, high=None, low=None):$/;"	m	class:_FlowControlMixin	access:public
+_sig_chld	unix_events.py	/^    def _sig_chld(self):$/;"	m	class:BaseChildWatcher	access:public
+_sighandler_noop	unix_events.py	/^def _sighandler_noop(signum, frame):$/;"	f	access:public
+_sock	selector_events.py	/^    _sock = None$/;"	v	class:_SelectorTransport
+_sock_accept	selector_events.py	/^    def _sock_accept(self, fut, registered, sock):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_add_cancellation_callback	unix_events.py	/^    def _sock_add_cancellation_callback(self, fut, sock):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_sock_connect	selector_events.py	/^    def _sock_connect(self, fut, sock, address):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_connect_cb	selector_events.py	/^    def _sock_connect_cb(self, fut, sock, address):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_connect_done	selector_events.py	/^    def _sock_connect_done(self, fd, fut):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_recv	selector_events.py	/^    def _sock_recv(self, fut, registered_fd, sock, n):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_recv_into	selector_events.py	/^    def _sock_recv_into(self, fut, registered_fd, sock, buf):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_sendall	selector_events.py	/^    def _sock_sendall(self, fut, registered_fd, sock, data):$/;"	m	class:BaseSelectorEventLoop	access:public
+_sock_sendfile_fallback	base_events.py	/^    async def _sock_sendfile_fallback(self, sock, file, offset, count):$/;"	m	class:BaseEventLoop	access:public
+_sock_sendfile_native	base_events.py	/^    async def _sock_sendfile_native(self, sock, file, offset, count):$/;"	m	class:BaseEventLoop	access:public
+_sock_sendfile_native	proactor_events.py	/^    async def _sock_sendfile_native(self, sock, file, offset, count):$/;"	m	class:BaseProactorEventLoop	access:public
+_sock_sendfile_native	unix_events.py	/^    async def _sock_sendfile_native(self, sock, file, offset, count):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_sock_sendfile_native_impl	unix_events.py	/^    def _sock_sendfile_native_impl(self, fut, registered_fd, sock, fileno,$/;"	m	class:_UnixSelectorEventLoop	access:public
+_sock_sendfile_update_filepos	unix_events.py	/^    def _sock_sendfile_update_filepos(self, fileno, offset, total_sent):$/;"	m	class:_UnixSelectorEventLoop	access:public
+_source_traceback	futures.py	/^    _source_traceback = None$/;"	v	class:Future
+_start	base_subprocess.py	/^    def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):$/;"	m	class:BaseSubprocessTransport	access:public
+_start	unix_events.py	/^    def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):$/;"	m	class:_UnixSubprocessTransport	access:public
+_start	windows_events.py	/^    def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):$/;"	m	class:_WindowsSubprocessTransport	access:public
+_start_handshake	sslproto.py	/^    def _start_handshake(self):$/;"	m	class:SSLProtocol	access:public
+_start_serving	base_events.py	/^    def _start_serving(self):$/;"	m	class:Server	access:public
+_start_serving	proactor_events.py	/^    def _start_serving(self, protocol_factory, sock,$/;"	m	class:BaseProactorEventLoop	access:public
+_start_serving	selector_events.py	/^    def _start_serving(self, protocol_factory, sock,$/;"	m	class:BaseSelectorEventLoop	access:public
+_start_shutdown	sslproto.py	/^    def _start_shutdown(self):$/;"	m	class:SSLProtocol	access:public
+_start_tls_compatible	proactor_events.py	/^    _start_tls_compatible = True$/;"	v	class:_ProactorBaseWritePipeTransport
+_start_tls_compatible	selector_events.py	/^    _start_tls_compatible = True$/;"	v	class:_SelectorSocketTransport
+_state	futures.py	/^    _state = _PENDING$/;"	v	class:Future
+_stop_accept_futures	proactor_events.py	/^    def _stop_accept_futures(self):$/;"	m	class:BaseProactorEventLoop	access:public
+_stop_serving	proactor_events.py	/^    def _stop_serving(self, sock):$/;"	m	class:BaseProactorEventLoop	access:public
+_stop_serving	selector_events.py	/^    def _stop_serving(self, sock):$/;"	m	class:BaseSelectorEventLoop	access:public
+_stop_serving	windows_events.py	/^    def _stop_serving(self, obj):$/;"	m	class:IocpProactor	access:public
+_task_get_stack	base_tasks.py	/^def _task_get_stack(task, limit):$/;"	f	access:public
+_task_print_stack	base_tasks.py	/^def _task_print_stack(task, limit, file):$/;"	f	access:public
+_task_repr_info	base_tasks.py	/^def _task_repr_info(task):$/;"	f	access:public
+_test_selector_event	selector_events.py	/^def _test_selector_event(selector, fd, event):$/;"	f	access:public
+_timer_handle_cancelled	base_events.py	/^    def _timer_handle_cancelled(self, handle):$/;"	m	class:BaseEventLoop	access:public
+_timer_handle_cancelled	events.py	/^    def _timer_handle_cancelled(self, handle):$/;"	m	class:AbstractEventLoop	access:public
+_try_finish	base_subprocess.py	/^    def _try_finish(self):$/;"	m	class:BaseSubprocessTransport	access:public
+_unregister	windows_events.py	/^    def _unregister(self, ov):$/;"	m	class:IocpProactor	access:public
+_unregister_task	tasks.py	/^def _unregister_task(task):$/;"	f	access:public
+_unregister_wait	windows_events.py	/^    def _unregister_wait(self):$/;"	m	class:_BaseWaitHandleFuture	access:public
+_unregister_wait	windows_events.py	/^    def _unregister_wait(self):$/;"	m	class:_WaitHandleFuture	access:public
+_unregister_wait_cb	windows_events.py	/^    def _unregister_wait_cb(self, fut):$/;"	m	class:_BaseWaitHandleFuture	access:public
+_unregister_wait_cb	windows_events.py	/^    def _unregister_wait_cb(self, fut):$/;"	m	class:_WaitHandleFuture	access:public
+_wait	base_subprocess.py	/^    async def _wait(self):$/;"	m	class:BaseSubprocessTransport	access:public
+_wait	tasks.py	/^async def _wait(fs, timeout, return_when, loop):$/;"	f	access:public
+_wait_cancel	windows_events.py	/^    def _wait_cancel(self, event, done_callback):$/;"	m	class:IocpProactor	access:public
+_wait_for_data	streams.py	/^    async def _wait_for_data(self, func_name):$/;"	m	class:StreamReader	access:public
+_wait_for_handle	windows_events.py	/^    def _wait_for_handle(self, handle, timeout, _is_cancel):$/;"	m	class:IocpProactor	access:public
+_wait_for_one	tasks.py	/^    async def _wait_for_one():$/;"	f	function:as_completed	access:public
+_wake_up_first	locks.py	/^    def _wake_up_first(self):$/;"	m	class:Lock	access:public
+_wake_up_next	locks.py	/^    def _wake_up_next(self):$/;"	m	class:Semaphore	access:public
+_wakeup	base_events.py	/^    def _wakeup(self):$/;"	m	class:Server	access:public
+_wakeup_next	queues.py	/^    def _wakeup_next(self, waiters):$/;"	m	class:Queue	access:public
+_wakeup_waiter	sslproto.py	/^    def _wakeup_waiter(self, exc=None):$/;"	m	class:SSLProtocol	access:public
+_wakeup_waiter	streams.py	/^    def _wakeup_waiter(self):$/;"	m	class:StreamReader	access:public
+_wrap_awaitable	tasks.py	/^def _wrap_awaitable(awaitable):$/;"	f	access:public
+_write_appdata	sslproto.py	/^    def _write_appdata(self, data):$/;"	m	class:SSLProtocol	access:public
+_write_ready	selector_events.py	/^    def _write_ready(self):$/;"	m	class:_SelectorSocketTransport	access:public
+_write_ready	unix_events.py	/^    def _write_ready(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+_write_to_self	base_events.py	/^    def _write_to_self(self):$/;"	m	class:BaseEventLoop	access:public
+_write_to_self	proactor_events.py	/^    def _write_to_self(self):$/;"	m	class:BaseProactorEventLoop	access:public
+_write_to_self	selector_events.py	/^    def _write_to_self(self):$/;"	m	class:BaseSelectorEventLoop	access:public
+abort	proactor_events.py	/^    def abort(self):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+abort	selector_events.py	/^    def abort(self):$/;"	m	class:_SelectorTransport	access:public
+abort	sslproto.py	/^    def abort(self):$/;"	m	class:_SSLProtocolTransport	access:public
+abort	transports.py	/^    def abort(self):$/;"	m	class:DatagramTransport	access:public
+abort	transports.py	/^    def abort(self):$/;"	m	class:WriteTransport	access:public
+abort	unix_events.py	/^    def abort(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+accept	windows_events.py	/^    def accept(self, listener):$/;"	m	class:IocpProactor	access:public
+accept_coro	windows_events.py	/^        async def accept_coro(future, conn):$/;"	f	function:IocpProactor.accept	access:public
+accept_pipe	windows_events.py	/^    def accept_pipe(self, pipe):$/;"	m	class:IocpProactor	access:public
+acquire	locks.py	/^    async def acquire(self):$/;"	m	class:Lock	access:public
+acquire	locks.py	/^    async def acquire(self):$/;"	m	class:Semaphore	access:public
+add_child_handler	unix_events.py	/^    def add_child_handler(self, pid, callback, *args):$/;"	m	class:AbstractChildWatcher	access:public
+add_child_handler	unix_events.py	/^    def add_child_handler(self, pid, callback, *args):$/;"	m	class:FastChildWatcher	access:public
+add_child_handler	unix_events.py	/^    def add_child_handler(self, pid, callback, *args):$/;"	m	class:SafeChildWatcher	access:public
+add_done_callback	futures.py	/^    def add_done_callback(self, fn, *, context=None):$/;"	m	class:Future	access:public
+add_reader	events.py	/^    def add_reader(self, fd, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+add_reader	selector_events.py	/^    def add_reader(self, fd, callback, *args):$/;"	m	class:BaseSelectorEventLoop	access:public
+add_signal_handler	events.py	/^    def add_signal_handler(self, sig, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+add_signal_handler	unix_events.py	/^    def add_signal_handler(self, sig, callback, *args):$/;"	m	class:_UnixSelectorEventLoop	access:public
+add_writer	events.py	/^    def add_writer(self, fd, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+add_writer	selector_events.py	/^    def add_writer(self, fd, callback, *args):$/;"	m	class:BaseSelectorEventLoop	access:public
+all_tasks	tasks.py	/^    def all_tasks(cls, loop=None):$/;"	m	class:Task	access:public
+all_tasks	tasks.py	/^def all_tasks(loop=None):$/;"	f	access:public
+as_completed	tasks.py	/^def as_completed(fs, *, loop=None, timeout=None):$/;"	f	access:public
+at_eof	streams.py	/^    def at_eof(self):$/;"	m	class:StreamReader	access:public
+attach_loop	unix_events.py	/^    def attach_loop(self, loop):$/;"	m	class:AbstractChildWatcher	access:public
+attach_loop	unix_events.py	/^    def attach_loop(self, loop):$/;"	m	class:BaseChildWatcher	access:public
+buffer_updated	protocols.py	/^    def buffer_updated(self, nbytes):$/;"	m	class:BufferedProtocol	access:public
+call_at	base_events.py	/^    def call_at(self, when, callback, *args, context=None):$/;"	m	class:BaseEventLoop	access:public
+call_at	events.py	/^    def call_at(self, when, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+call_exception_handler	base_events.py	/^    def call_exception_handler(self, context):$/;"	m	class:BaseEventLoop	access:public
+call_exception_handler	events.py	/^    def call_exception_handler(self, context):$/;"	m	class:AbstractEventLoop	access:public
+call_later	base_events.py	/^    def call_later(self, delay, callback, *args, context=None):$/;"	m	class:BaseEventLoop	access:public
+call_later	events.py	/^    def call_later(self, delay, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+call_soon	base_events.py	/^    def call_soon(self, callback, *args, context=None):$/;"	m	class:BaseEventLoop	access:public
+call_soon	events.py	/^    def call_soon(self, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+call_soon_threadsafe	base_events.py	/^    def call_soon_threadsafe(self, callback, *args, context=None):$/;"	m	class:BaseEventLoop	access:public
+call_soon_threadsafe	events.py	/^    def call_soon_threadsafe(self, callback, *args):$/;"	m	class:AbstractEventLoop	access:public
+callback	tasks.py	/^    def callback():$/;"	f	function:run_coroutine_threadsafe	access:public
+callback	windows_events.py	/^        def callback(f):$/;"	f	function:_WindowsSubprocessTransport._start	access:public
+can_write_eof	proactor_events.py	/^    def can_write_eof(self):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+can_write_eof	proactor_events.py	/^    def can_write_eof(self):$/;"	m	class:_ProactorDuplexPipeTransport	access:public
+can_write_eof	proactor_events.py	/^    def can_write_eof(self):$/;"	m	class:_ProactorSocketTransport	access:public
+can_write_eof	selector_events.py	/^    def can_write_eof(self):$/;"	m	class:_SelectorSocketTransport	access:public
+can_write_eof	sslproto.py	/^    def can_write_eof(self):$/;"	m	class:_SSLProtocolTransport	access:public
+can_write_eof	streams.py	/^    def can_write_eof(self):$/;"	m	class:StreamWriter	access:public
+can_write_eof	transports.py	/^    def can_write_eof(self):$/;"	m	class:WriteTransport	access:public
+can_write_eof	unix_events.py	/^    def can_write_eof(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+cancel	events.py	/^    def cancel(self):$/;"	m	class:Handle	access:public
+cancel	events.py	/^    def cancel(self):$/;"	m	class:TimerHandle	access:public
+cancel	futures.py	/^    def cancel(self):$/;"	m	class:Future	access:public
+cancel	tasks.py	/^    def cancel(self):$/;"	m	class:Task	access:public
+cancel	tasks.py	/^    def cancel(self):$/;"	m	class:_GatheringFuture	access:public
+cancel	windows_events.py	/^    def cancel(self):$/;"	m	class:_BaseWaitHandleFuture	access:public
+cancel	windows_events.py	/^    def cancel(self):$/;"	m	class:_OverlappedFuture	access:public
+cancel	windows_events.py	/^    def cancel(self):$/;"	m	class:_WaitCancelFuture	access:public
+cancelled	events.py	/^    def cancelled(self):$/;"	m	class:Handle	access:public
+cancelled	futures.py	/^    def cancelled(self):$/;"	m	class:Future	access:public
+cb	unix_events.py	/^        def cb(fut):$/;"	f	function:_UnixSelectorEventLoop._sock_add_cancellation_callback	access:public
+clear	locks.py	/^    def clear(self):$/;"	m	class:Event	access:public
+close	base_events.py	/^    def close(self):$/;"	m	class:BaseEventLoop	access:public
+close	base_events.py	/^    def close(self):$/;"	m	class:Server	access:public
+close	base_subprocess.py	/^    def close(self):$/;"	m	class:BaseSubprocessTransport	access:public
+close	coroutines.py	/^    def close(self):$/;"	m	class:CoroWrapper	access:public
+close	events.py	/^    def close(self):$/;"	m	class:AbstractEventLoop	access:public
+close	events.py	/^    def close(self):$/;"	m	class:AbstractServer	access:public
+close	proactor_events.py	/^    def close(self):$/;"	m	class:BaseProactorEventLoop	access:public
+close	proactor_events.py	/^    def close(self):$/;"	m	class:_ProactorBasePipeTransport	access:public
+close	selector_events.py	/^    def close(self):$/;"	m	class:BaseSelectorEventLoop	access:public
+close	selector_events.py	/^    def close(self):$/;"	m	class:_SelectorTransport	access:public
+close	sslproto.py	/^    def close(self):$/;"	m	class:_SSLProtocolTransport	access:public
+close	streams.py	/^    def close(self):$/;"	m	class:StreamWriter	access:public
+close	transports.py	/^    def close(self):$/;"	m	class:BaseTransport	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:AbstractChildWatcher	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:BaseChildWatcher	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:FastChildWatcher	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:SafeChildWatcher	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:_UnixReadPipeTransport	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:_UnixSelectorEventLoop	access:public
+close	unix_events.py	/^    def close(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+close	windows_events.py	/^    def close(self):$/;"	m	class:IocpProactor	access:public
+close	windows_events.py	/^    def close(self):$/;"	m	class:PipeServer	access:public
+close	windows_utils.py	/^    def close(self, *, CloseHandle=_winapi.CloseHandle):$/;"	m	class:PipeHandle	access:public
+closed	windows_events.py	/^    def closed(self):$/;"	m	class:PipeServer	access:public
+communicate	subprocess.py	/^    async def communicate(self, input=None):$/;"	m	class:Process	access:public
+connect	windows_events.py	/^    def connect(self, conn, address):$/;"	m	class:IocpProactor	access:public
+connect_accepted_socket	base_events.py	/^    async def connect_accepted_socket($/;"	m	class:BaseEventLoop	access:public
+connect_pipe	windows_events.py	/^    async def connect_pipe(self, address):$/;"	m	class:IocpProactor	access:public
+connect_read_pipe	base_events.py	/^    async def connect_read_pipe(self, protocol_factory, pipe):$/;"	m	class:BaseEventLoop	access:public
+connect_read_pipe	events.py	/^    async def connect_read_pipe(self, protocol_factory, pipe):$/;"	m	class:AbstractEventLoop	access:public
+connect_write_pipe	base_events.py	/^    async def connect_write_pipe(self, protocol_factory, pipe):$/;"	m	class:BaseEventLoop	access:public
+connect_write_pipe	events.py	/^    async def connect_write_pipe(self, protocol_factory, pipe):$/;"	m	class:AbstractEventLoop	access:public
+connection_lost	base_events.py	/^    def connection_lost(self, exc):$/;"	m	class:_SendfileFallbackProtocol	access:public
+connection_lost	base_subprocess.py	/^    def connection_lost(self, exc):$/;"	m	class:WriteSubprocessPipeProto	access:public
+connection_lost	protocols.py	/^    def connection_lost(self, exc):$/;"	m	class:BaseProtocol	access:public
+connection_lost	sslproto.py	/^    def connection_lost(self, exc):$/;"	m	class:SSLProtocol	access:public
+connection_lost	streams.py	/^    def connection_lost(self, exc):$/;"	m	class:FlowControlMixin	access:public
+connection_lost	streams.py	/^    def connection_lost(self, exc):$/;"	m	class:StreamReaderProtocol	access:public
+connection_made	base_events.py	/^    def connection_made(self, transport):$/;"	m	class:_SendfileFallbackProtocol	access:public
+connection_made	base_subprocess.py	/^    def connection_made(self, transport):$/;"	m	class:WriteSubprocessPipeProto	access:public
+connection_made	protocols.py	/^    def connection_made(self, transport):$/;"	m	class:BaseProtocol	access:public
+connection_made	sslproto.py	/^    def connection_made(self, transport):$/;"	m	class:SSLProtocol	access:public
+connection_made	streams.py	/^    def connection_made(self, transport):$/;"	m	class:StreamReaderProtocol	access:public
+connection_made	subprocess.py	/^    def connection_made(self, transport):$/;"	m	class:SubprocessStreamProtocol	access:public
+context	sslproto.py	/^    def context(self):$/;"	m	class:_SSLPipe	access:public
+coro	coroutines.py	/^        def coro(*args, **kw):$/;"	f	function:coroutine	access:public
+coroutine	coroutines.py	/^def coroutine(func):$/;"	f	access:public
+create_connection	base_events.py	/^    async def create_connection($/;"	m	class:BaseEventLoop	access:public
+create_connection	events.py	/^    async def create_connection($/;"	m	class:AbstractEventLoop	access:public
+create_datagram_endpoint	base_events.py	/^    async def create_datagram_endpoint(self, protocol_factory,$/;"	m	class:BaseEventLoop	access:public
+create_datagram_endpoint	events.py	/^    async def create_datagram_endpoint(self, protocol_factory,$/;"	m	class:AbstractEventLoop	access:public
+create_future	base_events.py	/^    def create_future(self):$/;"	m	class:BaseEventLoop	access:public
+create_future	events.py	/^    def create_future(self):$/;"	m	class:AbstractEventLoop	access:public
+create_pipe_connection	windows_events.py	/^    async def create_pipe_connection(self, protocol_factory, address):$/;"	m	class:ProactorEventLoop	access:public
+create_server	base_events.py	/^    async def create_server($/;"	m	class:BaseEventLoop	access:public
+create_server	events.py	/^    async def create_server($/;"	m	class:AbstractEventLoop	access:public
+create_subprocess_exec	subprocess.py	/^async def create_subprocess_exec(program, *args, stdin=None, stdout=None,$/;"	f	access:public
+create_subprocess_shell	subprocess.py	/^async def create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,$/;"	f	access:public
+create_task	base_events.py	/^    def create_task(self, coro):$/;"	m	class:BaseEventLoop	access:public
+create_task	events.py	/^    def create_task(self, coro):$/;"	m	class:AbstractEventLoop	access:public
+create_task	tasks.py	/^def create_task(coro):$/;"	f	access:public
+create_unix_connection	events.py	/^    async def create_unix_connection($/;"	m	class:AbstractEventLoop	access:public
+create_unix_connection	unix_events.py	/^    async def create_unix_connection($/;"	m	class:_UnixSelectorEventLoop	access:public
+create_unix_server	events.py	/^    async def create_unix_server($/;"	m	class:AbstractEventLoop	access:public
+create_unix_server	unix_events.py	/^    async def create_unix_server($/;"	m	class:_UnixSelectorEventLoop	access:public
+current_task	tasks.py	/^    def current_task(cls, loop=None):$/;"	m	class:Task	access:public
+current_task	tasks.py	/^def current_task(loop=None):$/;"	f	access:public
+data_received	base_events.py	/^    def data_received(self, data):$/;"	m	class:_SendfileFallbackProtocol	access:public
+data_received	base_subprocess.py	/^    def data_received(self, data):$/;"	m	class:ReadSubprocessPipeProto	access:public
+data_received	protocols.py	/^    def data_received(self, data):$/;"	m	class:Protocol	access:public
+data_received	sslproto.py	/^    def data_received(self, data):$/;"	m	class:SSLProtocol	access:public
+data_received	streams.py	/^    def data_received(self, data):$/;"	m	class:StreamReaderProtocol	access:public
+datagram_received	protocols.py	/^    def datagram_received(self, data, addr):$/;"	m	class:DatagramProtocol	access:public
+default_exception_handler	base_events.py	/^    def default_exception_handler(self, context):$/;"	m	class:BaseEventLoop	access:public
+default_exception_handler	events.py	/^    def default_exception_handler(self, context):$/;"	m	class:AbstractEventLoop	access:public
+do_handshake	sslproto.py	/^    def do_handshake(self, callback=None):$/;"	m	class:_SSLPipe	access:public
+done	futures.py	/^    def done(self):$/;"	m	class:Future	access:public
+drain	base_events.py	/^    async def drain(self):$/;"	m	class:_SendfileFallbackProtocol	access:public
+drain	streams.py	/^    async def drain(self):$/;"	m	class:StreamWriter	access:public
+empty	queues.py	/^    def empty(self):$/;"	m	class:Queue	access:public
+ensure_future	tasks.py	/^def ensure_future(coro_or_future, *, loop=None):$/;"	f	access:public
+eof_received	base_events.py	/^    def eof_received(self):$/;"	m	class:_SendfileFallbackProtocol	access:public
+eof_received	protocols.py	/^    def eof_received(self):$/;"	m	class:BufferedProtocol	access:public
+eof_received	protocols.py	/^    def eof_received(self):$/;"	m	class:Protocol	access:public
+eof_received	sslproto.py	/^    def eof_received(self):$/;"	m	class:SSLProtocol	access:public
+eof_received	streams.py	/^    def eof_received(self):$/;"	m	class:StreamReaderProtocol	access:public
+error_received	protocols.py	/^    def error_received(self, exc):$/;"	m	class:DatagramProtocol	access:public
+exception	futures.py	/^    def exception(self):$/;"	m	class:Future	access:public
+exception	streams.py	/^    def exception(self):$/;"	m	class:StreamReader	access:public
+extract_stack	format_helpers.py	/^def extract_stack(f=None, limit=None):$/;"	f	access:public
+factory	streams.py	/^        def factory():$/;"	f	function:start_server.start_unix_server	access:public
+factory	streams.py	/^    def factory():$/;"	f	function:start_server	access:public
+feed_appdata	sslproto.py	/^    def feed_appdata(self, data, offset=0):$/;"	m	class:_SSLPipe	access:public
+feed_data	streams.py	/^    def feed_data(self, data):$/;"	m	class:StreamReader	access:public
+feed_eof	sslproto.py	/^    def feed_eof(self):$/;"	m	class:_SSLPipe	access:public
+feed_eof	streams.py	/^    def feed_eof(self):$/;"	m	class:StreamReader	access:public
+feed_ssldata	sslproto.py	/^    def feed_ssldata(self, data, only_handshake=False):$/;"	m	class:_SSLPipe	access:public
+fileno	windows_utils.py	/^    def fileno(self):$/;"	m	class:PipeHandle	access:public
+finish_accept	windows_events.py	/^        def finish_accept(trans, key, ov):$/;"	f	function:IocpProactor.accept	access:public
+finish_accept_pipe	windows_events.py	/^        def finish_accept_pipe(trans, key, ov):$/;"	f	function:IocpProactor.accept_pipe	access:public
+finish_connect	windows_events.py	/^        def finish_connect(trans, key, ov):$/;"	f	function:IocpProactor.connect	access:public
+finish_recv	windows_events.py	/^        def finish_recv(trans, key, ov):$/;"	f	function:IocpProactor.recv	access:public
+finish_recv	windows_events.py	/^        def finish_recv(trans, key, ov):$/;"	f	function:IocpProactor.recv_into	access:public
+finish_send	windows_events.py	/^        def finish_send(trans, key, ov):$/;"	f	function:IocpProactor.send	access:public
+finish_sendfile	windows_events.py	/^        def finish_sendfile(trans, key, ov):$/;"	f	function:IocpProactor.sendfile	access:public
+finish_wait_for_handle	windows_events.py	/^        def finish_wait_for_handle(trans, key, ov):$/;"	f	function:IocpProactor._wait_for_handle	access:public
+format_cb	base_futures.py	/^    def format_cb(callback):$/;"	f	function:_format_callbacks	access:public
+full	queues.py	/^    def full(self):$/;"	m	class:Queue	access:public
+gather	tasks.py	/^def gather(*coros_or_futures, loop=None, return_exceptions=False):$/;"	f	access:public
+get	queues.py	/^    async def get(self):$/;"	m	class:Queue	access:public
+get_buffer	protocols.py	/^    def get_buffer(self, sizehint):$/;"	m	class:BufferedProtocol	access:public
+get_child_watcher	events.py	/^    def get_child_watcher(self):$/;"	m	class:AbstractEventLoopPolicy	access:public
+get_child_watcher	events.py	/^def get_child_watcher():$/;"	f	access:public
+get_child_watcher	unix_events.py	/^    def get_child_watcher(self):$/;"	m	class:_UnixDefaultEventLoopPolicy	access:public
+get_debug	base_events.py	/^    def get_debug(self):$/;"	m	class:BaseEventLoop	access:public
+get_debug	events.py	/^    def get_debug(self):$/;"	m	class:AbstractEventLoop	access:public
+get_event_loop	events.py	/^    def get_event_loop(self):$/;"	m	class:AbstractEventLoopPolicy	access:public
+get_event_loop	events.py	/^    def get_event_loop(self):$/;"	m	class:BaseDefaultEventLoopPolicy	access:public
+get_event_loop	events.py	/^def get_event_loop():$/;"	f	access:public
+get_event_loop_policy	events.py	/^def get_event_loop_policy():$/;"	f	access:public
+get_exception_handler	base_events.py	/^    def get_exception_handler(self):$/;"	m	class:BaseEventLoop	access:public
+get_exception_handler	events.py	/^    def get_exception_handler(self):$/;"	m	class:AbstractEventLoop	access:public
+get_extra_info	sslproto.py	/^    def get_extra_info(self, name, default=None):$/;"	m	class:_SSLProtocolTransport	access:public
+get_extra_info	streams.py	/^    def get_extra_info(self, name, default=None):$/;"	m	class:StreamWriter	access:public
+get_extra_info	transports.py	/^    def get_extra_info(self, name, default=None):$/;"	m	class:BaseTransport	access:public
+get_loop	base_events.py	/^    def get_loop(self):$/;"	m	class:Server	access:public
+get_loop	events.py	/^    def get_loop(self):$/;"	m	class:AbstractServer	access:public
+get_loop	futures.py	/^    def get_loop(self):$/;"	m	class:Future	access:public
+get_name	coroutines.py	/^    def get_name(coro):$/;"	f	function:_format_coroutine	access:public
+get_nowait	queues.py	/^    def get_nowait(self):$/;"	m	class:Queue	access:public
+get_pid	base_subprocess.py	/^    def get_pid(self):$/;"	m	class:BaseSubprocessTransport	access:public
+get_pid	transports.py	/^    def get_pid(self):$/;"	m	class:SubprocessTransport	access:public
+get_pipe_transport	base_subprocess.py	/^    def get_pipe_transport(self, fd):$/;"	m	class:BaseSubprocessTransport	access:public
+get_pipe_transport	transports.py	/^    def get_pipe_transport(self, fd):$/;"	m	class:SubprocessTransport	access:public
+get_protocol	base_subprocess.py	/^    def get_protocol(self):$/;"	m	class:BaseSubprocessTransport	access:public
+get_protocol	proactor_events.py	/^    def get_protocol(self):$/;"	m	class:_ProactorBasePipeTransport	access:public
+get_protocol	selector_events.py	/^    def get_protocol(self):$/;"	m	class:_SelectorTransport	access:public
+get_protocol	sslproto.py	/^    def get_protocol(self):$/;"	m	class:_SSLProtocolTransport	access:public
+get_protocol	transports.py	/^    def get_protocol(self):$/;"	m	class:BaseTransport	access:public
+get_protocol	unix_events.py	/^    def get_protocol(self):$/;"	m	class:_UnixReadPipeTransport	access:public
+get_protocol	unix_events.py	/^    def get_protocol(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+get_returncode	base_subprocess.py	/^    def get_returncode(self):$/;"	m	class:BaseSubprocessTransport	access:public
+get_returncode	transports.py	/^    def get_returncode(self):$/;"	m	class:SubprocessTransport	access:public
+get_running_loop	events.py	/^def get_running_loop():$/;"	f	access:public
+get_stack	tasks.py	/^    def get_stack(self, *, limit=None):$/;"	m	class:Task	access:public
+get_task_factory	base_events.py	/^    def get_task_factory(self):$/;"	m	class:BaseEventLoop	access:public
+get_task_factory	events.py	/^    def get_task_factory(self):$/;"	m	class:AbstractEventLoop	access:public
+get_write_buffer_limits	transports.py	/^    def get_write_buffer_limits(self):$/;"	m	class:_FlowControlMixin	access:public
+get_write_buffer_size	proactor_events.py	/^    def get_write_buffer_size(self):$/;"	m	class:_ProactorBasePipeTransport	access:public
+get_write_buffer_size	selector_events.py	/^    def get_write_buffer_size(self):$/;"	m	class:_SelectorDatagramTransport	access:public
+get_write_buffer_size	selector_events.py	/^    def get_write_buffer_size(self):$/;"	m	class:_SelectorTransport	access:public
+get_write_buffer_size	sslproto.py	/^    def get_write_buffer_size(self):$/;"	m	class:_SSLProtocolTransport	access:public
+get_write_buffer_size	transports.py	/^    def get_write_buffer_size(self):$/;"	m	class:WriteTransport	access:public
+get_write_buffer_size	transports.py	/^    def get_write_buffer_size(self):$/;"	m	class:_FlowControlMixin	access:public
+get_write_buffer_size	unix_events.py	/^    def get_write_buffer_size(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+getaddrinfo	base_events.py	/^    async def getaddrinfo(self, host, port, *,$/;"	m	class:BaseEventLoop	access:public
+getaddrinfo	events.py	/^    async def getaddrinfo(self, host, port, *,$/;"	m	class:AbstractEventLoop	access:public
+getnameinfo	base_events.py	/^    async def getnameinfo(self, sockaddr, flags=0):$/;"	m	class:BaseEventLoop	access:public
+getnameinfo	events.py	/^    async def getnameinfo(self, sockaddr, flags=0):$/;"	m	class:AbstractEventLoop	access:public
+gi_code	coroutines.py	/^    def gi_code(self):$/;"	m	class:CoroWrapper	access:public
+gi_frame	coroutines.py	/^    def gi_frame(self):$/;"	m	class:CoroWrapper	access:public
+gi_running	coroutines.py	/^    def gi_running(self):$/;"	m	class:CoroWrapper	access:public
+gi_yieldfrom	coroutines.py	/^    def gi_yieldfrom(self):$/;"	m	class:CoroWrapper	access:public
+handle	windows_utils.py	/^    def handle(self):$/;"	m	class:PipeHandle	access:public
+is_closed	base_events.py	/^    def is_closed(self):$/;"	m	class:BaseEventLoop	access:public
+is_closed	events.py	/^    def is_closed(self):$/;"	m	class:AbstractEventLoop	access:public
+is_closing	base_subprocess.py	/^    def is_closing(self):$/;"	m	class:BaseSubprocessTransport	access:public
+is_closing	proactor_events.py	/^    def is_closing(self):$/;"	m	class:_ProactorBasePipeTransport	access:public
+is_closing	selector_events.py	/^    def is_closing(self):$/;"	m	class:_SelectorTransport	access:public
+is_closing	sslproto.py	/^    def is_closing(self):$/;"	m	class:_SSLProtocolTransport	access:public
+is_closing	streams.py	/^    def is_closing(self):$/;"	m	class:StreamWriter	access:public
+is_closing	transports.py	/^    def is_closing(self):$/;"	m	class:BaseTransport	access:public
+is_closing	unix_events.py	/^    def is_closing(self):$/;"	m	class:_UnixReadPipeTransport	access:public
+is_closing	unix_events.py	/^    def is_closing(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+is_reading	proactor_events.py	/^    def is_reading(self):$/;"	m	class:_ProactorReadPipeTransport	access:public
+is_reading	selector_events.py	/^    def is_reading(self):$/;"	m	class:_SelectorSocketTransport	access:public
+is_reading	sslproto.py	/^    def is_reading(self):$/;"	m	class:_SSLProtocolTransport	access:public
+is_reading	transports.py	/^    def is_reading(self):$/;"	m	class:ReadTransport	access:public
+is_running	base_events.py	/^    def is_running(self):$/;"	m	class:BaseEventLoop	access:public
+is_running	coroutines.py	/^    def is_running(coro):$/;"	f	function:_format_coroutine	access:public
+is_running	events.py	/^    def is_running(self):$/;"	m	class:AbstractEventLoop	access:public
+is_serving	base_events.py	/^    def is_serving(self):$/;"	m	class:Server	access:public
+is_serving	events.py	/^    def is_serving(self):$/;"	m	class:AbstractServer	access:public
+is_set	locks.py	/^    def is_set(self):$/;"	m	class:Event	access:public
+iscoroutine	coroutines.py	/^def iscoroutine(obj):$/;"	f	access:public
+iscoroutinefunction	coroutines.py	/^def iscoroutinefunction(func):$/;"	f	access:public
+isfuture	base_futures.py	/^def isfuture(obj):$/;"	f	access:public
+isfuture	futures.py	/^isfuture = base_futures.isfuture$/;"	v
+join	queues.py	/^    async def join(self):$/;"	m	class:Queue	access:public
+kill	base_subprocess.py	/^    def kill(self):$/;"	m	class:BaseSubprocessTransport	access:public
+kill	subprocess.py	/^    def kill(self):$/;"	m	class:Process	access:public
+kill	transports.py	/^    def kill(self):$/;"	m	class:SubprocessTransport	access:public
+locked	locks.py	/^    def locked(self):$/;"	m	class:Lock	access:public
+locked	locks.py	/^    def locked(self):$/;"	m	class:Semaphore	access:public
+logger	log.py	/^logger = logging.getLogger(__package__)$/;"	v
+loop	proactor_events.py	/^        def loop(f=None):$/;"	f	function:BaseProactorEventLoop._start_serving	access:public
+loop_accept_pipe	windows_events.py	/^        def loop_accept_pipe(f=None):$/;"	f	function:ProactorEventLoop.start_serving_pipe	access:public
+loop_pid	events.py	/^    loop_pid = (None, None)$/;"	v	class:_RunningLoop
+max_size	selector_events.py	/^    max_size = 256 * 1024  # Buffer size passed to recv().$/;"	v	class:_SelectorTransport
+max_size	sslproto.py	/^    max_size = 256 * 1024   # Buffer size passed to read()$/;"	v	class:_SSLPipe
+max_size	unix_events.py	/^    max_size = 256 * 1024  # max bytes we read in one event loop iteration$/;"	v	class:_UnixReadPipeTransport
+maxsize	queues.py	/^    def maxsize(self):$/;"	m	class:Queue	access:public
+need_ssldata	sslproto.py	/^    def need_ssldata(self):$/;"	m	class:_SSLPipe	access:public
+new_event_loop	events.py	/^    def new_event_loop(self):$/;"	m	class:AbstractEventLoopPolicy	access:public
+new_event_loop	events.py	/^    def new_event_loop(self):$/;"	m	class:BaseDefaultEventLoopPolicy	access:public
+new_event_loop	events.py	/^def new_event_loop():$/;"	f	access:public
+notify	locks.py	/^    def notify(self, n=1):$/;"	m	class:Condition	access:public
+notify_all	locks.py	/^    def notify_all(self):$/;"	m	class:Condition	access:public
+open_connection	streams.py	/^async def open_connection(host=None, port=None, *,$/;"	f	access:public
+open_unix_connection	streams.py	/^    async def open_unix_connection(path=None, *,$/;"	f	function:start_server	access:public
+pause_reading	proactor_events.py	/^    def pause_reading(self):$/;"	m	class:_ProactorReadPipeTransport	access:public
+pause_reading	selector_events.py	/^    def pause_reading(self):$/;"	m	class:_SelectorSocketTransport	access:public
+pause_reading	sslproto.py	/^    def pause_reading(self):$/;"	m	class:_SSLProtocolTransport	access:public
+pause_reading	transports.py	/^    def pause_reading(self):$/;"	m	class:ReadTransport	access:public
+pause_reading	unix_events.py	/^    def pause_reading(self):$/;"	m	class:_UnixReadPipeTransport	access:public
+pause_writing	base_events.py	/^    def pause_writing(self):$/;"	m	class:_SendfileFallbackProtocol	access:public
+pause_writing	base_subprocess.py	/^    def pause_writing(self):$/;"	m	class:WriteSubprocessPipeProto	access:public
+pause_writing	protocols.py	/^    def pause_writing(self):$/;"	m	class:BaseProtocol	access:public
+pause_writing	sslproto.py	/^    def pause_writing(self):$/;"	m	class:SSLProtocol	access:public
+pause_writing	streams.py	/^    def pause_writing(self):$/;"	m	class:FlowControlMixin	access:public
+pipe	windows_utils.py	/^def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):$/;"	f	access:public
+pipe_connection_lost	protocols.py	/^    def pipe_connection_lost(self, fd, exc):$/;"	m	class:SubprocessProtocol	access:public
+pipe_connection_lost	subprocess.py	/^    def pipe_connection_lost(self, fd, exc):$/;"	m	class:SubprocessStreamProtocol	access:public
+pipe_data_received	protocols.py	/^    def pipe_data_received(self, fd, data):$/;"	m	class:SubprocessProtocol	access:public
+pipe_data_received	subprocess.py	/^    def pipe_data_received(self, fd, data):$/;"	m	class:SubprocessStreamProtocol	access:public
+print_stack	tasks.py	/^    def print_stack(self, *, limit=None, file=None):$/;"	m	class:Task	access:public
+process_exited	protocols.py	/^    def process_exited(self):$/;"	m	class:SubprocessProtocol	access:public
+process_exited	subprocess.py	/^    def process_exited(self):$/;"	m	class:SubprocessStreamProtocol	access:public
+put	queues.py	/^    async def put(self, item):$/;"	m	class:Queue	access:public
+put_nowait	queues.py	/^    def put_nowait(self, item):$/;"	m	class:Queue	access:public
+qsize	queues.py	/^    def qsize(self):$/;"	m	class:Queue	access:public
+read	streams.py	/^    async def read(self, n=-1):$/;"	m	class:StreamReader	access:public
+readexactly	streams.py	/^    async def readexactly(self, n):$/;"	m	class:StreamReader	access:public
+readline	streams.py	/^    async def readline(self):$/;"	m	class:StreamReader	access:public
+readuntil	streams.py	/^    async def readuntil(self, separator=b'\\n'):$/;"	m	class:StreamReader	access:public
+recv	windows_events.py	/^    def recv(self, conn, nbytes, flags=0):$/;"	m	class:IocpProactor	access:public
+recv_into	windows_events.py	/^    def recv_into(self, conn, buf, flags=0):$/;"	m	class:IocpProactor	access:public
+release	locks.py	/^    def release(self):$/;"	m	class:BoundedSemaphore	access:public
+release	locks.py	/^    def release(self):$/;"	m	class:Lock	access:public
+release	locks.py	/^    def release(self):$/;"	m	class:Semaphore	access:public
+remove_child_handler	unix_events.py	/^    def remove_child_handler(self, pid):$/;"	m	class:AbstractChildWatcher	access:public
+remove_child_handler	unix_events.py	/^    def remove_child_handler(self, pid):$/;"	m	class:FastChildWatcher	access:public
+remove_child_handler	unix_events.py	/^    def remove_child_handler(self, pid):$/;"	m	class:SafeChildWatcher	access:public
+remove_done_callback	futures.py	/^    def remove_done_callback(self, fn):$/;"	m	class:Future	access:public
+remove_reader	events.py	/^    def remove_reader(self, fd):$/;"	m	class:AbstractEventLoop	access:public
+remove_reader	selector_events.py	/^    def remove_reader(self, fd):$/;"	m	class:BaseSelectorEventLoop	access:public
+remove_signal_handler	events.py	/^    def remove_signal_handler(self, sig):$/;"	m	class:AbstractEventLoop	access:public
+remove_signal_handler	unix_events.py	/^    def remove_signal_handler(self, sig):$/;"	m	class:_UnixSelectorEventLoop	access:public
+remove_writer	events.py	/^    def remove_writer(self, fd):$/;"	m	class:AbstractEventLoop	access:public
+remove_writer	selector_events.py	/^    def remove_writer(self, fd):$/;"	m	class:BaseSelectorEventLoop	access:public
+restore	base_events.py	/^    async def restore(self):$/;"	m	class:_SendfileFallbackProtocol	access:public
+result	futures.py	/^    def result(self):$/;"	m	class:Future	access:public
+resume_reading	proactor_events.py	/^    def resume_reading(self):$/;"	m	class:_ProactorReadPipeTransport	access:public
+resume_reading	selector_events.py	/^    def resume_reading(self):$/;"	m	class:_SelectorSocketTransport	access:public
+resume_reading	sslproto.py	/^    def resume_reading(self):$/;"	m	class:_SSLProtocolTransport	access:public
+resume_reading	transports.py	/^    def resume_reading(self):$/;"	m	class:ReadTransport	access:public
+resume_reading	unix_events.py	/^    def resume_reading(self):$/;"	m	class:_UnixReadPipeTransport	access:public
+resume_writing	base_events.py	/^    def resume_writing(self):$/;"	m	class:_SendfileFallbackProtocol	access:public
+resume_writing	base_subprocess.py	/^    def resume_writing(self):$/;"	m	class:WriteSubprocessPipeProto	access:public
+resume_writing	protocols.py	/^    def resume_writing(self):$/;"	m	class:BaseProtocol	access:public
+resume_writing	sslproto.py	/^    def resume_writing(self):$/;"	m	class:SSLProtocol	access:public
+resume_writing	streams.py	/^    def resume_writing(self):$/;"	m	class:FlowControlMixin	access:public
+returncode	subprocess.py	/^    def returncode(self):$/;"	m	class:Process	access:public
+run	runners.py	/^def run(main, *, debug=False):$/;"	f	access:public
+run_coroutine_threadsafe	tasks.py	/^def run_coroutine_threadsafe(coro, loop):$/;"	f	access:public
+run_forever	base_events.py	/^    def run_forever(self):$/;"	m	class:BaseEventLoop	access:public
+run_forever	events.py	/^    def run_forever(self):$/;"	m	class:AbstractEventLoop	access:public
+run_in_executor	base_events.py	/^    def run_in_executor(self, executor, func, *args):$/;"	m	class:BaseEventLoop	access:public
+run_in_executor	events.py	/^    async def run_in_executor(self, executor, func, *args):$/;"	m	class:AbstractEventLoop	access:public
+run_until_complete	base_events.py	/^    def run_until_complete(self, future):$/;"	m	class:BaseEventLoop	access:public
+run_until_complete	events.py	/^    def run_until_complete(self, future):$/;"	m	class:AbstractEventLoop	access:public
+select	windows_events.py	/^    def select(self, timeout=None):$/;"	m	class:IocpProactor	access:public
+send	coroutines.py	/^    def send(self, value):$/;"	m	class:CoroWrapper	access:public
+send	windows_events.py	/^    def send(self, conn, buf, flags=0):$/;"	m	class:IocpProactor	access:public
+send_signal	base_subprocess.py	/^    def send_signal(self, signal):$/;"	m	class:BaseSubprocessTransport	access:public
+send_signal	subprocess.py	/^    def send_signal(self, signal):$/;"	m	class:Process	access:public
+send_signal	transports.py	/^    def send_signal(self, signal):$/;"	m	class:SubprocessTransport	access:public
+sendfile	base_events.py	/^    async def sendfile(self, transport, file, offset=0, count=None,$/;"	m	class:BaseEventLoop	access:public
+sendfile	events.py	/^    async def sendfile(self, transport, file, offset=0, count=None,$/;"	m	class:AbstractEventLoop	access:public
+sendfile	windows_events.py	/^    def sendfile(self, sock, file, offset, count):$/;"	m	class:IocpProactor	access:public
+sendto	selector_events.py	/^    def sendto(self, data, addr=None):$/;"	m	class:_SelectorDatagramTransport	access:public
+sendto	transports.py	/^    def sendto(self, data, addr=None):$/;"	m	class:DatagramTransport	access:public
+serve_forever	base_events.py	/^    async def serve_forever(self):$/;"	m	class:Server	access:public
+serve_forever	events.py	/^    async def serve_forever(self):$/;"	m	class:AbstractServer	access:public
+set	locks.py	/^    def set(self):$/;"	m	class:Event	access:public
+set_child_watcher	events.py	/^    def set_child_watcher(self, watcher):$/;"	m	class:AbstractEventLoopPolicy	access:public
+set_child_watcher	events.py	/^def set_child_watcher(watcher):$/;"	f	access:public
+set_child_watcher	unix_events.py	/^    def set_child_watcher(self, watcher):$/;"	m	class:_UnixDefaultEventLoopPolicy	access:public
+set_debug	base_events.py	/^    def set_debug(self, enabled):$/;"	m	class:BaseEventLoop	access:public
+set_debug	events.py	/^    def set_debug(self, enabled):$/;"	m	class:AbstractEventLoop	access:public
+set_default_executor	base_events.py	/^    def set_default_executor(self, executor):$/;"	m	class:BaseEventLoop	access:public
+set_default_executor	events.py	/^    def set_default_executor(self, executor):$/;"	m	class:AbstractEventLoop	access:public
+set_event_loop	events.py	/^    def set_event_loop(self, loop):$/;"	m	class:AbstractEventLoopPolicy	access:public
+set_event_loop	events.py	/^    def set_event_loop(self, loop):$/;"	m	class:BaseDefaultEventLoopPolicy	access:public
+set_event_loop	events.py	/^def set_event_loop(loop):$/;"	f	access:public
+set_event_loop	unix_events.py	/^    def set_event_loop(self, loop):$/;"	m	class:_UnixDefaultEventLoopPolicy	access:public
+set_event_loop_policy	events.py	/^def set_event_loop_policy(policy):$/;"	f	access:public
+set_exception	futures.py	/^    def set_exception(self, exception):$/;"	m	class:Future	access:public
+set_exception	streams.py	/^    def set_exception(self, exc):$/;"	m	class:StreamReader	access:public
+set_exception	tasks.py	/^    def set_exception(self, exception):$/;"	m	class:Task	access:public
+set_exception	windows_events.py	/^    def set_exception(self, exception):$/;"	m	class:_BaseWaitHandleFuture	access:public
+set_exception	windows_events.py	/^    def set_exception(self, exception):$/;"	m	class:_OverlappedFuture	access:public
+set_exception	windows_events.py	/^    def set_exception(self, exception):$/;"	m	class:_WaitCancelFuture	access:public
+set_exception_handler	base_events.py	/^    def set_exception_handler(self, handler):$/;"	m	class:BaseEventLoop	access:public
+set_exception_handler	events.py	/^    def set_exception_handler(self, handler):$/;"	m	class:AbstractEventLoop	access:public
+set_loop	windows_events.py	/^    def set_loop(self, loop):$/;"	m	class:IocpProactor	access:public
+set_protocol	base_subprocess.py	/^    def set_protocol(self, protocol):$/;"	m	class:BaseSubprocessTransport	access:public
+set_protocol	proactor_events.py	/^    def set_protocol(self, protocol):$/;"	m	class:_ProactorBasePipeTransport	access:public
+set_protocol	selector_events.py	/^    def set_protocol(self, protocol):$/;"	m	class:_SelectorSocketTransport	access:public
+set_protocol	selector_events.py	/^    def set_protocol(self, protocol):$/;"	m	class:_SelectorTransport	access:public
+set_protocol	sslproto.py	/^    def set_protocol(self, protocol):$/;"	m	class:_SSLProtocolTransport	access:public
+set_protocol	transports.py	/^    def set_protocol(self, protocol):$/;"	m	class:BaseTransport	access:public
+set_protocol	unix_events.py	/^    def set_protocol(self, protocol):$/;"	m	class:_UnixReadPipeTransport	access:public
+set_protocol	unix_events.py	/^    def set_protocol(self, protocol):$/;"	m	class:_UnixWritePipeTransport	access:public
+set_result	futures.py	/^    def set_result(self, result):$/;"	m	class:Future	access:public
+set_result	tasks.py	/^    def set_result(self, result):$/;"	m	class:Task	access:public
+set_result	windows_events.py	/^    def set_result(self, result):$/;"	m	class:_BaseWaitHandleFuture	access:public
+set_result	windows_events.py	/^    def set_result(self, result):$/;"	m	class:_OverlappedFuture	access:public
+set_result	windows_events.py	/^    def set_result(self, result):$/;"	m	class:_WaitCancelFuture	access:public
+set_task_factory	base_events.py	/^    def set_task_factory(self, factory):$/;"	m	class:BaseEventLoop	access:public
+set_task_factory	events.py	/^    def set_task_factory(self, factory):$/;"	m	class:AbstractEventLoop	access:public
+set_transport	streams.py	/^    def set_transport(self, transport):$/;"	m	class:StreamReader	access:public
+set_write_buffer_limits	sslproto.py	/^    def set_write_buffer_limits(self, high=None, low=None):$/;"	m	class:_SSLProtocolTransport	access:public
+set_write_buffer_limits	transports.py	/^    def set_write_buffer_limits(self, high=None, low=None):$/;"	m	class:WriteTransport	access:public
+set_write_buffer_limits	transports.py	/^    def set_write_buffer_limits(self, high=None, low=None):$/;"	m	class:_FlowControlMixin	access:public
+shield	tasks.py	/^def shield(arg, *, loop=None):$/;"	f	access:public
+shutdown	sslproto.py	/^    def shutdown(self, callback=None):$/;"	m	class:_SSLPipe	access:public
+shutdown_asyncgens	base_events.py	/^    async def shutdown_asyncgens(self):$/;"	m	class:BaseEventLoop	access:public
+shutdown_asyncgens	events.py	/^    async def shutdown_asyncgens(self):$/;"	m	class:AbstractEventLoop	access:public
+sleep	tasks.py	/^async def sleep(delay, result=None, *, loop=None):$/;"	f	access:public
+sock_accept	events.py	/^    async def sock_accept(self, sock):$/;"	m	class:AbstractEventLoop	access:public
+sock_accept	proactor_events.py	/^    async def sock_accept(self, sock):$/;"	m	class:BaseProactorEventLoop	access:public
+sock_accept	selector_events.py	/^    async def sock_accept(self, sock):$/;"	m	class:BaseSelectorEventLoop	access:public
+sock_connect	events.py	/^    async def sock_connect(self, sock, address):$/;"	m	class:AbstractEventLoop	access:public
+sock_connect	proactor_events.py	/^    async def sock_connect(self, sock, address):$/;"	m	class:BaseProactorEventLoop	access:public
+sock_connect	selector_events.py	/^    async def sock_connect(self, sock, address):$/;"	m	class:BaseSelectorEventLoop	access:public
+sock_recv	events.py	/^    async def sock_recv(self, sock, nbytes):$/;"	m	class:AbstractEventLoop	access:public
+sock_recv	proactor_events.py	/^    async def sock_recv(self, sock, n):$/;"	m	class:BaseProactorEventLoop	access:public
+sock_recv	selector_events.py	/^    async def sock_recv(self, sock, n):$/;"	m	class:BaseSelectorEventLoop	access:public
+sock_recv_into	events.py	/^    async def sock_recv_into(self, sock, buf):$/;"	m	class:AbstractEventLoop	access:public
+sock_recv_into	proactor_events.py	/^    async def sock_recv_into(self, sock, buf):$/;"	m	class:BaseProactorEventLoop	access:public
+sock_recv_into	selector_events.py	/^    async def sock_recv_into(self, sock, buf):$/;"	m	class:BaseSelectorEventLoop	access:public
+sock_sendall	events.py	/^    async def sock_sendall(self, sock, data):$/;"	m	class:AbstractEventLoop	access:public
+sock_sendall	proactor_events.py	/^    async def sock_sendall(self, sock, data):$/;"	m	class:BaseProactorEventLoop	access:public
+sock_sendall	selector_events.py	/^    async def sock_sendall(self, sock, data):$/;"	m	class:BaseSelectorEventLoop	access:public
+sock_sendfile	base_events.py	/^    async def sock_sendfile(self, sock, file, offset=0, count=None,$/;"	m	class:BaseEventLoop	access:public
+sock_sendfile	events.py	/^    async def sock_sendfile(self, sock, file, offset=0, count=None,$/;"	m	class:AbstractEventLoop	access:public
+sockets	base_events.py	/^    def sockets(self):$/;"	m	class:Server	access:public
+ssl	base_events.py	/^    ssl = None$/;"	v
+ssl	selector_events.py	/^    ssl = None$/;"	v
+ssl	sslproto.py	/^    ssl = None$/;"	v
+ssl_object	sslproto.py	/^    def ssl_object(self):$/;"	m	class:_SSLPipe	access:public
+start_server	streams.py	/^async def start_server(client_connected_cb, host=None, port=None, *,$/;"	f	access:public
+start_serving	base_events.py	/^    async def start_serving(self):$/;"	m	class:Server	access:public
+start_serving	events.py	/^    async def start_serving(self):$/;"	m	class:AbstractServer	access:public
+start_serving_pipe	windows_events.py	/^    async def start_serving_pipe(self, protocol_factory, address):$/;"	m	class:ProactorEventLoop	access:public
+start_tls	base_events.py	/^    async def start_tls(self, transport, protocol, sslcontext, *,$/;"	m	class:BaseEventLoop	access:public
+start_tls	events.py	/^    async def start_tls(self, transport, protocol, sslcontext, *,$/;"	m	class:AbstractEventLoop	access:public
+start_unix_server	streams.py	/^    async def start_unix_server(client_connected_cb, path=None, *,$/;"	f	function:start_server	access:public
+stop	base_events.py	/^    def stop(self):$/;"	m	class:BaseEventLoop	access:public
+stop	events.py	/^    def stop(self):$/;"	m	class:AbstractEventLoop	access:public
+subprocess_exec	base_events.py	/^    async def subprocess_exec(self, protocol_factory, program, *args,$/;"	m	class:BaseEventLoop	access:public
+subprocess_exec	events.py	/^    async def subprocess_exec(self, protocol_factory, *args,$/;"	m	class:AbstractEventLoop	access:public
+subprocess_shell	base_events.py	/^    async def subprocess_shell(self, protocol_factory, cmd, *,$/;"	m	class:BaseEventLoop	access:public
+subprocess_shell	events.py	/^    async def subprocess_shell(self, protocol_factory, cmd, *,$/;"	m	class:AbstractEventLoop	access:public
+task_done	queues.py	/^    def task_done(self):$/;"	m	class:Queue	access:public
+terminate	base_subprocess.py	/^    def terminate(self):$/;"	m	class:BaseSubprocessTransport	access:public
+terminate	subprocess.py	/^    def terminate(self):$/;"	m	class:Process	access:public
+terminate	transports.py	/^    def terminate(self):$/;"	m	class:SubprocessTransport	access:public
+throw	coroutines.py	/^    def throw(self, type, value=None, traceback=None):$/;"	m	class:CoroWrapper	access:public
+time	base_events.py	/^    def time(self):$/;"	m	class:BaseEventLoop	access:public
+time	events.py	/^    def time(self):$/;"	m	class:AbstractEventLoop	access:public
+transport	streams.py	/^    def transport(self):$/;"	m	class:StreamWriter	access:public
+wait	locks.py	/^    async def wait(self):$/;"	m	class:Condition	access:public
+wait	locks.py	/^    async def wait(self):$/;"	m	class:Event	access:public
+wait	subprocess.py	/^    async def wait(self):$/;"	m	class:Process	access:public
+wait	tasks.py	/^async def wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED):$/;"	f	access:public
+wait_closed	base_events.py	/^    async def wait_closed(self):$/;"	m	class:Server	access:public
+wait_closed	events.py	/^    async def wait_closed(self):$/;"	m	class:AbstractServer	access:public
+wait_closed	streams.py	/^    async def wait_closed(self):$/;"	m	class:StreamWriter	access:public
+wait_for	locks.py	/^    async def wait_for(self, predicate):$/;"	m	class:Condition	access:public
+wait_for	tasks.py	/^async def wait_for(fut, timeout, *, loop=None):$/;"	f	access:public
+wait_for_handle	windows_events.py	/^    def wait_for_handle(self, handle, timeout=None):$/;"	m	class:IocpProactor	access:public
+when	events.py	/^    def when(self):$/;"	m	class:TimerHandle	access:public
+wrap_future	futures.py	/^def wrap_future(future, *, loop=None):$/;"	f	access:public
+wrapped	sslproto.py	/^    def wrapped(self):$/;"	m	class:_SSLPipe	access:public
+wrapper	coroutines.py	/^        def wrapper(*args, **kwds):$/;"	f	function:coroutine	access:public
+write	proactor_events.py	/^    def write(self, data):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+write	selector_events.py	/^    def write(self, data):$/;"	m	class:_SelectorSocketTransport	access:public
+write	sslproto.py	/^    def write(self, data):$/;"	m	class:_SSLProtocolTransport	access:public
+write	streams.py	/^    def write(self, data):$/;"	m	class:StreamWriter	access:public
+write	transports.py	/^    def write(self, data):$/;"	m	class:WriteTransport	access:public
+write	unix_events.py	/^    def write(self, data):$/;"	m	class:_UnixWritePipeTransport	access:public
+write_eof	proactor_events.py	/^    def write_eof(self):$/;"	m	class:_ProactorBaseWritePipeTransport	access:public
+write_eof	proactor_events.py	/^    def write_eof(self):$/;"	m	class:_ProactorDuplexPipeTransport	access:public
+write_eof	proactor_events.py	/^    def write_eof(self):$/;"	m	class:_ProactorSocketTransport	access:public
+write_eof	selector_events.py	/^    def write_eof(self):$/;"	m	class:_SelectorSocketTransport	access:public
+write_eof	streams.py	/^    def write_eof(self):$/;"	m	class:StreamWriter	access:public
+write_eof	transports.py	/^    def write_eof(self):$/;"	m	class:WriteTransport	access:public
+write_eof	unix_events.py	/^    def write_eof(self):$/;"	m	class:_UnixWritePipeTransport	access:public
+writelines	streams.py	/^    def writelines(self, data):$/;"	m	class:StreamWriter	access:public
+writelines	transports.py	/^    def writelines(self, list_of_data):$/;"	m	class:WriteTransport	access:public
