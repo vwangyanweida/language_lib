@@ -1,15 +1,17 @@
 <!-- vim-markdown-toc GFM -->
 
-* [容器](#容器)
-	* [序列容器](#序列容器)
-	* [关联容器](#关联容器)
-	* [无序容器容器](#无序容器容器)
-* [迭代器](#迭代器)
-* [迭代器适配器](#迭代器适配器)
-	* [Insert iterator](#insert-iterator)
-	* [Stream iterator](#stream-iterator)
-	* [Reverse iterator](#reverse-iterator)
-	* [Move iterator](#move-iterator)
+	* [容器](#容器)
+		* [序列容器](#序列容器)
+		* [关联容器](#关联容器)
+		* [无序容器容器](#无序容器容器)
+	* [迭代器](#迭代器)
+	* [迭代器适配器](#迭代器适配器)
+		* [Insert iterator](#insert-iterator)
+		* [Stream iterator](#stream-iterator)
+		* [Reverse iterator](#reverse-iterator)
+		* [Move iterator](#move-iterator)
+		* [更易型算法](#更易型算法)
+* [疑问](#疑问)
 
 <!-- vim-markdown-toc -->
 ### 容器
@@ -47,6 +49,8 @@
 4. 内部是一个linked list 组成的array
 
 ### 迭代器
+> 迭代器只不过是“容器内部某一位置”的抽象概念而已。一般来说，迭代器对自己所属的容器一无所知。任何“以迭代器访问容器”的算法都不得（无法）通过迭代器调用容器的任何成员函数。这个设计导致一个重要结果：算法的操作对象不一定得是“容器内的全部元素”所形成的区间，而可以是那些元素的子集。
+
 1. 前向迭代器 / Forward iterator
 2. 双向迭代器 / Bidirectional iterator
 3. 随机访问迭代器 / Random-access iterator : 只有随机访问迭代器支持 operator <.
@@ -82,3 +86,18 @@
 
 
 #### Move iterator
+
+#### 更易型算法
+> 更易型算法会删除原来容器的成员，但是coll.end()返回的终点没有变，需要重新计算容器的长度
+
+1. 更易型算法(指那些会移除remove、重排reorder、修改modify元素的算法)若用于关联式容器或无序容器，会出现问题，关联式和无序容器不能被当作操作目标，原因是：如果更易型算法用于关联式和无需容器身上，会改变某位置上的值，进而破坏容器本身对次序的维护(关联式容器是已排序sorted，无序容器是hash运算的结果)。
+
+2. <font color=green>关联式容器和无序容器的所有迭代器均被声明为指向常量的value或key，如果更改关联式容器或无序容器，会导致编译错误。</font>
+
+3. 关联式容器和无序容器怎样删除元素？调用它们的成员函数
+
+3. remove：remove会返回一个iterator，指向的是现在容器的end节点。coll需要调用erase来删除多余的元素。
+
+
+## 疑问
+1. back_iterator 和back_inserter所代表的不同?

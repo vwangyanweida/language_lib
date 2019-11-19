@@ -1,3 +1,21 @@
+<!-- vim-markdown-toc GFM -->
+
+* [相似](#相似)
+	* [1 循环：](#1-循环)
+	* [2 匿名函数](#2-匿名函数)
+	* [3 可调用对象](#3-可调用对象)
+	* [4 魔法方法/编译器自动调用](#4-魔法方法编译器自动调用)
+	* [5 容器类型](#5-容器类型)
+	* [6 泛型和元类](#6-泛型和元类)
+	* [7 STL算法和python算法函数](#7-stl算法和python算法函数)
+	* [8 偏函数和std::bind](#8-偏函数和stdbind)
+	* [9 默认实参](#9-默认实参)
+	* [10 可变形参](#10-可变形参)
+	* [map/for_each](#mapfor_each)
+* [不同](#不同)
+	* [1 lambda：闭包变量](#1-lambda闭包变量)
+
+<!-- vim-markdown-toc -->
 ## 相似
 ### 1 循环：
 1. python
@@ -151,6 +169,15 @@ bind(1);
 - c
 
 - c++
+
+### map/for_each
+1. python:
+
+	```map(functional, coll)```
+
+2. c++
+
+	```for_each(coll.cbegin(), coll.cend(), functional)```
 
 ## 不同
 ### 1 lambda：闭包变量
