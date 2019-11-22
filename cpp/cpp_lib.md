@@ -11,7 +11,9 @@
 		* [Reverse iterator](#reverse-iterator)
 		* [Move iterator](#move-iterator)
 		* [更易型算法](#更易型算法)
+	* [匿名函数](#匿名函数)
 * [疑问](#疑问)
+	* [insert](#insert)
 
 <!-- vim-markdown-toc -->
 ### 容器
@@ -98,6 +100,14 @@
 
 3. remove：remove会返回一个iterator，指向的是现在容器的end节点。coll需要调用erase来删除多余的元素。
 
+### 匿名函数
+1. [=]以=caputure值，表明：在lambda被声明时已有效的所有符号都以by value形式传进lambda体内。
 
 ## 疑问
 1. back_iterator 和back_inserter所代表的不同?
+2. std::transform函数用法？
+3. multiplies<int> 是否是乘积运算
+
+### insert
+1. 顺序容器insert是移动，原来的容器移动后元素减少
+2. unordered_map容器是拷贝，将所有这个分清楚？
