@@ -14,6 +14,7 @@
 	* [匿名函数](#匿名函数)
 * [疑问](#疑问)
 	* [insert](#insert)
+	* [反向迭代器](#反向迭代器)
 
 <!-- vim-markdown-toc -->
 ### 容器
@@ -111,3 +112,7 @@
 ### insert
 1. 顺序容器insert是移动，原来的容器移动后元素减少
 2. unordered_map容器是拷贝，将所有这个分清楚？
+
+### 反向迭代器
+迭代器指的位置是物理位置，reverse_iterator的区间是[end+1, 0),iterator 指的是[begin, end+1) .所以
+对reverse_iterator取值时，取得是迭代器指向物理位置的前一个元素。
