@@ -1,2 +1,0 @@
-/usr/bin/ar qc libMatha.a  CMakeFiles/Matha.dir/mysqrt.cpp.o
-/usr/bin/ranlib libMatha.a
