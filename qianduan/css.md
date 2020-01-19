@@ -16,6 +16,15 @@
 * [css 样式化区块](#css-样式化区块)
 	* [设置宽高的约束](#设置宽高的约束)
 	* [flex 布局详解](#flex-布局详解)
+	* [背景](#背景)
+	* [图片](#图片)
+	* [表格](#表格)
+	* [轮廓：](#轮廓)
+* [高级区块效果](#高级区块效果)
+	* [盒子阴影](#盒子阴影)
+	* [圆角边框](#圆角边框)
+* [css选择器](#css选择器)
+	* [](#)
 
 <!-- vim-markdown-toc -->
 ## 名词
@@ -330,3 +339,178 @@ min-width: 5000px;
 2. flex布局默认首行左对齐。
 
 3. [flex布局详解](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+
+4. [实验楼页面](https://www.shiyanlou.com/courses/1237/learning/)
+
+### 背景
+1. 属性：
+	- background-color:
+		1. 取值：red、 green、#FF00FF
+		2. 大多数元素的背景色是 transparent（透明色），而不是 white（白色）
+
+	- background-position:
+		1. left：等价于left center或者center left
+		2. right：等价于right center或者center right
+		3. top、bottom、center
+
+	- background-size:
+		1. 背景图片的尺寸
+		2. background-size: 60px 80px; 第一个是宽度，第二个是高度
+		3. 使用两个通过空格分格的值，指定图像的水平（x）和垂直（y）坐标
+		4. 图像的左上角为原点（0,0），x 坐标从左到右，y 坐标从上到下
+
+	- background-repeat:
+		1. 规定如何重复背景图片
+		2. 默认是不断复制填满真个背景空间
+		3. 背景图片只需复制一次，设置no-repeat
+		4. repeat-x: 图像将在整个背景中水平地重复。
+		5. repeat-y: 图像会在背景下垂直地重复。
+
+	- background-image:
+		1. 规定要使用的背景图象
+		2. 充当项目符号的图片的参考路径。
+		3. 颜色渐变。通过 linear-gradient() 函数设置，
+			函数至少需要用逗号分隔的三个参数——背景中渐变的方向，开始的颜色和结尾的颜色。例如：
+
+			1. background-image: linear-gradient(to bottom, red, blue);
+			2. 渐变的方向可以通过关键字来指定方向 （to bottom，to right， to bottom right等）
+			3. 或者使用角度值 (0 deg 相当于 to top，90 deg 相当于 to right，直到 360 deg，它再次相当于 to top ）
+
+	- background-
+
+### 图片
+1. 属性：
+	- height：
+	- width
+	- border：定义图片周围的边框
+
+2. eg
+	``` <img src="/aa.jpg" width='20px', height="200px", border="1"> ```
+
+### 表格
+1. 表格边框：border
+```
+table,th,td {
+border: 2px, solid, red;
+}
+```
+
+2. 折叠边框： border-collapse设置是否将边框折叠为单一边框
+```
+table {
+border-collapse:collapse;
+}
+```
+
+3. 表格的高度和宽度： width、height
+```
+table {
+	width: 50%;
+	height:50px;
+}
+```
+
+4. 表格文本对齐的方式：
+	- text-align设置水平对齐: 取值有left（左对齐）、right（右对齐）和center居中对齐
+	- vertical-align设置垂直对齐方式，取值有top（顶对齐）、bottom（底部对齐）和middle（居中对齐）
+
+	```
+	td {
+		height:50px;
+	   vertical-align:top;
+	}
+	```
+
+5. 表格内边距： 通过为td和th元素设置padding，控制表格中内容和边框的距离
+```
+td {
+	padding: 30px;
+}
+```
+
+6. 表格颜色： 通过color设置表格文本颜色， background-color设置表格背景颜色
+
+7. 表格标题位置：caption-side，取值有：top(默认值，标题定位与表格之上)，bottom(把标题定位于表格之下)和inherit(规定应该从父元素继承caption-side的属性值)
+
+### 轮廓：
+1. outline: 是绘制于元素周围的一条线，位于边框的外围，可起到突出元素的作用。
+	- outline-color: 设置轮廓的颜色，取值和其余颜色的取值一样
+	- outline-style: 设置轮廓的样式：取值如下：
+		- none: 默认，无轮廓
+		- dotted：点状轮廓
+		- dashed: 虚线轮廓
+		- solid:  实线
+		- double:  双线轮廓，宽度等同于outline-width的值
+		- groove:  3D凹槽轮廓
+		- ridge:   3D凸槽轮廓
+		- inset：  3D凹边轮廓
+		- outset   3D凸边轮廓
+		- inherit  继承父元素的轮廓样式
+
+	- outline-width: 轮廓的宽度，它的取值有：
+		- thin 规定细轮廓
+		- medium 中等，默认
+		- thick  粗轮廓
+		- length  允许你自己定义的轮廓粗细的值
+		- inherit： 继承
+
+2. 三个属性可以一起写：
+```
+p {
+outline: red dotted thick;
+}
+```
+## 高级区块效果
+### 盒子阴影
+1. box-shadow 属性设置盒子阴影。box-shadow 有四个值:
+	- 第一个值是水平偏移量（水平阴影）：即向右的距离，阴影被从原始的框中偏移(如果值为负的话则为左)。
+	- 第二个值是垂直偏移量（垂直阴影）：即阴影从原始盒子中向下偏移的距离(或向上，如果值为负)。
+	- 第三个值是模糊半径（影子大小）：即在阴影中应用的模糊度。
+	- 第四个值是阴影的基本颜色。你可以使用任何长度和颜色单位来定义这些值。
+
+2. eg:
+```
+.shadow {
+	box-shadow: 5px 5px 5px red;
+	width: 200px;
+	height: 100px;
+	background-color: blue;
+}
+```
+
+3. 多个盒子阴影：使用逗号隔开。
+```
+ box-shadow: 1px 1px 1px yellow,
+              2px 2px 1px yellow,
+              3px 3px 1px blue,
+              4px 4px 1px blue,
+              5px 5px 1px black,
+              6px 6px 1px black;
+```
+
+4. 内部阴影: 使用 inset 关键字，把它放在一个影子声明的开始，使它变成一个内部阴影，而不是一个外部阴影
+```
+.shadow {
+			box-shadow: inset 5px 5px 5px red;
+			width: 200px;
+			height: 100px;
+			background-color: blue;
+		}
+```
+
+### 圆角边框
+1. border-radius：创建圆角
+2. border-radius 的值除了用百分号（%）还可以用 length，比如：border-radius:25px;。
+3. eg
+```
+.radius {
+                width: 200px;
+                height: 200px;
+                border: 1px;
+                background-color: red;
+                border-radius: 50%;/*将正方形变成圆*/
+		}
+```
+
+## css选择器
+### 
