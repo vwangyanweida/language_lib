@@ -1,53 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title></title>
+<html>
+	<head>
 	<style type="text/css">
-		.box{
-			width: 600px;
-			border: 2px dashed green;
-			
-		}
-		.box:after {
-			clear: both;
-		}
-
-		.clearfix:after {
-			content: "";
-			/*设置内容为空*/
-			height: 0;
-			/*高度为0*/
-			line-height: 0;
-			/* 行高为0*/
-			display: block;
-			/*将文本转为块级元素*/
-			visibility: hidden;
-			/*将元素隐藏*/
-			clear: both/*清除浮动*/
-		}
-
-		.box1, .box2 {
-			width:200px;
-			height: 100px;
-		}
-
-		.box1 {
-			float: left;
-			background-color: red;
-		}
-
-		.box2 {
-			background-color: blue;
-		}
-
+p {
+	height: 500px;
+	padding: 100px;
+	background-color: pink;
+}
 	</style>
-</head>
-<body>
-	<div class="box clearfix">
-		<div class="box1"></div>
-	</div> 	
+	</head>
+	<body>
 
-	<div class="box2"></div>
-</body>
+		<p>
+		<a href="#winter">查看冬天。</a>
+		</p>
+		<div>
+			<div>
+				<div id="test1">
+					<div>thest</div>
+				</div>
+				<div id="test2">
+					<div>thest</div>
+				</div>
+				<div id="test3">
+					<div>thest</div>
+				</div>
+				<div id="test4">
+					<div>thest</div>
+				</div>
+				<div id="test5">
+					<div>thest</div>
+				</div>
+				<div id="test6">
+					<div>thest</div>
+				</div>
+				<div id="test7">
+					<div>thest</div>
+				</div>
+				<div id="test8">
+					<div>thest</div>
+				</div>
+				<div id="test9">
+					<div>thest</div>
+				</div>
+				<div id="test10">
+					<div>thest</div>
+				</div>
+			</div>
+		</div>
+		<h2>春</h2>
+		<p>万物复苏</p>
+
+		<h2>夏</h2>
+		<p>夏日绵绵</p>
+
+		<h2 id="winter">秋</h2>
+		<p>秋高气爽</p>
+
+		<h2><a name="winter">冬</a></h2>
+		<p>白雪皑皑</p>
+
+	</body>
 </html>
