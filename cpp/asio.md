@@ -1,1 +1,206 @@
 
+<!-- vim-markdown-toc GFM -->
+
+* [并发](#并发)
+	* [高级接口：async 和future](#高级接口async-和future)
+		* [async](#async)
+		* [future](#future)
+		* [Launch(发射)策略](#launch发射策略)
+		* [异常处理](#异常处理)
+		* [等待和轮询](#等待和轮询)
+		* [传递实参](#传递实参)
+		* [Shared Future](#shared-future)
+	* [低级接口](#低级接口)
+		* [thread](#thread)
+
+<!-- vim-markdown-toc -->
+## 并发
+1. 高级接口: 允许你启动线程，包括传递实参、处理结果和异常
+2. 低级接口：像mutex或atomic，用来对付放宽的内存次序（relaxed memory order，RMO）
+3. 并发书籍：C++ Concurrency in Action
+
+### 高级接口：async 和future
+1. async()提供一个接口，让一个可调用对象，<font color=red>若是可能的话在后台运行，成为一个独立线程。</font>
+2. class future<> 允许你等待线程结束并获取其结果(一个返回值，或者也许是一个异常)
+
+#### async
+1. async <font color=red>尝试将其所获得的函数立刻异步启动于一个分离的线程内</font>
+
+#### future
+1. future 允许你取得"传给async()的那个函数"的未来结果--也许是个返回值，也许是个异常。
+2. 这个future object已受到"被启动函数"返回类型的特化，如果被启动函数发挥空，则future类型是future<void>.
+	<font color=red>future是一个模板，实例化为异步函数返回类型</font>
+3. <font color=red>future必须存在，确保"目标函数"或快或慢最终会被调用</font>
+	- async()尝试启动目标函数，但如果没启动，稍后需要这个future object 才能强制启动目标函数
+	- 当我们需要函数的运行结果或当我们想要确保该函数执行时，需要future对象。
+	- 因此，即使对启动与后台的那个函数的结果不感兴趣，还是需要握有这个future object
+
+4. <font color=green>为了能够在"启动及控制函数"处与"返回之future object"之间交换数据，二者都指向同意个所谓的shared state</font>。
+	- 这个future应该是一个指针或者引用。使得调度函数可以想这个future里写目标函数运行完成后的结果，其他函数也可以访问这个future. 
+	- asyncio和tornado里的future就是返回的一个类型，需要IOLOOP事件循环函数可以访问到这个future，
+		往里面添加结果，触发条件变量，通知阻塞在future的result处的函数继续运行。
+
+5. 调用future的get函数，以下三件事之一会发生：
+	1. 如果func()被async()启动于一个分离线程中并且已结束，你会立刻获得其结果
+	2. 如果func()被启动尚未结束，get()会阻塞在这个调用(block)等待func()结束后获得结果。
+	3. 如果func()尚未启动，会强迫启动如同一个同步调用：get()会引发停滞直至产生结果
+
+	4. 总结：
+		- get和tornado的future的get_result一样，会阻塞直到异步函数完成然后返回结果
+		- c++的future的get和python不同在于：
+			- async是默认启动一个线程，而python默认是将函数添加到事件循环，单线程执行
+			- future的get可以将目标函数同步启动，如果async没有启动一个新的线程的话。
+
+6. <font color=red>调用async()并不保证传入函数一定会被启动</font>
+	- 如果async没有启动新的线程运行函数，那么函数调用会被推迟至你明确说你需要其结果(也就是调用get())
+	- 或只是希望目标函数完成其任务(也就是调用wait())
+
+7. 因为get是阻塞方法，所以为了获得最佳效果，一般而言应该将调用async()和调用get()之间的距离最大化，早调用而晚返回
+
+#### Launch(发射)策略
+> 只要明确的传递给async launch策略，就可以指示async以何种方式启动并发函数
+
+1. std::launch::async : 告诉async明确的以异步方式启动目标数，而绝不推延目标函数的执行
+	1. 如果异步调用在这里无法实现，会抛出一个std::system_error异常，差错码：`resource_unavailable_try_again`,相当于POSIX的errno EAGAIN
+	2. 有了这个async发射策略，就不必非得调用get()
+		- 如果返回的future生命即将结束，这个程序会等待func()结束，即主线程创建了一个非daemon的线程，主线程会等待子线程完成。
+		- 如果<font color=red>不将std::async的结果赋值出去，即没有接受future 对象，调用者会阻塞在这里直到目标函数结束，相当于一个完完全全的同步调用</font>
+
+2. std::launch::deferred: 强制延缓执行，绝不会在没有get()或wait()的情况下启动。
+	1. 允许你写lazy evaluation 缓式求值。
+	2. eg
+	```
+	auto f1 = std::async(std::launch::deferred, task1);
+	auto f2 = std::async(std::launch::deferred, task2);
+	...
+	auto va1 = thisOrThatIsTheCase() ? f1.get():f2.get();
+	```
+	3. 有助于单线程模拟async，除非需要考虑到race condition
+
+#### 异常处理
+1. 调用get()时，当async启动的线程出现异常时，该异常不会在新启动的线程内被处理，而是会被传播出去。
+2. 因此想要处理后台操作的异常，只需要协同get()做出"已同步方式调用该操作"所做的相同动作即可。
+
+#### 等待和轮询
+1. 一个future<>只能调用一次get(),之后，future就处于无效状态。
+	- future的无效状态可以通过valid()来检测
+	- 无效状态下除了析构函数的任何调用都不可预期
+
+2. wait等待后台操作完成而不需要处理其结果，可以多次调用：
+	1. wait()可以<font color=red>强制启动该future象征的线程并等待这一后台操作的终止</font>
+
+3. 如果线程尚未启动，不强制启动线程的函数：
+	1. `wait_for`():等待某个时间段
+		``` 
+		std::future<...> f(std::async(func));
+		f.wait_for(std::chrono::seconds(10));
+		```
+
+	2. `wait_until()`:等待到达某个时间点
+		```
+		std::future<...> f(std::async(func));
+		f.wait_until(std::system_clock::now() + std::chrono::minutes(1));
+		
+		```
+
+	3. 这两个函数返回一下三种东西之一：
+		- std::future_status::deferred：操作未启动(没有调用get和wait函数),立刻返回。   
+		- std::future_status::timeout： 操作异步启动但尚未结束，waiting 又已过期
+		- std::future_status::ready:    操作已完成
+
+	4. 投机性运行：
+		1. 如果wait_for了一定时间，如果后台程序完成，返回后台程序的结果，否则，返回另外的前台程序的结果。
+
+	5. wiat_for 循环时，如果没有指定launch策略为async，则后台程序可能没有启动，条件中一定要包含deffered，
+		不能仅仅检查返回的是否是ready，因为如果是deferred，可能陷入死循环。
+
+	6. 放弃执行权：
+		- yield： std::this_thred::yield();
+		- 睡眠一小段时间
+
+#### 传递实参
+1. 使用一个lambda，并让它调用后台函数，在lambda中使用了要传递的对象。
+```
+auto f1 = std::async([]{doSomething('.');});
+```
+
+2. by value 传递
+```
+char c = '@';
+auto f = std::async([=]{ doSomething(c); });
+```
+
+3. async提供了callable object的惯常接口，第一个参数是可调用对象，后面可以加上不定数目的参数。
+```
+char c = '@';
+auto f = std::async(doSomething, c);
+```
+
+4. by reference传递，但这样会有风险，被传递的值可能在后台任务启动前变得无效，这对于lambda和直接被调用的函数都适用：
+```
+char c = '@';
+auto f = std::async([&]{ doSomething(c); });
+
+auto f = std::async(doSomething, std::ref(c));
+```
+
+5. 可以传给async()一个指向成员函数的指针，这是后面的第一个实参必须是一个reference或pointer
+
+6. 结论：
+	如果你使用async()，就因该以by value的方式传递所有“用来处理目标函数”的必要object，使async()之需使用局部拷贝，
+	如果拷贝成本太高，让那些object以const reference形式传递，且不使用mutable。
+
+#### Shared Future
+1. future的get方法只能使用一次，再次使用会报错
+
+2. shared_future可以多次调用get(),导致相同的结果，或者跑出相同的异常
+```
+shared_future<int> f = async(doSomething)
+```
+	- 注意：async返回的是一个future，这是默认初始化将future转化成为了一个shared_future.
+	- 以寻常的future为初值，于是future的状态(state)会被搬移到shared future身上k
+
+3. <font color=red>future中的state是保存的可以共享的状态，future调用share后，future本身没有关联的state了，
+		所以future不是valid的，所以future也只能赋值一次，以后future就是无效的状态了。</font>
+
+4. shared_future是右值引用，不可以以future初始化shared future。future不是右值，不能绑定到shared future。
+
+5. future的成员数share()返回一个shared_future
+```
+auto f = async(queryNumber).share();
+```
+6. future和shared future的声明式有些不同
+	1. class future<>:
+		- T future<T>::get()
+		- T& future<T&>::get()
+		- void future<void>::get()
+
+	2. class shared_future<>
+		- const T& shared_future<T>::get();
+		- T& shared_future<T&>::get();
+		- void shared_future<void>::get()
+
+	3. 两者的第一个声明不同：
+		- future 返回的是一个“搬移后的执行结果”(move)或“该结果的一份拷贝”。
+		- shared_future返回的是一个reference，指向存放于“被共享之shared state”的结果
+
+7. 可以将shared future 传递到多个async执行的后台线程中，也可以将同一个shared future 的引用传递到多个后台线程中，
+	- 这样就不再是“使用多个shared future object 而由它们共享同一个shared future”，
+	- 而是“使用shared future object执行多次get()”
+	- 这中风险较高，应该使用值传递，传递给每个后台线程shared future的值拷贝，来共享同一个shared state
+	- 风险在于确保f的生存周期大于启动的线程，而shared future和成员函数不是同步的，但是shared state是同步的
+	- 如果要修改future内容，需要外部同步。
+
+###  低级接口
+#### thread
+> 启动某个线程，只需要先声明一个std::thread对象，并将目标任务当作初始参数，然后要么等他结束，要么将他卸离(detach)
+
+1. Thread的所有参数对象最好都是by value
+2. 和async的不同: 
+	- Class thread 没有发射策略：如果无法启动一个县县城，会抛出：std::system_error
+	- 没有接口可以处理线程结果，唯一可获得是一个线程ID
+	- 如果发生异常，如果线程没有捕获异常，程序会立刻终止，如果要传播异常到外面，需要使用exception_ptr
+	- 必须声明是否等待线程结束(join)，或打算“将它自母体卸离(detach)使它运行于后台而不受控制”
+		如果在thread object 寿命结束前不这么做，或发生move assignment，程序会终止
+	- 如果线程运行于后台而main()结束了，<font color=red>所有线程都会被鲁莽而硬性的终止</font>
+
