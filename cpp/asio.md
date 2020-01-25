@@ -12,6 +12,10 @@
 		* [Shared Future](#shared-future)
 	* [低级接口](#低级接口)
 		* [thread](#thread)
+			* [Detached Thread](#detached-thread)
+			* [ID](#id)
+		* [Promise](#promise)
+		* [packaged task](#packaged-task)
 
 <!-- vim-markdown-toc -->
 ## 并发
@@ -204,3 +208,58 @@ auto f = async(queryNumber).share();
 		如果在thread object 寿命结束前不这么做，或发生move assignment，程序会终止
 	- 如果线程运行于后台而main()结束了，<font color=red>所有线程都会被鲁莽而硬性的终止</font>
 
+##### Detached Thread
+1. 线程detached后，主线程丧失了对它的控制，没有轻松的办法可以得知它是否运行，以及运行多久
+	- 如果detached 线程方你问寿命结束的object会出现异常
+	- 不要让detached访问nonlocal资源
+	- 最好让detached 线程以by value方式传递
+
+2. 如果程序退出时，可能detached程序还在运行，这意味着它仍有可能访问“已被销毁”或“正在析构”的global或static，
+	这将导致不可预期的行为。
+
+3. detached thread的一般性规则：
+	- Detached thread 应该宁可只访问local copy
+	- 如果detached thread用了一个global or static object，应该做一下事情之一：
+		1. 确保这些global/static object 在“对它们进行访问”之所有detached thread都结束(或都不在访问它们)之前不被销毁。
+			一种做法就是condition variable，它让detached thread用来发信号说他们已结束，离开main()或调用exit()之前,
+			你必须先设置妥这些condition variable，然后发送信号(to signal)说可进行析构了。
+
+		2. 以调用quick_exit()的方式结束程序，这个函数之所以存在完全是为了
+			“不调用global和static object析构函数”的方式结束程序。
+
+4. 终止detached thread唯一安全方法就是搭配`...at_thread_exit()`函数群中的某一个，这会"强制main thread 等待detached thread真正结束"
+
+##### ID
+1. `this_thread.get_id()`
+2. `threadObject.get_id()`
+3. 识别线程的唯一办法就是保存下来ID比较
+
+#### Promise
+1. 在线程间传递参数和处理异常，可以通过实参传递数值给线程，如果需要线程运行结果，可以传递引用或指针。
+2. 另一个方法是promise，future是通过get获得线程结果，promise是通过set...()提供数据
+3. promise和future都能暂时持有一个shared state
+4. Promise 内部会建立一个shared state，在这里被用来存放一个响应的类型的值或一个异常，
+	并可能被future object 取其数据当作线程结果。
+
+5. 使用步骤：
+	1. promise传递到线程中时需要by reference传递，使其状体的以改变(copying不适用于promise)
+	2. 在线程中调用`set_value()`或`set_exception()`，便得以在promise中存放一个值或一个异常。
+	3. 注意，promise只能设置一次，不管是`set_value`还是`set_exception`只能设置一个，否则报错future 已经设置过了。
+	5. promise将值保存到shared state里面，一旦这个shared state存有某个值或异常，
+		其状态就变为ready，于是可以从其他地方取出。
+	6. 取出操作要借助一个“共享相同shared state”的futureobject，因此需要调用`get_future`
+	7. get会阻塞直到promise设置了值，但此时线程可能并没有退出。
+	8. 如果想令shared state在线程却是结束时变成ready，需要调用
+		`set_value_at_thread_exit()`和 `set_exception_at_thread_exit()`
+	9. Promise和future并不仅仅用于多线程，但线程也可以。
+
+6. `current_exception()`: 它会将当前异常以类型std::exception_ptr生成出来，
+	如果当前并无异常就生成nullptr，这个异常会存放在promise object 内部。
+
+7. 总结：
+	- promise 传入线程中，可以通过`set_value()`在线程中为promise设置一个值，
+		其他线程可以通过promise的`get_future`获取一个future，
+
+#### packaged task
+
+		而通过future的get可以获取promise设置的值。
