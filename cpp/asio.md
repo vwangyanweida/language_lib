@@ -16,6 +16,12 @@
 			* [ID](#id)
 		* [Promise](#promise)
 		* [packaged task](#packaged-task)
+	* [启动线程](#启动线程)
+		* [Namespace `this_thread`](#namespace-this_thread)
+	* [线程同步](#线程同步)
+	* [Mutex 和Lock](#mutex-和lock)
+		* [递归锁(Recursive) Lock](#递归锁recursive-lock)
+		* [尝试性的Lock及带时间性的Lock](#尝试性的lock及带时间性的lock)
 
 <!-- vim-markdown-toc -->
 ## 并发
@@ -115,7 +121,7 @@
 	4. 投机性运行：
 		1. 如果wait_for了一定时间，如果后台程序完成，返回后台程序的结果，否则，返回另外的前台程序的结果。
 
-	5. wiat_for 循环时，如果没有指定launch策略为async，则后台程序可能没有启动，条件中一定要包含deffered，
+	5. wiat_for 循环时，如果没有指定launch策略为async，则后台程序可能没有启动，条件中一定要包含deferred，
 		不能仅仅检查返回的是否是ready，因为如果是deferred，可能陷入死循环。
 
 	6. 放弃执行权：
@@ -195,6 +201,27 @@ auto f = async(queryNumber).share();
 	- 风险在于确保f的生存周期大于启动的线程，而shared future和成员函数不是同步的，但是shared state是同步的
 	- 如果要修改future内容，需要外部同步。
 
+8. `shared_state`
+	- future 用来表示一个操作的结果：可能是要给返回值或者是一个异常，但不会两者都是，它只能被设置一次。
+	- 成果被管理在一个shared state内，后者可以被`std::async()`或一个`std::packaged_task`或一个`promise` 创建出来
+	- 结果可能尚未存在
+	- 结果只能被取出来一次，因此future可能处于有效(valid)或无效(invalid)状态：
+		- 有效意味着"某已操作的成果或爆发的异常尚未被取出"
+	- <font color=red>如果future的template参数是reference类型的，get()便返回一个reference只想返回值。</font>
+	- 否则get返回返回值的一份copy，或是对返回值进行move assign操作-取决于返回类型是否支持move assignment语义
+	- get只可调用一次，因为get会使future处于无效状态
+	- <font color=green>future既不提供copy构造函数也不提供copy assignment操作符，确保不会两个object共享某一后台操作之状态(state)</font>
+	- 将某个future object 状态搬移至另一个的唯一办法是，调用move构造函数或move assignment操作符。
+	-<font color=red>如果调用析构函数的那个future是某一个shared state的最后拥有者，而相关的task已启动但尚未结束，析构函数会阻塞，直到任务结束</font>
+
+9. `shared_future`
+	- 允许多次get，get 不会令其失效
+	- 支持copy 语义
+	- get()是一个const 成员函数，返回一个const reference指向"存储与shared state"的值(这意味着必须确定"被返回的reference"的寿命短于shared state)
+	- 但是future的get()却是一个non-const 成员函数，返回一个move assignment拷贝，除非这个class被一个reference类型实现特化
+	- 不提供share()
+	- 因为是一个reference，所以多线程同时访问会出现data race，一定要注意需不需要同步化
+
 ###  低级接口
 #### thread
 > 启动某个线程，只需要先声明一个std::thread对象，并将目标任务当作初始参数，然后要么等他结束，要么将他卸离(detach)
@@ -251,7 +278,7 @@ auto f = async(queryNumber).share();
 	7. get会阻塞直到promise设置了值，但此时线程可能并没有退出。
 	8. 如果想令shared state在线程却是结束时变成ready，需要调用
 		`set_value_at_thread_exit()`和 `set_exception_at_thread_exit()`
-	9. Promise和future并不仅仅用于多线程，但线程也可以。
+	9. Promise和future并不仅仅用于多线程，单线程也可以。
 
 6. `current_exception()`: 它会将当前异常以类型std::exception_ptr生成出来，
 	如果当前并无异常就生成nullptr，这个异常会存放在promise object 内部。
@@ -259,7 +286,54 @@ auto f = async(queryNumber).share();
 7. 总结：
 	- promise 传入线程中，可以通过`set_value()`在线程中为promise设置一个值，
 		其他线程可以通过promise的`get_future`获取一个future，
+	- promise 用你来临时持有一个值或一个异常
+	- 一般而言，promise可持有一个shared state
+	- 如果shared state持有一个值或一个异常，我们就说它是ready
+	- 一个promise只能调用一次get_future(),第二次调用会抛出`std::future_error`
+	- 所有用来设定数值或异常的成员函数是<font color=red>线程安全的</font>，犹如有一个mutex确保每次只有某一个成员函数可以修改shared state
 
 #### packaged task
+1. `packaged_task`是将一个函数包装成一个任务，就像python中的task包装一样，
+	设置future，设置回调，包装成为一个可以通过事件循环调度的task。
 
-		而通过future的get可以获取promise设置的值。
+2. 包装成为任务后，可以随时调用，而不像async一样，立刻尝试后台启动。
+
+3. `packaged_task`模板的参数是函数的类型，future才是结果的类型。
+
+4. `packaged_task`定义与<future>内，持有目标函数及其可能的结果(也就是该函数的shared state，就相当于python中的future)
+
+### 启动线程
+#### Namespace `this_thread`
+1. 针对任何线程(包括main thread)<thread>声明一个命名空间std::this_thread用以提供线程专属的global函数
+	- `this_thread::get_id()`:
+	- `this_thread::sleep_for(dur)`:
+	- `this_thread::sleep_until(tp)`:
+	- `this_thread::yield()`: 建议释放控制以便重新调度，让下一个线程调度
+
+### 线程同步
+1. 并发问题：
+	- Unsynchronized data access(未同步化的数据访问)：并发运行的线程读和写同一笔数据，不知道哪一个语句先来
+	- Half-wiritten data(写至半途的数据): 某个县城投正在读数据，另一个线程改动它，于是读取线程读取一个半新半旧的值
+	- Recordered statement(重新排序的语句)：语句和操作有可能被重新安排次序，也许对单线程是正确的，但多线程却破坏了预期行为
+
+2. 解决问题的概念：
+	- Atomicity(不可切割性)
+	- Order(次序)
+
+3. volatitle：用来阻止"过度优化"
+	- java中，volatile对于automicity和order提供了某些保证
+	- C++中，volatile<font color=red>只是具体表示对外部资源的访问不应该被优化掉，既不提供atomicity也不提供order</font>
+
+### Mutex 和Lock
+1. Mutex：互斥提，是用来协助采取独占排他方式控制"对资源的并发访问"
+2. 为了获取独占式的资源访问能力，相应的线程必须锁定(lock) mutex,这样可以防止其他线程也锁定mutex，知道第一个线程解锁(unlock) mutex;
+3. `lock_guard`: 为了实现构造函数获得资源，析构函数--甚至当"异常造成生命结束"它也总是会被调用--负责释放资源 的目的。
+4. lock应该限制在可能最短周期内，由于析构函数会释放这个lock，明确使用大括号，令lock在更进一步语句被处理之前先释放。
+
+#### 递归锁(Recursive) Lock
+1. 递归所的典型例子是active object 或monitor，他们在每个public函数内放一个mutex并取得其lock，用以防止data race 腐蚀对象内部状态
+2. `recursive_mutesx` 允许统一鲜橙多次锁定，并在最近一次相应的unlock()时释放lock。
+
+#### 尝试性的Lock及带时间性的Lock
+1. `try_lock`: 试图获取一个lock，成功返回true，失败返回false
+	- 为了仍能够使用`lock_guard`(<font color=red>使用当下作用域的任何出口都会自动unlock mutex</font>)，可以传一个额外实参`adopt_lock`给其构造函数

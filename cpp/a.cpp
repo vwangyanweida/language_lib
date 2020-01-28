@@ -1,47 +1,21 @@
-#include <thread>
-#include <future>
 #include <iostream>
+#include <future>
+#include <mutex>
 #include <string>
-#include <exception>
-#include <stdexcept>
-#include <functional>
-#include <utility>
-#include <chrono>
 
-void doSomething(std::promise<std::string>& p) {
-	try {
-		std::cout << "read char ('x' for exception): ";
-		char c = std::cin.get();
-		if (c == 'x') {
-			throw std::runtime_error(std::string("char ")+c+" read");
-		}
-		std::string s = std::string("char ") + c + " processed";
-		p.set_value(std::move(s));
+std::mutex printMutex;
 
-		std::this_thread::sleep_for(std::chrono::seconds(2));
-		p.set_value(std::string("this is second number"));
-
-	} catch (...) {
-		p.set_exception(std::current_exception());
+void print(const std::string& s) {
+	std::lock_guard<std::mutex> l(printMutex);
+	for (char c : s) {
+		std::cout.put(c);
 	}
-	
+	std::cout << std::endl;
 }
 
 int main() {
-	try {
-		std::promise<std::string> p;
-		std::thread t(doSomething, std::ref(p));
-		t.detach();
+	auto f1 = std::async(std::launch::async, print, "Hello from a first thread");
+	auto f2 = std::async(std::launch::async, print, "Hello from a second thread");
+	print("Hello from the main thread");
 
-		std::future<std::string> f(p.get_future());
-		std::cout << "result: " << f.get() << std::endl;
-
-		std::future<std::string> g(p.get_future());
-		std::cout << "result: " << g.get() << std::endl;
-
-	} catch (const std::exception& e) {
-		std::cerr << "EXCEPTION: " << e.what() << std::endl;
-	} catch (...) {
-		std::cerr << "EXCEPTION: " << std::endl;
-	}
 }
