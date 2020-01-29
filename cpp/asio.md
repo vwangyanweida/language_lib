@@ -337,3 +337,13 @@ auto f = async(queryNumber).share();
 #### 尝试性的Lock及带时间性的Lock
 1. `try_lock`: 试图获取一个lock，成功返回true，失败返回false
 	- 为了仍能够使用`lock_guard`(<font color=red>使用当下作用域的任何出口都会自动unlock mutex</font>)，可以传一个额外实参`adopt_lock`给其构造函数
+		
+	```
+	while (m.try_lock() == false) {
+		doSomthing();
+	}
+	std::lock_gurad<std::mutex> lg(m, std::adopt_lock);
+	```
+
+	- `try_lock`可能假性失败，也就是说即使lock并未被他人拿走它也有可能失败
+
