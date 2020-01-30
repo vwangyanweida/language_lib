@@ -22,6 +22,9 @@
 	* [Mutex 和Lock](#mutex-和lock)
 		* [递归锁(Recursive) Lock](#递归锁recursive-lock)
 		* [尝试性的Lock及带时间性的Lock](#尝试性的lock及带时间性的lock)
+	* [lock 总结](#lock-总结)
+		* [mutex](#mutex)
+		* [Lock](#lock)
 
 <!-- vim-markdown-toc -->
 ## 并发
@@ -332,7 +335,7 @@ auto f = async(queryNumber).share();
 
 #### 递归锁(Recursive) Lock
 1. 递归所的典型例子是active object 或monitor，他们在每个public函数内放一个mutex并取得其lock，用以防止data race 腐蚀对象内部状态
-2. `recursive_mutesx` 允许统一鲜橙多次锁定，并在最近一次相应的unlock()时释放lock。
+2. `recursive_mutesx` 允许循环递归多次锁定，并在最近一次相应的unlock()时释放lock。
 
 #### 尝试性的Lock及带时间性的Lock
 1. `try_lock`: 试图获取一个lock，成功返回true，失败返回false
@@ -347,3 +350,22 @@ auto f = async(queryNumber).share();
 
 	- `try_lock`可能假性失败，也就是说即使lock并未被他人拿走它也有可能失败
 
+
+### lock 总结
+#### mutex
+1. mutex: 最简单的互斥对象
+2. `timed_mutx`: 带有超时机制的互斥对象，允许等待一段时间或直到某个时间点仍未能获得互斥对象的所有权时放弃等待。
+3. `recursive_mutex`: 允许被同一个线程递归的Lock和Unlock
+4. `recursive_timed_mutex`: 2,3
+4. `shared_timed_mutex(c++14)`: 允许多个线程共享所有权的互斥对象，如读写锁。
+
+#### Lock
+1. 最简单的使用：加锁、解锁。加锁时如果锁被占用，阻塞
+2. RAII(资源获取就是初始化) 管理对象： 
+	- std::`lock_guard`: 
+	- std::`unique_lock`:
+	- std::`shared_lock(C++14)`:
+
+
+https://www.cnblogs.com/diegodu/p/7099300.html
+https://www.cnblogs.com/haippy/p/3237213.html
