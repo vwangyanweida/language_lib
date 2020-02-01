@@ -19,12 +19,17 @@
 	* [启动线程](#启动线程)
 		* [Namespace `this_thread`](#namespace-this_thread)
 	* [线程同步](#线程同步)
+		* [并发出现的问题：](#并发出现的问题)
 	* [Mutex 和Lock](#mutex-和lock)
 		* [递归锁(Recursive) Lock](#递归锁recursive-lock)
 		* [尝试性的Lock及带时间性的Lock](#尝试性的lock及带时间性的lock)
 	* [lock 总结](#lock-总结)
 		* [mutex](#mutex)
 		* [Lock](#lock)
+		* [互斥对象管理类模板的加锁策略](#互斥对象管理类模板的加锁策略)
+		* [底层加锁函数](#底层加锁函数)
+		* [对多个互斥对象加锁](#对多个互斥对象加锁)
+		* [只调用一次的锁](#只调用一次的锁)
 
 <!-- vim-markdown-toc -->
 ## 并发
@@ -314,16 +319,16 @@ auto f = async(queryNumber).share();
 	- `this_thread::yield()`: 建议释放控制以便重新调度，让下一个线程调度
 
 ### 线程同步
-1. 并发问题：
-	- Unsynchronized data access(未同步化的数据访问)：并发运行的线程读和写同一笔数据，不知道哪一个语句先来
-	- Half-wiritten data(写至半途的数据): 某个县城投正在读数据，另一个线程改动它，于是读取线程读取一个半新半旧的值
-	- Recordered statement(重新排序的语句)：语句和操作有可能被重新安排次序，也许对单线程是正确的，但多线程却破坏了预期行为
+#### 并发出现的问题：
+1. Unsynchronized data access(未同步化的数据访问)：并发运行的线程读和写同一笔数据，不知道哪一个语句先来
+2. Half-wiritten data(写至半途的数据): 某个县城投正在读数据，另一个线程改动它，于是读取线程读取一个半新半旧的值
+3. Recordered statement(重新排序的语句)：语句和操作有可能被重新安排次序，也许对单线程是正确的，但多线程却破坏了预期行为
 
-2. 解决问题的概念：
+4. 解决问题的概念：
 	- Atomicity(不可切割性)
 	- Order(次序)
 
-3. volatitle：用来阻止"过度优化"
+5. volatitle：用来阻止"过度优化"
 	- java中，volatile对于automicity和order提供了某些保证
 	- C++中，volatile<font color=red>只是具体表示对外部资源的访问不应该被优化掉，既不提供atomicity也不提供order</font>
 
@@ -361,11 +366,142 @@ auto f = async(queryNumber).share();
 
 #### Lock
 1. 最简单的使用：加锁、解锁。加锁时如果锁被占用，阻塞
-2. RAII(资源获取就是初始化) 管理对象： 
-	- std::`lock_guard`: 
-	- std::`unique_lock`:
-	- std::`shared_lock(C++14)`:
+2. 为了防止异常退出导致的死锁和退出分支时忘记解锁，c#提供了lock关键字，java提供了synchronized关键字，他们都通过finally关键字来实现，
+	然而C++并没有try-finally，事实上C++并不需要finally。C++通常使用RAII(Resource Acquisition Is Initialization)来自动管理资源
 
+3. RAII(资源获取就是初始化) 管理对象： 
+	- std::`lock_guard`: 严格基于作用域(scope-based)的所管理类模板:
+		1. 构造时是否加锁是可选的(不加锁时假定当前线程已经获得锁的所有权)，
+		2. <font color=red>析构时自动释放锁(不加锁也使用这个对象就是为了析构时释放锁的，所以即使已经获得锁，也还是可以使用`lock_guard`)</font>
+		3. 所有权不可以转移，对象生存期内<font color=red>不允许手动加锁和释放锁</font>
 
-https://www.cnblogs.com/diegodu/p/7099300.html
-https://www.cnblogs.com/haippy/p/3237213.html
+	- std::`unique_lock`: 更加灵活的锁管理类模板:
+		1. 构造时是否加锁是可选的
+		2. 在对象析构时如果持有锁会自动释放锁
+		3. 所有权可以转移
+		4. 对象生命期内允许手动加锁和释放锁
+
+	- std::`shared_lock(C++14)`: 用于管理可转移和共享所有权的互斥对象
+
+#### 互斥对象管理类模板的加锁策略
+1. 策略 、 tag type 、描述
+	1. 默认:  无: 请求锁，阻塞当前线程直到成功获得锁道道
+	2. std::`defer_lock`: `std::defer_lock_t`: 不请求锁
+	3. `std::try_to_lock`: `std::try_to_lock_t`: 尝试请求锁，但不阻塞线程，锁不可用时也会立即返回
+	4. `std::adopt_lock`: `std::adopt_lock_t`: 假定当前线程已经获得互斥对象的所有权，所以不在请求锁
+
+2. RAII管理对象对策略的支持: 所有对象都支持默认的策略
+	1. `lock_guard`: 
+		- `std::adopt_lock`
+	2. `unique_lock`
+		- 支持所有的策略
+
+	3. `shared_lock`
+		- 支持所有策略
+
+	4. 只有`lock_guard`不支持`try_to_lock`和`defer_lock`，其他所有RAII对象支持所有策略
+
+#### 底层加锁函数
+1. `std::try_lock`，尝试同时对多个互斥量上锁。
+2. std::lock，可以同时对多个互斥量上锁。
+3. `std::call_once`，如果多个线程需要同时调用某个函数，`call_once` 可以保证多个线程对该函数只调用一次。
+
+#### 对多个互斥对象加锁
+1. 在某些情况下我们可能需要对多个互斥对象进行加锁,但是如果多个锁的加锁顺序不是一样的话，多个线程可能出现死锁
+2. 为了避免发生这类死锁，对于任意两个互斥对象，在多个线程中进行加锁时应保证其先后顺序是一致
+```
+std::mutex mt1, mt2;
+// thread 1
+{
+    std::lock_guard<std::mutex> lck1(mt1);
+    std::lock_guard<std::mutex> lck2(mt2);
+    // do something
+}
+// thread 2
+{
+    std::lock_guard<std::mutex> lck1(mt1);
+    std::lock_guard<std::mutex> lck2(mt2);
+    // do something
+}
+```
+3. 更好的做法是使用标准库中的std::lock和`std::try_lock`函数来对多个Lockable对象加锁。
+	- std::lock(或`std::try_lock`)会使用一种避免死锁的算法对多个待加锁对象进行lock操作(`std::try_lock`进行`try_lock`操作)
+	- 当待加锁的对象中有不可用对象时std::lock会阻塞当前线程知道所有对象都可用(`std::try_lock`不会阻塞线程当有对象不可用时会释放已经加锁的其他对象并立即返回)
+
+		```
+		std::mutex mt1, mt2;
+		// thread 1lock_guard
+		{
+			std::unique_lock<std::mutex> lck1(mt1, std::defer_lock);
+			std::unique_lock<std::mutex> lck2(mt2, std::defer_lock);
+			std::lock(lck1, lck2);
+			// do something
+		}
+		// thread 2
+		{
+			std::unique_lock<std::mutex> lck1(mt1, std::defer_lock);
+			std::unique_lock<std::mutex> lck2(mt2, std::defer_lock);
+			std::lock(lck2, lck1);
+			// do something
+		}
+		```
+
+4. 此外`std::lock`和`std::try_lock`还是异常安全的函数(要求待加锁的对象unlock操作不允许抛出异常)，
+	- 当对多个对象加锁时，其中如果有某个对象在lock或`try_lock`时抛出异常，std::lock或`std::try_lock`会捕获这个异常
+		并将之前已经加锁的对象逐个执行unlock操作，然后重新抛出这个异常(异常中立)。
+	
+	
+5. 并且`std::lock_guard`的构造函数`lock_guard`(`mutex_type`& m, `std::adopt_lock_t` t)也不会抛出异常。所以std::lock像下面这么用也是正确
+```
+std::lock(mt1, mt2);
+std::lock_guard<std::mutex> lck1(mt1, std::adopt_lock);
+std::lock_guard<std::mutex> lck2(mt2, std::adopt_lock);
+```
+
+6. 总结：
+	1. 多个互斥体加锁时，一个个的加锁，需要按照同样的顺序来对多个锁来加锁
+	2. 如果lock多个锁时，当待加锁的对象中有不可用对象时std::lock会阻塞当前线程直到所有对象都可用
+		所以：<font color=red>锁其实没有申请，因为它并不会释放已经申请的锁</font>
+
+		- 如果是`unique_lock`,需要使用`defer_lock`策略
+		- 如果是`lock_guard`，需要使用`adopt_lock`策略
+
+	3. 如果`try_lock`多个锁时，不需要指定锁和策略的搭配，它会直接返回。
+
+#### 只调用一次的锁
+1. call_once保证函数fn只被执行一次
+	- 如果有多个线程同时执行函数fn调用，则只有一个活动线程(active call)会执行函数
+	- 其他的线程在这个线程执行返回之前会处于”passive execution”(被动执行状态)——不会直接返回，直到活动线程对fn调用结束才返回。
+	- 对于所有调用函数fn的并发线程，数据可见性都是同步的(一致的)。
+
+2. 如果活动线程在执行fn时抛出异常，则会从处于”passive execution”状态的线程中挑一个线程成为活动线程继续执行fn，依此类推。
+	一旦活动线程返回，所有”passive execution”状态的线程也返回,不会成为活动线程
+
+3. 实际上once_flag相当于一个锁，使用它的线程都会在上面等待，只有一个线程允许执行。
+	如果该线程抛出异常，那么从等待中的线程中选择一个，重复上面的流程
+
+4. 函数
+```
+头文件#include<mutex>
+
+template <class Fn, class... Args>
+
+void call_once (once_flag& flag, Fn&& fn, Args&&...args);
+```
+
+5. eg
+```
+        static std::once_flag oc;  // 用于call_once的局部静态变量
+
+        Singleton* Singleton::m_instance;
+
+        Singleton* Singleton::getInstance() {
+
+            std::call_once(oc, [&] () { m_instance = newSingleton(); });
+
+            return m_instance;
+
+        }
+```
+
+	还有一个要注意的地方是 once_flag的生命周期，它必须要比使用它的线程的生命周期要长。所以通常定义成全局变量比较好。
