@@ -30,6 +30,8 @@
 		* [底层加锁函数](#底层加锁函数)
 		* [对多个互斥对象加锁](#对多个互斥对象加锁)
 		* [只调用一次的锁](#只调用一次的锁)
+	* [Condition Variable](#condition-variable)
+		* [意图](#意图)
 
 <!-- vim-markdown-toc -->
 ## 并发
@@ -375,18 +377,24 @@ auto f = async(queryNumber).share();
 		2. <font color=red>析构时自动释放锁(不加锁也使用这个对象就是为了析构时释放锁的，所以即使已经获得锁，也还是可以使用`lock_guard`)</font>
 		3. 所有权不可以转移，对象生存期内<font color=red>不允许手动加锁和释放锁</font>
 
-	- std::`unique_lock`: 更加灵活的锁管理类模板:
+	- std::`unique_lock`: 更加灵活的锁管理类模板: 就像unique pointer一样,你可以把它们在作用域之间搬移,但保证一次只有一个lock拥有mutex.
 		1. 构造时是否加锁是可选的
 		2. 在对象析构时如果持有锁会自动释放锁
 		3. 所有权可以转移
 		4. 对象生命期内允许手动加锁和释放锁
+		5. 可以调用owns_lock()和bool()来查询mutex是否被锁住
+		6. 比`lock_guard`多三个构造函数:
+			- 使用`try_to_lock`作为策略
+			- 使用一个时间段或时间点给构造函数,表示尝试一个明确的时间周期内锁定:
+				- `unique_lock<std::timed_mutex> lock(mutex, std::chrono::secdonds(1));`
+			- 使用`defer_lock`策略
 
 	- std::`shared_lock(C++14)`: 用于管理可转移和共享所有权的互斥对象
 
 #### 互斥对象管理类模板的加锁策略
 1. 策略 、 tag type 、描述
 	1. 默认:  无: 请求锁，阻塞当前线程直到成功获得锁道道
-	2. std::`defer_lock`: `std::defer_lock_t`: 不请求锁
+	2. std::`defer_lock`: `std::defer_lock_t`: 表示初始化这个lock object但尚未打算锁住mutex.不请求锁
 	3. `std::try_to_lock`: `std::try_to_lock_t`: 尝试请求锁，但不阻塞线程，锁不可用时也会立即返回
 	4. `std::adopt_lock`: `std::adopt_lock_t`: 假定当前线程已经获得互斥对象的所有权，所以不在请求锁
 
@@ -426,7 +434,8 @@ std::mutex mt1, mt2;
 ```
 3. 更好的做法是使用标准库中的std::lock和`std::try_lock`函数来对多个Lockable对象加锁。
 	- std::lock(或`std::try_lock`)会使用一种避免死锁的算法对多个待加锁对象进行lock操作(`std::try_lock`进行`try_lock`操作)
-	- 当待加锁的对象中有不可用对象时std::lock会阻塞当前线程知道所有对象都可用(`std::try_lock`不会阻塞线程当有对象不可用时会释放已经加锁的其他对象并立即返回)
+	- 当待加锁的对象中有不可用对象时std::lock会阻塞当前线程直到所有对象都可用
+		(`std::try_lock`不会阻塞线程当有对象不可用时会释放已经加锁的其他对象并立即返回)
 
 		```
 		std::mutex mt1, mt2;
@@ -461,15 +470,21 @@ std::lock_guard<std::mutex> lck2(mt2, std::adopt_lock);
 6. 总结：
 	1. 多个互斥体加锁时，一个个的加锁，需要按照同样的顺序来对多个锁来加锁
 	2. 如果lock多个锁时，当待加锁的对象中有不可用对象时std::lock会阻塞当前线程直到所有对象都可用
-		所以：<font color=red>锁其实没有申请，因为它并不会释放已经申请的锁</font>
+		所以：<font color=red>lock可能会按相同的规则来加锁,使得所有加锁顺序相同.因为它并不会释放已经申请的锁</font>
 
+	3. 多个锁加锁时的RAII应该满足如下规则:
 		- 如果是`unique_lock`,需要使用`defer_lock`策略
 		- 如果是`lock_guard`，需要使用`adopt_lock`策略
 
-	3. 如果`try_lock`多个锁时，不需要指定锁和策略的搭配，它会直接返回。
+	4. 如果`try_lock`多个锁时，不需要指定锁和策略的搭配，它会直接返回不可用的锁的id,如果全部加锁成功,返回-1。
+
+	5. lock会使用deadlock回避机制,而`try_lock`不提供deadlock回避机制,但它保证<font color=red>以出现于实参列的次序来试着完成锁定</font>
+		- 说明lock多个mutex时,lock会改变mutex的次序,以是的各个锁按同一顺序加锁.
 
 #### 只调用一次的锁
-1. call_once保证函数fn只被执行一次
+1. `call_once`的第一实参必须是相应的`once_flag`,下一个实参是可调用对象,还可以再加上其他实参给被调用的函数使用
+
+1. `call_once`保证函数fn只被执行一次
 	- 如果有多个线程同时执行函数fn调用，则只有一个活动线程(active call)会执行函数
 	- 其他的线程在这个线程执行返回之前会处于”passive execution”(被动执行状态)——不会直接返回，直到活动线程对fn调用结束才返回。
 	- 对于所有调用函数fn的并发线程，数据可见性都是同步的(一致的)。
@@ -477,10 +492,15 @@ std::lock_guard<std::mutex> lck2(mt2, std::adopt_lock);
 2. 如果活动线程在执行fn时抛出异常，则会从处于”passive execution”状态的线程中挑一个线程成为活动线程继续执行fn，依此类推。
 	一旦活动线程返回，所有”passive execution”状态的线程也返回,不会成为活动线程
 
-3. 实际上once_flag相当于一个锁，使用它的线程都会在上面等待，只有一个线程允许执行。
+3. 实际上`once_flag`相当于一个锁，使用它的线程都会在上面等待，只有一个线程允许执行。
 	如果该线程抛出异常，那么从等待中的线程中选择一个，重复上面的流程
 
-4. 函数
+4. 原则上可以使用同一个`once_flag`调用不同的函数.之所以把once flag 当做第一个实参传给`call_once`就是<font color=red>为了确保传入的机能只被执行一次</font>
+	- 因此,如果第一次调用成功,下一次调用又带着相同的 once flag,传入的机能就不会被调用--即使该机能与第一次有异(机能似乎指的是第二个参数那个可调用对象)
+	- 被调用的函数所造成的任何异常都会被`call_once()`抛出,此情况下<font color=red>第一次调用被视为不成功,因此下一次`call_once`还可以在调用它所调用的机能</font>
+	- 就是说:如果once flag 调用的函数成功,下次同一个once flag就不会被调用了,如果once flag第一次的可调用对象失败,那么这个once flag还可以使用一次.
+
+5. 函数
 ```
 头文件#include<mutex>
 
@@ -489,19 +509,81 @@ template <class Fn, class... Args>
 void call_once (once_flag& flag, Fn&& fn, Args&&...args);
 ```
 
-5. eg
+6. eg
 ```
-        static std::once_flag oc;  // 用于call_once的局部静态变量
-
-        Singleton* Singleton::m_instance;
-
-        Singleton* Singleton::getInstance() {
-
-            std::call_once(oc, [&] () { m_instance = newSingleton(); });
-
-            return m_instance;
-
-        }
+std::once_flag oc;
+std::call_once(oc, initialize);
 ```
 
-	还有一个要注意的地方是 once_flag的生命周期，它必须要比使用它的线程的生命周期要长。所以通常定义成全局变量比较好。
+7. 还有一个要注意的地方是 `once_flag`的生命周期，它必须要比使用它的线程的生命周期要长。所以通常定义成全局变量比较好。
+
+### Condition Variable
+> 有时候,被不同线程执行的task必须彼此等待,所以对 并发操作 实现同步化除了data race之外还有其他原因
+
+1. future智能传递数据一次,他不是为这种场景设计的.future 的主要目的是处理线程的返回值或异常.
+2. 条件变量,他可以来同步化线程之间的数据流逻辑依赖关系
+
+#### 意图
+1. "让某线程等待另一个线程"的一个粗浅方法,就是使用ready flag之类的东西. 这通常意味着等待中的线程需要轮询其所需要的数据或条件是否已达到
+```
+bool readyFlag;
+std::mutex readyFlagMutex;
+{
+	std::unique_lock<std::mutex> ul(readyFlagMutex);
+	while (!readyFlag) {
+		ul.unlock();
+		std::this_therad::yield();
+		std::this_thread::sleep_for(std::chrono::millseconds(100));
+		ul.lock();
+	}
+}
+```
+
+2. 一个较好的方法是使用condition variable: `<condition_variable>`
+	- 它是个变量,借由它,一个线程可以唤醒一或多个其他等待中的线程
+
+3. condition variable 的运作如下:
+	1. 你必须同时包含<mutex> 和`<cnodition_variable>`,并声明一个mutex 和一个condiion variable:
+		```
+		#include <mutex>
+		#include <condition_variable>
+
+		std::mutex readyMutex;
+		std::condition_variable readyCondVar;
+		```
+
+	2. 那个激发"条件总于满足"的线程(或多线程之一)
+		- 必须调用 `readyCondVar.notify_one()`;
+		- 或调用 `readyCondVar.notify_all()`;
+
+	3. 那个"等待条件被满足"的线程必须调用
+		```
+		std::unique_lock<std::mutex> l(readyMutex)`;
+		readyCondVar.wait(1);
+		```
+		因此"提供或准备某东西"的那个线程只需对condition variable 调用notify_one()或notify_all(),便会唤醒一个或所有等待中的线程
+
+4. 注意的问题:
+	1. 等待这个condition variable需要一个mutex和一个`unique_lock`,因为等待线程可能锁定或解除mutex,所以不能使用`lock_guard`.
+	2. condition variable 可能出现假醒(spurious wakeup)
+		因此,我们必须检查数据是否真正备妥,或是仍需要诸如ready flag之类的东西,可以用同一个mutex.
+		
+	3. <font color=red>使用同一个mutex来使用condition variable时,unique lock也是会阻塞的,直到它获得锁,然后调用variable 
+		的wait,wait会自动释放锁,然后等待,直到被重新被唤醒再重新加锁,还可以多一个条件判断函数.</font>
+
+	4. mutex相当于一个简单类型,lock guard,unique guard 是RAII的锁管理器.condition variable 是使用锁的,直接使用unique lock.
+	5. <font color=red>cond wait的时候,第一个参数的锁必须是锁定的,否则会出错.它会在条件不满足的时候自动释放锁</font>
+
+	6. 所有通知(notification)都会同步化,所以并发调用notify_one()和notify_all()不会带来麻烦
+	7. 所有等待某个condition variable的线程都必须使用相同的mutex,
+		<font color=red>当wait()家族的某个成员被调用时该mutex必须被`unique_lock`锁定,否则会发生不明确的行为,因为wait会释放锁</font>
+
+	8. 注意: condition variable 的消费者总是在"被锁住的mutex"基础上操作.
+		<font color=red>只有等待函数(waiting function)会执行一下三个atomic步骤暂时接触mutex.</font>
+
+		- 解除(unlocking) mutex然后进入等待状态(waiting state) //调用wait()
+		- 解除因等待而造成的阻塞(Unblokcing the wait)          //被通知
+		- 再次锁住mutex                                        //被通知
+		
+	9. 8 意味着传给wait函数的那个判断式总是在lock情况下被调用,所以它们可以安全的处理受mutex保护的对象,用来将mutex锁定和解锁的动作可能抛出异常.
+	10. <font color=red>粗浅解法:"lock, check state, unlock, wait" (锁定, 检查状态, 解锁, 等待) 的问题是,在unlock和wait之间形成的通知会遗失</font>
