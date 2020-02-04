@@ -32,6 +32,9 @@
 		* [只调用一次的锁](#只调用一次的锁)
 	* [Condition Variable](#condition-variable)
 		* [意图](#意图)
+	* [Atomic](#atomic)
+		* [Atomic 高层接口](#atomic-高层接口)
+		* [Atomic底层接口](#atomic底层接口)
 
 <!-- vim-markdown-toc -->
 ## 并发
@@ -587,3 +590,59 @@ std::mutex readyFlagMutex;
 		
 	9. 8 意味着传给wait函数的那个判断式总是在lock情况下被调用,所以它们可以安全的处理受mutex保护的对象,用来将mutex锁定和解锁的动作可能抛出异常.
 	10. <font color=red>粗浅解法:"lock, check state, unlock, wait" (锁定, 检查状态, 解锁, 等待) 的问题是,在unlock和wait之间形成的通知会遗失</font>
+
+5. `wait_for`和`wait_until`各有个给不接受判断式(predicate)的版本,它们返回的值都属于一下枚举值:
+	- `std::cv_status::timeout` : 如果发生不容置疑的超时(timeout)
+	- `std::cv_status::no_timeout`: 如果发生通知(notification)
+
+6. `wait_for`和`wait_until`亦各有个接受判断式(predicate)的版本,它们返回判断式的执行结果
+
+7. `notify_all_at_thread_exit(cv, l)`: 用来在其调用者(线程)退场(exit)时调用`notify_all()`
+	- 为此它暂时锁住对应的lock l,后者必须使用所有等待线程(waiting thread)共享同一个mutex
+	- 为避免死锁,线程调用`notify_all_at_thread_exit()`之后应该直接退场(exit)
+	- <font color=red>因此这个调用只是为了在通知 waiting thread 之前先完成清理工作,而且这个而清理工作绝不该造成阻塞(block)</font>
+	
+### Atomic
+1. 普通数据同步问题:
+	1. 一般而言,及时面对基本数据类型,读和写也不是atomic(不可分割的).因此亦可能读到一个被写了一半的值,C++ standard说这会带来不明确的行为
+	2. 编译器生成的代码有可能改变操作次序,所以供应端线程可能刚在供应数据之前就设置了ready flag,而消费端线程也有可能在侦测ready flag之前具处理该数据.
+
+2. 使用mutex可以消除问题,但是比较昂贵,aotmic在某些情况下可以取代mutex和lock
+
+#### Atomic 高层接口
+> 它提供的操作将使用默认保证，不论内存访问次序如何，这个默认保证提供了顺序一致性（sequential consistency), 
+	意思是在线程之中atomic操作保证一定"像代码出现的次序"那样地发生.因此不会出现重排语句的情况
+
+1. 使用:
+	1. 包含头文件<atomic>,其内声明了atomic
+	2. 使用std::atomic<> template 声明要给atomic object:
+		```std::atomic<bool> readyFlag(false)```
+	3. <font color=red>总是应该将atomic object 初始化,因为其default 构造函数并不完全初始化它(倒不是其初始值不明确,而是其lock未被初始化)</font>,
+		面对一个static-duration atomic 对象,应该使用一个常量作为其初始值
+
+	4. <font color=red>如果只使用default构造函数,接下来唯一允许的操作是如下调用global atomic_init()</font>
+
+		``` 
+		std::atomic<bool> readyFlag;
+		std::atomic_init(&readyFlag, false);
+		```
+
+2. atomic 操作:atomic最重要的语句是store()和load():
+	- store()赋予一个新值
+	- load() 取当前值
+
+	- 这些操作都保证是atomic(不可切割的),所以不需要加锁来保证执行顺序.
+	- 使用condition variable 时我们仍需要mutex才能保护对condition variable 的消费(即使它现在是个atomic object)
+
+3. atomic 类型,可以使用寻常的操作,像是赋值/自动转换整型,递增,递减等,但是为了提供atomicity(不可分割性),某些惯常行为会出现轻微差异:
+	- 赋值操作返回的是被赋予的值,而不是返回一个reference指向"接受该值"的atomic
+
+4. store()会对影响所及的内存区执行一个所谓的release操作,确保此前所有的内存操作(all prior memory operations)不论是否是atomic,在store返回作用之前都变成"可被其他线程看见".
+	(应该就是改变了各个cpu内的所有缓存)
+
+5. load() 会对所有影响所及的内存区执行一个所谓的acquire操作,确保随后的所有内存操作不论是否为atomic,在load之后都变成"可被其他线程看见"
+
+6. atomic操作默认使用一个特别内存次序(memory order),名为memory_order_seq_cst,它代表孙旭一致的内存次序
+
+#### Atomic底层接口
+> 带有"放宽之次序保证"的操作
