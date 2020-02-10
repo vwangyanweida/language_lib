@@ -22,16 +22,16 @@
 > 有序集合，内部每个元素都有确凿的位置--取决于插入时机和地点，与元素值无关
 
 1. 如果以追加方式对一个集合置入几个元素，它们排序次序将和置入顺序一致。
-2. STL提供了5个定义好的序列容器：array、deque、vector、list、forward_list
+2. STL提供了5个定义好的序列容器：array、deque、vector、list、`forward_list`
 3. <font color=green>通常实现为：array或者linked list</font>
 4. <font color=green>序列容器可以通过计算得到位置地址，支持随机读取</font>
-	1. push_bask: 所有序列容器都支持，因为都可以在末尾加入一个元素，而且效率很高。
+	1. `push_bask`: 所有序列容器都支持，因为都可以在末尾加入一个元素，而且效率很高。
 	2. 数字下标操作: 
 	3. 中段、起始段插入元素比较费时，因为安插点之后的所有元素都要移动。
 
 5. 特殊情况
 	1. list 不提供随机访问
-	2. forward_list 不提供push_back()和size()
+	2. `forward_list` 不提供`push_back`()和size()
 #### 关联容器
 > 这是一种已排序的集合，元素位置取决于value(key，如果是key/value pair)和给定的某个排序准则
 
@@ -47,7 +47,7 @@
 > 这是一种无序集合，其内每个元素的位置无关紧要，唯一重要的是某特定元素是否位于此集合内。
 
 1. 元素位置可能改变。
-2. STL提供了4个定义好的无序容器：unordered_set、unordered_multiset、unordered_map、unordered_multimap
+2. STL提供了4个定义好的无序容器：`unordered_set`、`unordered_multiset`、`unordered_map`、`unordered_multimap`
 3. <font color=green>通常实现未hash table</font>
 4. 内部是一个linked list 组成的array
 
@@ -67,13 +67,13 @@
 1. 使用它可以解决算法的“目标空间不足”问题，它会促使目标空间的大小按需要增长。
 
 2. 三种insert iterator
-	1. bask_iterator
+	1. `bask_iterator`
 		- 调用push_back()
 		- 支持push_back的容器有：vector、deque、list、string。array、forward_list不支持。
 
-	2. front_iterator
-		- 内部调用push_front()
-		- 支持push_front()的容器有：deque、list、forward_list.
+	2. `front_iterator`
+		- 内部调用`push_front`()
+		- 支持`push_front`()的容器有：deque、list、forward_list.
 
 	3. iterator
 		- 内部调用insert()
@@ -83,9 +83,9 @@
 > Stream 是一个用来表现I/O通道的对象。
 
 #### Reverse iterator
-> 所有提供双向或随机访问迭代器的容器都可以通过他们的成员函数rbegin和rend产生一个反向迭代器（也就是forward_list之外所有的序列容器和所有的关联容器）
+> 所有提供双向或随机访问迭代器的容器都可以通过他们的成员函数rbegin和rend产生一个反向迭代器（也就是`forward_list`之外所有的序列容器和所有的关联容器）
 
-1. forward_list和所有的无序容器都没有提供回向迭代接口，即rbegin()、rend().因为那些容器内部实现只是使用singly linked list 串起所有元素。
+1. `forward_list`和所有的无序容器都没有提供回向迭代接口，即rbegin()、rend().因为那些容器内部实现只是使用singly linked list 串起所有元素。
 
 
 #### Move iterator
@@ -105,14 +105,14 @@
 1. [=]以=caputure值，表明：在lambda被声明时已有效的所有符号都以by value形式传进lambda体内。
 
 ## 疑问
-1. back_iterator 和back_inserter所代表的不同?
+1. `back_iterator` 和`back_inserter`所代表的不同?
 2. std::transform函数用法？
 3. multiplies<int> 是否是乘积运算
 
 ### insert
 1. 顺序容器insert是移动，原来的容器移动后元素减少
-2. unordered_map容器是拷贝，将所有这个分清楚？
+2. `unordered_map`容器是拷贝，将所有这个分清楚？
 
 ### 反向迭代器
-迭代器指的位置是物理位置，reverse_iterator的区间是[end+1, 0),iterator 指的是[begin, end+1) .所以
-对reverse_iterator取值时，取得是迭代器指向物理位置的前一个元素。
+迭代器指的位置是物理位置，`reverse_iterator`的区间是[end+1, 0),iterator 指的是[begin, end+1) .所以
+对`reverse_iterator`取值时，取得是迭代器指向物理位置的前一个元素。
