@@ -312,6 +312,9 @@ auto f = async(queryNumber).share();
 
 4. `packaged_task`定义与<future>内，持有目标函数及其可能的结果(也就是该函数的shared state，就相当于python中的future)
 
+5. `packaged_task`如果在单线程中执行时,代码汇报核心转储,但是如果源文件定义有别的线程,即使没有执行,程序也会正常,不知道怎么回事?				
+	这个东西还是用到异步的多线程中去吧.
+
 ### 启动线程
 #### Namespace `this_thread`
 1. 针对任何线程(包括main thread)<thread>声明一个命名空间std::this_thread用以提供线程专属的global函数
