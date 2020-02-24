@@ -12,6 +12,21 @@
 		* [有序列表: ol](#有序列表-ol)
 		* [无序列表:ul](#无序列表ul)
 		* [自定义列表:dl](#自定义列表dl)
+	* [元数据](#元数据)
+	* [块](#块)
+	* [布局](#布局)
+	* [文本格式](#文本格式)
+	* [文档和网站架构](#文档和网站架构)
+	* [表格](#表格)
+	* [多媒体嵌入](#多媒体嵌入)
+		* [图像标签](#图像标签)
+		* [视频](#视频)
+		* [音频](#音频)
+		* [向量图](#向量图)
+		* [iframe](#iframe)
+		* [表单](#表单)
+			* [表单原生组件](#表单原生组件)
+		* [按钮](#按钮)
 
 <!-- vim-markdown-toc -->
 ## 网站的文件处理
@@ -30,7 +45,7 @@
 				//filed是表单里的key，就类似于一般表单里的name，file文件对象，filename是传送到服务器里的文件名字，一般缺省。
 			``` 	
 		3. 当FormData里含有文件时，就要将enctype指定为multipart/form-data而不是application/x-www-form-urlencoded.
-		``` <form enctype="multipart/form-data"></form>```
+		``` `<form enctype="multipart/form-data">`</form>```
 	
 		4. XMLHttpRequest对象
 			1. 创建xhr对象
@@ -45,7 +60,7 @@
 						"MSXML2.XmlHttp.1.0"
 					];
 
-					for (var i=0; i < v.length; i++) {
+					for (var i=0; i `< v.length; i++) {
 						try {
 							xhr = new ActiveXobject(v[i]);
 							break;
@@ -82,34 +97,34 @@
 ### HTML 标签
 #### 双标签
 1. 常见双标签
-	- <html></html>
-	- <head></head>
-	- <title></title>
-	- <body></body>
-	- <h1></h1>
-	- <h2></h2>
-	- <p></p>
-	- <div></div>
-	- <span></span>
-	- <a></a>
-	- <ul></ul>
-	- <ol></ol>
-	- <dt></dt>
-	- <dd></dd>
-	- <mark></mark>
-	- <iframe></iframe>
+	- `<html>`</html>`
+	- `<head>`</head>`
+	- `<title>`</title>`
+	- `<body>`</body>`
+	- `<h1>`</h1>`
+	- `<h2>`</h2>`
+	- `<p>`</p>`
+	- `<div>`</div>`
+	- `<span>`</span>`
+	- `<a>`</a>`
+	- `<ul>`</ul>`
+	- `<ol>`</ol>`
+	- `<dt>`</dt>`
+	- `<dd>`</dd>`
+	- `<mark>`</mark>`
+	- `<iframe>`</iframe>`
 
 #### 单标签
 1. 常见单标签
-	- <br/>     <!--换行-->
-	- <hr />    <!--水平分隔线-->
-	- <meta />
-	- <img />
+	- `<br/>`     `<!--换行-->`
+	- `<hr />`    `<!--水平分隔线-->`
+	- `<meta />`
+	- `<img />`
 
 #### HTML链接
 1. 链接可以是一个字，一个词，或一组词，也可以是一幅图像
 
-2. 两种使用<a>标签的方式 
+2. 两种使用`<a>`标签的方式 
 	- 通过使用href属性：创建指向两一个文档的链接
 	- 通过使用name属性：常见文档内的书签 /创建锚点时，最好使用ID
 
@@ -147,15 +162,15 @@
 	2. HTML元素input type='radio'分组，我们知道radio button控件在同一个分组类，check操作是mutex的，
 		同一时间只能选中一个radio，这个分组就是根据相同的name属性来实现的。
 
-	3. 建立页面中的锚点，我们知道<a href="url">link</a>是获得一个页面超级链接，如果不用href属性，而改用name，
-		如：<a name="PageBottom"></a>，我们就获得了一个页面锚点。
+	3. 建立页面中的锚点，我们知道`<a href="url">`link`</a>`是获得一个页面超级链接，如果不用href属性，而改用name，
+		如：`<a name="PageBottom">`</a>`，我们就获得了一个页面锚点。
 
 	4. 作为对象的identity，如Applet、Object、Embed等元素。比如在Applet对象实例中，我们将使用其name来引用该对象。
 
 	5.  在img元素和map元素之间关联的时候，如果要定义img的热点区域，需要使用其属性usemap，
 		使usemap="#name"(被关联的map元素的name)。
 
-	6. 某些特定元素的属性，如attribute，和param。例如为Object定义参数<param name = "appletParameter" value= "value">。
+	6. 某些特定元素的属性，如attribute，和param。例如为Object定义参数`<param name = "appletParameter" value= "value">`。
 
 	7. name属性也可以作为客户端对象的标识,可以使用javascript的document.getElementByName('name')来获取对象
 
@@ -164,9 +179,9 @@
 1. 有序列表有type和start属性
 2. 语法格式：
 ```
-<ol type="value1" start="value2">
-	<li></li>
-</ol>
+`<ol type="value1" start="value2">`
+	`<li>`</li>`
+`</ol>`
 ```
 
 3. value1表示有序列表项目符号的类型，value2表示项目开始的数值。
@@ -179,4 +194,451 @@
 	- I 小时使用大写罗马数字
 
 #### 无序列表:ul
+> 无序列表是一个项目的列表，此列项目使用粗体圆点（典型的小黑圆圈）进行标记。无序列表始于 `<ul>` 标签。每个列表项始于`<li>`。
+> 无序列表的各个列表项之间没有顺序级别之分，是并列的
+
+1. ul 的 type 属性：默认值: disc，方块: square，空心圆: circle
+
 #### 自定义列表:dl
+> 自定义列表不仅仅是一列项目，而是项目及其注释的组合。
+
+1. 自定义列表以`<dl>` 标签开始。每个自定义列表项以 `<dt>` 开始。每个自定义列表项的定义以 `<dd>` 开始。
+2. 自定义列表的列表项前没有任何项目符号
+3. eg
+```
+`<dl>`
+	`<dt>`名词1`</dt>`
+	`<dd>`名词1解释1`</dd>`
+	...
+	`<dt>`名词`</dt>`
+	`<dd>`名词2解释1`</dd>`
+	...
+`</dl>`
+```
+### 元数据
+> 元数据就是用来描述数据的数据。 HTML 中也有很多元数据，下面为大家简单介绍一下。
+
+1. `<meta>`标签提供关于 HTML 文档的元数据：描述（description）、关键词（keywords）、文档的作者（author）等其他元数据
+
+### 块
+> 大多数 HTML 元素被定义为块级元素或内联元素。
+
+1. 块级元素
+    - 总是独占一行，表现为另起一行开始，而且其后的元素也必须另起一行显示。宽度(width)、高度(height)、内边距(padding)和外边距(margin)都可控制。
+	- 常见块级元素： `<h1>`,`<p>`, `<ul>`, `<table>`。
+
+2. 内联元素
+	- 内联元素在显示时通常不会以新行开始。
+		宽度(width)、高度(height)、内边距的 top/bottom(padding-top/padding-bottom)和外边距的 top/bottom(margin-top/margin-bottom)都不可改变。
+
+	- 常见内联元素：`<b>`, `<td>`, `<a>`, `<img>`。
+
+### 布局
+> HTML 布局主要有两种：使用 div 元素的布局和使用 table 元素的布局
+
+1. 使用div元素的布局
+
+2. 使用table 布局
+
+### 文本格式
+> 文本格式其实就是文本的样式，比如说文章的换行，文字的加粗，斜体等等类似这些的，都是文本格式，这些都是通过文本格式标签实现的
+
+1. 文本格式化标签
+	- `<b>`		定义粗体文本
+	- `<big>`		定义大号字
+	- `<em>`		定义着重文字
+	- `<i>`		定义斜体字
+	- `<small>`	定义小号字
+	- `<strong>`	定义加重语气
+	- `<sub>`		定义下标字
+	- `<sup>`		定义上标字
+	- `<ins>`		定义插入字
+	- `<del>`		定义删除字
+
+### 文档和网站架构
+1. 标题
+	通常在顶部有一个大标题和（或）图标。 这是一个网站的主要常见信息，通常存在于每一个网页。
+
+2. 导航
+	提供跳转到网站不同内容的链接；通常由菜单按钮、链接或选项卡表示。
+
+3. 主要内容
+	中心的一个大区域，包含给定网页的大部分独特内容。
+
+4. 侧栏
+	一些次要信息、链接、引言、广告等。
+
+5. 页脚
+	横跨页面底部的条纹，通常包含精美的打印、版权通知或联系信息。
+
+6. 为了实现这样的语义标记，HTML 提供了可以用来表示这些部分的专用标签，例如：
+
+	- 标题：`<header>`
+	- 导航栏：`<nav>`
+	- 主要内容：`<main>`具有代表性的内容段落主题可以使用 `<article>`, `<section>`，`<div>`元素。
+	- 侧栏：`<aside>`经常嵌套在`<main>`中
+	- 页脚：`<footer>`
+
+### 表格
+1. <table>标签
+	<table>... </table>标签用于在 HTML 文档中创建表格。它包含表名和表格本身内容的代码。
+
+2. <tr>标签
+	<tr>标签用于定义每一行。
+
+3. <td>标签
+	<td>标签用于定义每一列。
+
+4. 表格的常用属性
+	- border :注意,这个border是table中最小的单位,即每个td的外边框.
+		每个cell都有四个边,所以一旦设置了这个border,两个cell之间是有空隙的,每个cell各自有自己的边.2X2的table,是有4个小矩形.
+
+	- cellspacing: 单元格与单元格之间的距离
+	- cellpadding: 设置文字与单元格之间的距离
+	- width: 设置表格的宽度
+	- heigt: 设置表格的高度
+	- bgcolor: 设置背景颜色
+
+5. 表头一般位于表格的第一行或第一列，其文本加粗居中显示，就类似于课程表上的第一行日期的显示，
+	而表头的设置也很简单，只需要用<th></th>代替<td></td>即可。
+
+6. 绘制表格的时候，我们常常需要合并单元格，而在 HTML 中提供了 colspan（合并行）和 rowspan（合并列）属性来帮助我们实现这一效果。
+> colpan 又称跨列, rowspan又称跨行
+
+7.  caption 元素定义表格标题
+	caption 标签必须紧随 table 标签之后。你只能对每个表格定义一个标题。通常这个标题会被居中于表格之上。
+
+8. 表格布局
+> 在使用表格进行布局时，可以将表格划分为头部、主体和页脚，具体如下所示：
+
+	1. `<thead></thead>`：用于定义表格的头部，一般包含网页的logo和导航等头部信息,位于`<table></table>`之中。
+	2. `<tfoot></tfoot>`：用于定义表格的页脚，一般包含网页底部的企业信息，地址联系方式等，位于`<table></table>`标记之中，`<thead></thead>`标记之后。
+	3. `<tbody></tbody>`：用于定义表格的主体，一般包含网页中除头部和底部之外的其他内容，位于`<table></table>`标记之中，`<tfoot></tfoot>`标记之后。
+	4. 注：现在很多布局都是采用 div+css 的方式，如果大家对 table 布局感兴趣的话，可以直接搜索"搜狐股票"，然后点击 F12 查看源码。
+
+### 多媒体嵌入
+####  图像标签
+> 在 HTML 中，图像由 <img> 标签定义。语法为：
+
+```
+<img src="url" alt="" />
+```
+1. `<img>` 是空标签，它只包含属性，没有闭合标签。
+2. 要在页面上显示图像，你需要使用源属性（src）。src 的值是图像文件的 URL，也就是引用该图像的文件的的绝对路径或相对路径。
+3. alt 规定图像的替代文本即当图片未成功显示的时候显示的文本信息。
+4. title 设置鼠标悬停时显示的内容（一般不用设置）。
+5. 此外还可以通过设置 width 和 height 的值来设置图片的宽和高。 
+6. 相对路径
+> 这种路径是以引用文件的网页所在位置为参考基础，而建立出的目录路径。
+> 因此，当保存于不同目录的网页引用同一个文件时，所使用的路径将不相同，故称之为相对路径。
+
+	- 图像文件和 HTML 文件位于同一文件夹：只需输入图像文件的名称即可，比如：<img src="syl.png" />。
+	- 图像文件位于 HTML 文件的下一级文件夹：输入文件夹名和文件名，之间用“/”隔开，比如：<img src="img/img1/syl.png" />。
+	- 图像文件位于 HTML 文件的上一级文件夹：在文件名之前加入“../” ，如果是上两级，则需要使用 “../ ../”，以此类推，比如：<img src="../syl.png" />。
+
+7. 绝对路径
+	指当所有网页引用同一个文件时，所使用的路径都是一样的
+
+8.  自适应图片
+> 网页前端开发的很多时候，我们需要让图片能够根据父元素自适应变化大小，从而使网页排版更加美观。
+	1. 通过把 width 设置为 100%，使得图片随着窗口宽度的改变而自动适应变化大小
+
+#### 视频
+1. video标签
+2. 属性
+	- autoplay:  autoplay: 如果出现该属性,则视频在就绪后马上播放
+	- controls:  controls: 如果出现该属性,则向用户显示控件,比如播放按钮
+	- height:    pixels:   设置视频播放器的高度
+	- loop:      loop:     如果出现该属性,泽当媒介文件播放完后再次开始播放
+	- preload:   preload   如果出现该属性,则视频在二面加载时进行加载,并预备播放.如果使用autoplay,则忽略该属性
+	- src:       url       要播放的视频的url
+	- width:     pixels    设置视频播放器的宽度
+
+#### 音频
+1. audio 标签
+	定义：用来嵌入音频
+
+2. eg
+```
+<audio controls>
+<source src="http://labfile.oss.aliyuncs.com/courses/1236/平凡之路.mp3" type="audio/mp3">
+			平凡之路
+</audio>
+```
+3. 音频播放器所占用的空间比视频播放器要小，由于它没有视觉部件，你只需要显示出能控制音频播放的控件。它不支持 width/height 属性。
+
+#### 向量图 
+> 矢量图像，也称为面向对象的图像或绘图图像，在数学上定义为一系列由线连接的点。
+> 矢量文件中的图形元素称为对象。每个对象都是一个自成一体的实体，它具有颜色、形状、轮廓、大小和屏幕位置等属性。
+> 既然每个对象都是一个自成一体的实体，就可以在维持它原有清晰度和弯曲度的同时，多次移动和改变它的属性，而不会影响图例中的其它对象。
+> 这些特征使基于矢量的程序特别适用于图例和三维建模，因为它们通常要求能创建和操作单个对象。
+> 基于矢量的绘图同分辨率无关。这意味着它们可以按最高分辨率显示到输出设备上
+
+1. 使用原因:
+	电脑中的图像类型分为两大类，一类称为点阵图（位图），一类称为矢量图。 
+	点阵图在图片放大的时候会出现模糊现象（你可以试着把一个 png 格式的图片放大观察一下），矢量图则不会。
+	因此越来越多的人开始使用矢量图来作为网页图标。
+
+2. 怎么添加矢量图
+> 现在网上有很多免费开源的矢量图标库提供给我们使用，这里给大家推荐两个：
+
+	- 阿里巴巴矢量图标库 http://iconfont.cn/
+	- 谷歌浏览器里的矢量图库 https://icomoon.io/
+
+#### iframe
+> iframe 元素会创建包含另外一个文档的内联框架（即行内框架）,用于嵌入其他网页。
+
+1. 语法：
+```
+<iframe  src="规定在 iframe 中显示的文档的 URL" width="" height=""  frameborder="1/0"  name="iframe名称"  scrolling="yes/no/auto">
+</iframe>
+```
+
+2. 常用属性说明：
+	- align:  left/right/top/middle/bottom   :不赞成使用,请用css代替
+	- frameborder:   1 / 0                   :规定是否显示框架周围的边框
+	- height:       pixels / %				 : 规定iframe的高度
+	- longdesc:     URL                      :规定一个页面,该页面包含了有关iframe的较长描述
+	- marginheight:  pixels                  : 定义iframe的顶部和底部的边距
+	- marginwidth:  pixels                   : 定义iframe的左侧和右侧的边距
+	- name:         `frame_name`             : 规定iframe的名称
+	- sandbox    : allow-forms/allow-same-origin/allow-scripts/allow-top-navigation   : 规定一系列对`<iframe>`中内容的额外限制
+	- scrolling:    yes/no/auto		         : 规定是否在iframe中显示滚动条
+	- seamless:    seamless			         : 规定`<iframe>`看上去像是包含文档的一部分
+	- src: 	       URL						 : 规定iframe中显示的文档的URL
+	- srcdoc:      `HTML_code`               : 规定在iframe中显示的页面的HTML内容
+	- width:       pixels                    :定义iframe的宽度
+
+#### 表单
+1. HTML 表单概述
+表单在网页中主要负责数据采集功能。一个表单有三个基本组成部分：
+
+    - 表单标签：这里面包含了处理表单数据所用 CGI 程序的 URL 以及数据提交到服务器的方法。
+    - 表单域：包含了文本框、密码框、隐藏域、多行文本框、复选框、单选框、下拉选择框和文件上传框等。
+    - 表单按钮：包括提交按钮、复位按钮和一般按钮；用于将数据传送到服务器上的 CGI 脚本或者取消输入，还可以用表单按钮来控制其他定义了处理脚本的处理工作。
+
+2. 语法:
+	```
+	<form name="form_name" method="get/post" action="url"></form>
+	```
+
+3. 属性:
+	- name：定义表单的名字。
+	- method：定义表单结果从浏览器传送到服务器的方式，默认参数为：get 。post 安全性更高，因此常用作传输密码等，而 get 安全性较低，一般用于查询数据。
+	- action：用来指定表单处理程序的位置(服务器端脚本处理程序）
+
+4. 发送数据:
+	<form>元素定义了如何发送数据。它的所有属性是对用户点击提交按钮时所发送的请求进行了配置。两个与之相关的属性是 action 和 method。
+
+5. 定义了发送数据要去的地址。它的值必须是一个有效的 URL，可以是相对 URL 也可以是绝对 URL。
+	如果没有提供此属性或者action="#"，则数据将被发送到包含表单的页面的 URL。
+
+6. 表单验证
+	- required属性: 输入值不能为空,如果输入值为空，将会提示错误信息。
+		```
+		<form>
+	 	<label for="place">where are you want to go?</label>	
+		<input id="place" name="place" required>
+		<button>submit</button>
+		</form>
+		```
+	- 强制条目的长度: minlength, maxlength
+
+7. fieldset 和 legend 元素 
+> `<fieldset>` 元素组合表单中的相关数据，`<legend>` 元素为 `<fieldset>` 元素定义标题
+
+8. label
+	- 为 input 元素定义标注（标记）,当用户选择该标签时，浏览器就会自动将焦点转到和标签相关的表单控件上。
+	- `<label>` 标签的 for 属性应当与相关元素的 id 属性相同，使得`<label>` 标签与 `<input>` 正确相关联。
+
+##### 表单原生组件
+1. 文本输入框
+> 文本输入框是最基本的表单组件，它便于用户输入各种数据。
+> 注：HTML 文本框只是个纯文本输入控件。
+> 这就意味着你不能用它来进行富文本编辑（如加粗、斜体等）。所谓的富文本编辑器其实都是自定义的组件
+
+	1. 所有文本域的通用规范
+		
+	    - 它们可以被标记为 readonly (用户不能修改输入值)甚至是 disabled (输入值永远不会与表单数据的其余部分一起发送)。
+		- 它们可以有一个 placeholder; 这是文本输入框中出现的文本，用来简略描述输入框的目的。
+		- 它们都受 size (输入框的物理尺寸) 和 length (文本框可以输入的最大字符数)约束。
+		- 如果浏览器支持的话，可以进行拼写检查。
+
+2. 单行文本框
+> 单行文本框使用type属性值为text的`<input>`元素创建的(若未提供type属性值,text为默认值).
+> 此外,如果你指定给type的属性值不被浏览器所支持(比如type="date"),也会使用text作为它的值.
+
+	1. 单行文本框只有一个真正的约束:如果你输入带有换行符的文本,浏览器会在发送数据之前删除这些换行符.
+	2. eg
+	```
+	<input type="text" id="text" name="text" value="I'm a text">
+	```
+3. e-mail 输入框
+> 该类型的输入框设置type值为email
+	
+	1. 它给输入框添加了这样的验证约束:用户需要输入一个有效的e-mail地址;
+	2. 其他任何输入都会导致输入框报错.
+	3. 而通过设置multiple属性,这种输入框也可以让用户输入多个e-mail地址(多个e-mail地址之间用逗号隔开)
+	4. eg
+	```
+	<input type="email" id="email" name="email" multiple>
+	```
+
+4. 密码输入框
+> 该类型的输入框设置type值为password
+
+	1. eg
+	```
+	<input type="password" id="pwd" name="pwd">
+	```
+
+5. 搜索框
+> 该类型的输入框设置type为search
+	
+	1. eg
+	```
+	<input type="search" id="search" name="search">
+	```
+
+6. 电话号码输入框
+> 该类型的输入框设置type为tel
+
+	1. eg
+	```
+	<input type="tel" id="tel" name="tel">
+	```
+
+7. url输入框
+> 该类型的输入框设置type为url
+
+	1. eg:
+
+	```
+	<input type="url" id="url" name="url">
+	```
+
+	2. 注：它为字段添加了特殊的验证约束，如果输入值是个不符合格式的 url，浏览器就会报告错误。符合 url 格式并不意味着它引用了一个实际存在的位置。
+
+8. 多行文本框
+> 使用 <textarea>元素。
+
+	1. eg:
+	```
+	<textarea cols="每行中的字符数" rows="显示的行数"></textarea>
+	```
+
+	 2. 注：textarea 和常规的单行文本字段之间的主要区别是，允许用户输入包含硬换行符(即按回车)的文本。
+	 3. 可以通过 cols 和 rows 属性来规定 textarea 的尺寸，不过更好的办法是使用 CSS 的 height 和 width 属性。
+	 4. 另外在大多数浏览器中，文本区域在右下角有一个拖放操作，允许用户调整它的大小。
+	 5. 这种调整能力可以通过使用 CSS 设置文本区域的 resize 值为 none 来关闭。
+
+9. 下拉组件
+> HTML 有两种下拉组件：选择框和自动补全组件。
+> 这两者的交互方式是一样的，一旦控件被激活，浏览器会展示列表的值让用户从中选择，这个值列表会覆盖在页面内容之上。
+
+	1. 选择框语法:
+	```
+	<select>
+		<option>选项一</option>
+		<option>选项二</option>
+		<option>选项三</option>
+		<option>选项四</option>
+	</select>
+	```
+	2. selelct 标记的常用属性:
+		- size:  指定下拉菜单的可见选项数
+		- multiple:  定义: multiple="multiple" : 规定可以选择多个选项
+			- window使用Ctrl按钮来选择多个选项
+			- mac: 按住command按钮来选择多个选项
+
+	3. option标记的常用属性:
+		- selected: 定义selected="selected", 当前选项即为默认选择项.
+
+	4. 自动补全组件
+		1. 使用<datalist>元素来为表单小部件提供建议的、自动完成的值，并使用一些<option>子元素来指定要显示的值。
+		2. 然后使用 list 属性将数据列表绑定到一个文本域(通常是一个 <input>元素)。
+
+		3. 一旦数据列表与表单小部件相关联，它的选项用于自动完成用户输入的文本。
+		4. 通常，这是作为一个下拉框向用户展示的，在输入框中输入可能匹配的内容
+		5. eg
+		```
+		<label for="myColor">What's your favorite color?</label>
+		<input type="text" name="myColor" id="myColor" list="mySuggestion">
+		<datalist id="mySuggestion">
+			<option>black</option>
+			<option>blue</option>
+			<option>green</option>
+			<option>red</option>
+			<option>black</option>
+			<option>yellow</option>
+		</datalist>
+		```
+
+10. 可勾选组件
+> 可勾选组件指的是通过点击能够改变其状态的组件。
+
+	1. 有两种可勾选组件：复选框和单选框，它们都可以通过 checked 属性来指示该组件是否默认被勾选。
+	2. 值得注意的是，对大多数表单组件而言，表单提交后所有具有 name 属性的组件都会被提交，即使它们没有获值。
+	3. 但对于可勾选组件，它们的值却只有在它们被勾选之后才会提交，换而言之：如果没有勾选，则不会提交任何东西
+	4. 复选框:
+		1. `<input type="checkbox" checked>`
+	5. 单选框:
+		1. `<input type="radio" checked>`
+
+	6. 几个单选按钮可以连接在一起,只需要把它们的 name 值设置为相同的。
+		同一组中只有一个按钮可以同时被选。
+		如果没有选中任何一个，那么整个单选按钮池就被认为处于未知状态，且不会随表单提交。
+
+	7. <font color=red>因该是表单只提交name有值的勾选组件,所以多个单选框有同样的name则会只提交选中的那个.
+		而前端也是只为name绑定一个值,则只有一个可以被选中.</font>  
+
+#### 按钮
+> HTML 表单中，有三种按钮：提交按钮，重置按钮,匿名按钮。
+
+1. 我们可以使用 <button>元素或者<input>元素来创建一个按钮。type 属性的值指定显示什么类型的按钮。
+2. 提交按钮（submit）
+> 用于发送表单数据给服务器。
+
+	1. 语法：
+	```
+	<button type="submit">
+	This a submit button
+	</button>
+
+	<!--or-->
+
+	<input type="submit" value="This is a submit button">
+	```
+
+3. 重置按钮
+> 用于重置所有表单组件为默认值。
+
+	1. 语法：
+	```
+	<button type="reset">
+    This a reset button
+	</button>
+
+	<!--or-->
+
+	<input type="reset" value="This is a reset button">
+	```
+
+4. 匿名按钮（button）
+> 没有自动生效的按钮，但是可以使用 JavaScript 代码进行定制。如果你省略了 type 属性，那么这就是默认值。
+
+	1. 语法：
+	```
+	<button type="button">
+    This a anonymous button
+	</button>
+
+	<!--or-->
+
+	<input type="button" value="This is a anonymous button">
+	```
+5. 不管使用的是<button>元素还是<input>元素，按钮的行为都是一样的。它们的不同点在于：
+
+	- 从前面的例子中也可以看出<button>元素允许你使用 HTML 内容作为其标记内容，但<input>元素只接受纯文本内容。
+	- 使用<button>元素，可以有一个不同于按钮标签的值(通过将其设置为 value 属性)。（但是在 IE 8之前的版本中是不行的）
+
