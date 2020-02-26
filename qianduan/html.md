@@ -28,6 +28,8 @@
 		* [按钮](#按钮)
 * [HTML5](#html5)
 	* [新添标签](#新添标签)
+		* [拖放](#拖放)
+		* [cavas](#cavas)
 
 <!-- vim-markdown-toc -->
 ## 网站的文件处理
@@ -359,14 +361,36 @@
 1. audio 标签
 	定义：用来嵌入音频
 
-2. eg
+2. 属性:
+	- autoplay:  autoplay: 如果出现该属性,则视频在就绪后马上播放
+	- controls:  controls: 如果出现该属性,则向用户显示控件,比如播放按钮
+	- loop:      loop:     如果出现该属性,泽当媒介文件播放完后再次开始播放
+	- preload:   preload   如果出现该属性,则视频在二面加载时进行加载,并预备播放.如果使用autoplay,则忽略该属性
+	- src:       url       要播放的视频的url
+	- muted:     pixels    设置视频输出应该被静音.
+
+
+3. eg
 ```
-<audio controls>
+<audio controls="controls" src="http://labfile.oss.aliyuncs.com/courses/1236/平凡之路.mp3">
+			平凡之路
+</audio>
+
+<audio controls="controls">
 <source src="http://labfile.oss.aliyuncs.com/courses/1236/平凡之路.mp3" type="audio/mp3">
+<source src="http://labfile.oss.aliyuncs.com/courses/1236/phone.mp3" type="audio/mp3">
 			平凡之路
 </audio>
 ```
-3. 音频播放器所占用的空间比视频播放器要小，由于它没有视觉部件，你只需要显示出能控制音频播放的控件。它不支持 width/height 属性。
+
+	- 注意: 
+		1. audio元素允许多个source 元素,source元素可以连接不同的音频文件,浏览器将使用第一个可识别的格式.
+		2. 只有一个src时,可以将src写入audio标签
+
+4. 音频播放器所占用的空间比视频播放器要小，由于它没有视觉部件，你只需要显示出能控制音频播放的控件。它不支持 width/height 属性。
+
+5. 音频格式和浏览器的支持不同,兼容性兼容解决方案是jPlayer
+	它是一个javaScript写的完全完全免费和开源的媒体库,作为jQuery插件的医院,使用jPlayer可以在网页上轻松加入狂平台的音乐和视频.
 
 #### 向量图 
 > 矢量图像，也称为面向对象的图像或绘图图像，在数学上定义为一系列由线连接的点。
@@ -734,4 +758,113 @@
 
 	1. figure 元素的内容应该与主内容相关，但如果被删除，则不应对文档流产生影响
 
+#### 拖放
+> 拖放（Drag 和 drop）是 HTML5 标准的组成部分，任何元素都能够拖放，从字面意思上来理解，拖放就是抓取对象后拖到另一个位置上。
+
+1. 在 MDN 官方文档中拖放是这样描述的：
+	- HTML 拖放接口使应用程序能够在 Firefox 和其他浏览器中使用拖放功能。
+	- 例如，通过这些功能，用户可以使用鼠标选择可拖动元素，将元素拖动到可放置元素，并通过释放鼠标按钮来放置这些元素。
+	- 可拖动元素的一个半透明表示在拖动操作期间跟随鼠标指针。
+
+2. 对于网站、扩展以及 XUL 应用程序来说，你可以自定义能够成为可拖拽的元素类型、可拖拽元素产生的反馈类型，以及可放置的元素。
+
+3. 注：img 元素和 a 元素（必须指定 href）默认允许拖放。
+
+4. 拖放是如何实现的
+	1. 确定什么是可拖动的
+		为了使元素可拖放，首先把 draggable 属性设置为 true，再加上全局事件处理函数 ondragstart，如下所示：
+		```
+		<img draggable="true" ondragstart="drag(event)" />		
+		```
+
+	2. 定义拖动数据
+		每个drag event 都有一个dataTransfer属性保存事件的数据.这个属性(Data Transfer对象)也有管理拖动数据的方法.
+		setData()方法添加一个项目的拖拽数据,如下图的实力代码所示:
+		```
+		function drag(ev) {
+			ev.dataTransfer.setData("Text", ev.target.id);
+		}
+		```
+
+	3. 定义一个放置区
+		ondragover事件规定在何处放置被拖动的数据.默认地,无法将数据/元素放置到其他元素中.如果需要设置允许放置,我们必须阻止对元素的默认处理方式:
+		```
+		function allowDrop(ev) {
+			ev.preventDefault();
+		}
+		```
+
+	4. 进行放置
+		1. 当放置被拖数据时,会发生drop事件:
+		```
+		function (ev) {
+			//调用 preventDefault()来比避免浏览器对数据的默认处理
+			ev.preventDefault();
+			//通过dataTransfer.getData("Text")方法获得被拖拽的数据,该方法将返回在setData()方法中设置为相同类型的任何数据
+			var data = ev.dataTransfer.getData("Text");
+			//<font color=red>被拖数据是被拖元素的id, 把被拖元素追加到放置元素中</font>
+			ev.target.appendChild(document.getElementById(data));
+		}
+		```
+
+		2. ev是发生在element上的事件,ev的target是发生事件的元素
+
+6. 事件:
+    1. 在拖动目标上触发事件 (源元素):
+        ondragstart - 用户开始拖动元素时触发
+        ondrag - 元素正在拖动时触发
+        ondragend - 用户完成元素拖动后触发
+
+    2. 释放目标时触发的事件:
+        ondragenter - 当被鼠标拖动的对象进入其容器范围内时触发此事件
+        ondragover - 当某被拖动的对象在另一对象容器范围内拖动时触发此事件
+        ondragleave - 当被鼠标拖动的对象离开其容器范围内时触发此事件
+        ondrop - 在一个拖动过程中，释放鼠标键时触发此事件
+
+	3. 注意： 在拖动元素时，每隔 350 毫秒会触发 ondragover 事件。
+
+7. 总结:
+	1. 被拖动元素
+		- 设置可以被拖动: draggable="true"
+		- 设置拖动元素需要传递的value: 
+			1. ondragstart 事件触发时调用函数
+			2. 函数中调用 ev.dataTransfer.setData("Text", ev.target.id) 设置传递的value
+
+	2. 放置的目标
+		- 默认地，无法将数据/元素放置到其他元素中。如果需要设置允许放置，我们必须阻止对元素的默认处理方式		
+			1. 当拖动的标签移动到容器时,触发的事件绑定到一个函数:
+			2. 调用ev.preventDefault(), 阻止默认程序触发.
+	
+		- 当释放标签事件触发时,定义需要执行的操作.
+
+#### cavas
+1. Canvas 就是一个画布，主要用于图形表示、图表绘制、游戏制作，主要有如下特征：
+
+	- Canvas 像传统的银幕，是一个矩形，并且它是一个无色透明的区域。
+	 
+	- 在 Canvas 里绘画并不是说类似于 “你画我猜” 之类的用鼠标来作画，而是需要 JavaScript 脚本来绘制图形。
+	  
+	- Canvas 区域中的每个像素都可控，即像素级操作。
+	  
+	- Canvas 拥有多种绘制路径、矩形、圆形、字符以及添加图像的方法。
+	  
+	- 只要是支持 HTML5 标准的浏览器都支持 Canvas。
+
+2. Canvas左上角为原点坐标,只有正坐标,无负坐标
+
+3.  直线绘制
+
+	- strokeStyle：设置或返回笔的颜色、渐变或模式。默认值为：#000000。
+	 
+	- lineWidth：设置或返回当前的线条宽度 ，以像素计。
+	  
+	- beginPath()：起始一条路径，或重置当前路径。
+	  
+	- closePath()：创建从当前点回到起始点的路径。
+	  
+	- moveTo()：把路径移动到画布中的指定点，不创建线条。
+	  
+	- lineTo()：添加一个新点，然后在画布中创建从该点到最后指定点的线条。
+	  
+	- stroke()：绘制已定义的路径。
 
