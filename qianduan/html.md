@@ -28,8 +28,8 @@
 		* [按钮](#按钮)
 * [HTML5](#html5)
 	* [新添标签](#新添标签)
-		* [拖放](#拖放)
-		* [cavas](#cavas)
+	* [拖放](#拖放)
+	* [cavas](#cavas)
 
 <!-- vim-markdown-toc -->
 ## 网站的文件处理
@@ -758,7 +758,7 @@
 
 	1. figure 元素的内容应该与主内容相关，但如果被删除，则不应对文档流产生影响
 
-#### 拖放
+### 拖放
 > 拖放（Drag 和 drop）是 HTML5 标准的组成部分，任何元素都能够拖放，从字面意思上来理解，拖放就是抓取对象后拖到另一个位置上。
 
 1. 在 MDN 官方文档中拖放是这样描述的：
@@ -837,7 +837,7 @@
 	
 		- 当释放标签事件触发时,定义需要执行的操作.
 
-#### cavas
+### cavas
 1. Canvas 就是一个画布，主要用于图形表示、图表绘制、游戏制作，主要有如下特征：
 
 	- Canvas 像传统的银幕，是一个矩形，并且它是一个无色透明的区域。
@@ -868,3 +868,75 @@
 	  
 	- stroke()：绘制已定义的路径。
 
+4. 创建Canvas
+	1. 向HTML5页面添加canvas元素,规定元素的id,宽度和高度:
+	```
+	<canvas id="myCanvas" width="520px" height="1314px">
+	对不起,你的浏览器不支持canvas
+	</canvas>
+	```
+	2. 通过js来绘制
+	> canvas元素本身是没有绘图能力的,所有的绘制工作必须在js内部完成
+	
+		1. 首先获得canvas元素
+			``` var myCanvas=document.getElementById("myCanvas"); ```
+
+		2. 创建context 对象:
+			```var ctx = myCanvas.getContext("2d")
+				or
+				var ctx = document.getElementById("mycanvas").getContext("2d");
+			```
+
+			- 2d 是当前唯一的合法值,指定了绘制二维图,并且导致getContext()方法返回一个环境对象,
+			- 该对象导出一个二维绘图API,拥有多种绘制路径,举行,原型,字符以及添加图象的方法.
+
+5. 直线绘制
+	- strokeStyle：设置或返回笔的颜色、渐变或模式。默认值为：#000000。
+	 
+	- lineWidth：设置或返回当前的线条宽度 ，以像素计。
+	 
+	- beginPath()：起始一条路径，或重置当前路径。
+	 
+	- closePath()：创建从当前点回到起始点的路径。
+	 
+	- moveTo()：把路径移动到画布中的指定点，不创建线条。
+	 
+	- lineTo()：添加一个新点，然后在画布中创建从该点到最后指定点的线条。
+	 
+	- stroke()：绘制已定义的路径。
+
+6. 矩形绘制
+	1. rect() 方法介绍
+		1. 使用 rect() 方法创建矩形。语法为：
+
+			```ctx.rect(x,y,width,height);```
+
+		2. 参数说明：
+			- x 表示矩形左上角的 x 坐标。
+			 
+			- y 表示矩形左上角的 y 坐标。
+			 
+			- width 表示矩形的宽度，以像素计。
+			 
+			- height 表示矩形的高度，以像素计。
+			 
+			- 注：使用 stroke() 或 fill() 方法在画布上实际地绘制矩形。
+
+	2. strokeRect()方法: 使用strokeRect()方法绘制矩形(不填色),笔触的默认颜色是黑色
+		1. 语法为:
+			```ctx.strokeRect(x,y,width,height);```
+
+		2. 参数与rect()方法一致,唯一的区别是这个不需要添加一句stroke()或fill()方法.无法填色.
+
+	3. fillRect()方法介绍:使用fillRectangle()方法创建实心矩形.
+		1. 语法为:
+			```ctx.fillRect(x,y,width,height);```
+
+		2. 参数说明和前面一致,默认的填充颜色是黑色,可以使用fillStyle属性来设置用于填充绘图的颜色,渐变或模式.
+
+	4. clearRect(): 使用clearRect()方法清除给定矩形内指定像素
+		1. 语法为:
+			```ctx.clearRect(x,y,width,height);```
+
+	5. 圆和椭圆的绘制
+		1. 使用acr()方法
