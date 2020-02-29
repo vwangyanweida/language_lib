@@ -33,6 +33,7 @@
 	* [表单属性](#表单属性)
 	* [输入类型](#输入类型)
 	* [web Storage](#web-storage)
+	* [文件上传](#文件上传)
 
 <!-- vim-markdown-toc -->
 ## 网站的文件处理
@@ -1373,3 +1374,91 @@
 			}
 			```
 			2. 该回调函数有两个参数，第一个参数为 transaction 对象，第二个参数为执行发生错误时的文字说明。		
+
+### 文件上传
+1. 在 HTML4 标准中文件上传控件只接受一个文件，而在新标准中，只需要设置 multiple，就支持多文件上传。按住 Ctrl 或者 Shift 即可选择多个文件。
+
+	```<input type="file" class="file" multiple>```
+
+2. 获取文件信息
+	选中文件通过 HTMLInputElement.files 属性返回，返回值是一个 FileList 对象,这个对象是一个包含了许多 File 文件的列表。
+	比如我们首先运行上面例子的代码，然后随便上传一个文件（这里上传的是一个名为 700.png 的图片），然后按 F12 进入控制台，输入代码:
+
+3. 每个 File 对象包含了以下信息：
+
+	- lastModified 表示 UNIX timestamp 形式的最后修改时间。
+
+	- lastModifiedDate 表示 Date 形式的最后修改时间。
+
+	- name 表示文件名。只读字符串，只包含文件名称，不包含任何路径。
+
+	- size 表示文件的字节大小，只读的 64 位整数。
+
+	- type 表示文件的 MIME 类型。当类型不确定时为 ""。
+
+	- webkitRelativePath 此处为空，当在 input 上加 webkitdirectory 属性时，用户可选择文件夹，此时 webkitRelativePath 表示文件夹中文件的相对路径。
+
+	- 注：FileList 对象由 DOM 提供，列出了所有用户选择的文件，每一个代表了一个 File 对象。
+		你可以通过检查文件列表的 length 属性决定用户可以选则多少文件。
+		各个 File 对象可以方便地通过访问文件列表来获取，像访问数组那样。
+
+4. 限制文件的上传类型
+
+	1. 如果我们需要限制用户上传文件的类型，比如某处我们只希望能够上传图片，那么我们可以使用 input 的 accept 属性，
+		accept 属性接受一个逗号分隔的 MIME 类型字符串。比如：
+
+		```
+		<!-- 表示只接受 png 图片 -->
+		accept="image/png" 或 accept=".png"  
+
+		<!-- 表示接受PNG/JPEG 文件. -->
+		accept="image/png, image/jpeg" 或 accept=".png, .jpg, .jpeg"
+
+		<!-- 表示接受任何图片文件类型. -->
+		accept="image/*"
+
+		 <!-- 表示接受任何 MS Doc 文件类型. -->
+		 accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+		```
+
+5. 文件读取
+	1. 以上 File 对象只获取到了对文件的描述信息，<font color=red>但没有获得文件中的数据</font>。
+	2. HTML5 中提供了 FileReader 对象允许 Web 应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容。
+		1. 首先创建一个 FileReader 实例：
+
+		```
+		var reader = new FileReader();
+		```
+
+		2. 属性: FileReader.error 属性表示在读取文件时发生的错误，只读。语法为：
+
+		```
+		var error = instanceOfFileReader.error;
+		```
+
+		3. FileReader.readyState 属性表示 FileReader 状态的数字，只读。取值如下：
+			- EMPTY		0	还没有加载任何数据.
+			- LOADING		1	数据正在被加载.
+			- DONE	2	已完成全部的读取请求.
+
+		4. 语法为：
+		```
+		var state = instanceOfFileReader.readyState;
+		```
+
+			- FileReader.result 属性表示文件的内容。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作，只读。
+
+		5. 事件处理:
+			- FileReader.onabort	处理abort事件。该事件在读取操作被中断时触发。
+			- FileReader.onerror	处理error事件。该事件在读取操作发生错误时触发。
+			- FileReader.onload	处理load事件。该事件在读取操作完成时触发。
+			- FileReader.onloadstart	处理loadstart事件。该事件在读取操作开始时触发
+			- FileReader.onloadend	处理loadend事件。该事件在读取操作结束时（要么成功，要么失败）触发。
+			- FileReader.onprogress	处理progress 事件。该事件在读取 Blob 时触发
+
+		6. 方法
+			- FileReader.abort()	中止读取操作。在返回时，readyState属性为DONE。
+			- FileReader.readAsArrayBuffer()	开始读取指定的 Blob 中的内容, 一旦完成, result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象 。
+			- FileReader.readAsDataURL()	开始读取指定的 Blob 中的内容。一旦完成，result 属性中将包含一个 data: URL 格式的字符串以表示所读取文件的内容。
+			- FileReader.readAsText()		开始读取指定的 Blob 中的内容。一旦完成，result 属性中将包含一个字符串以表示所读取的文件内容。
+
