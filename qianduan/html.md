@@ -30,6 +30,9 @@
 	* [新添标签](#新添标签)
 	* [拖放](#拖放)
 	* [cavas](#cavas)
+	* [表单属性](#表单属性)
+	* [输入类型](#输入类型)
+	* [web Storage](#web-storage)
 
 <!-- vim-markdown-toc -->
 ## 网站的文件处理
@@ -938,5 +941,435 @@
 		1. 语法为:
 			```ctx.clearRect(x,y,width,height);```
 
-	5. 圆和椭圆的绘制
-		1. 使用acr()方法
+7. 圆和椭圆的绘制
+	1. 使用acr()方法绘制圆或者椭圆,语法为:
+	```
+	ctx.arc(x, y, r, sAngle, eAngle, counterclockwise);
+	```
+
+	2. 参数说明:
+
+		- x 表示圆的中心的 x 坐标。
+
+		- y 表示圆的中心的 y 坐标。
+
+		- r 表示圆的半径。
+
+		- sAngle 表示起始角，以弧度计（特别需要注意的是弧的圆形的三点钟位置是 0 度而不是常规以为的 90 度）。
+
+		- eAngle 表示结束角，以弧度计。
+
+		- counterclockwise 表示绘制圆的方向，值为 false 表示顺时针，为 true 表示逆时针。是一个可选值，默认值是 false。
+
+8. 贝塞尔曲线绘制
+	1. Canvas 可以绘制两种贝塞尔曲线：二次贝塞尔曲线和三次贝塞尔曲线:
+		1. 二次贝塞尔曲线
+
+			1. 语法为：ctx.quadraticCurveTo(cpx,cpy,x,y);
+			2. 参数说明：
+			    - cpx 表示贝塞尔控制点的 x 坐标。
+				- cpy 表示贝塞尔控制点的 y 坐标。
+				- x 表示结束点的 x 坐标。
+				- y 表示结束点的 y 坐标。
+			3. 二次贝塞尔曲线需要两个点。
+				- 第一个点是用于二次贝塞尔计算中的控制点，第二个点是曲线的结束点。
+				- 曲线的开始点是当前路径中最后一个点。
+				- 如果路径不存在，那么我们使用 beginPath() 和 moveTo() 方法来定义开始点
+
+		2. 三次贝塞尔曲线
+			1. 语法为： ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
+			2. 参数说明：
+
+				- cp1x 表示第一个贝塞尔控制点的 x 坐标。
+			    - cp1y 表示第一个贝塞尔控制点的 y 坐标。
+				- cp2x 表示第二个贝塞尔控制点的 x 坐标。
+				- cp2y 表示第二个贝塞尔控制点的 y 坐标。
+				- x 表示结束点的 x 坐标。
+				- y 表示结束点的 y 坐标。
+			 
+			3. 注：和二次贝塞尔曲线不同的是多了一个控制点。
+
+9. 填充
+> 使用 fillStyle 属性，设置或返回用于填充绘画的颜色、渐变或模式。
+
+	1. 语法为：ctx.fillStyle = color|gradient|pattern;
+	2. 参数说明:
+		- color 表示绘图填充的颜色。默认值是 #000000。
+		- gradient 表示用于填充绘图的渐变对象（线性或放射性）。
+		- pattern 表示用于填充绘图的 pattern 对象
+
+	3. eg:实心矩形,填充红色
+	```
+	<canvas id="myCanvas" width="200px", height="1214px">
+		对不起,你的浏览器不支持cavas
+	</canvas>
+
+	<script type="text/javascript">
+	var mycanvas = document.getElementById("myCanvas");
+	var ctx = mycanvas.getContext("2d");
+	ctx.fillStyle="red";
+	ctx.fillRect(10, 10, 100, 200);
+	```
+
+10. 渐变:
+	1. 使用createLinearGradient()方法创建线性渐变,语法为: ctx.createLinearGradient(x0, y0, x1, y1);
+	2. 参数说明:
+		- x0表示渐变开始点的x坐标
+		- y0表示渐变开始点的y坐标
+		- x1 表示渐变结束点的 x 坐标。
+		- y1 表示渐变结束点的 y 坐标。
+
+	3. 使用addColorStop()方法规定渐变对象中的颜色和停止位置,语法为: gradient.addColorStop(stop, color);
+	4. 参数说明:
+		- stop: 表示渐变中开始与结束之间的位置,是介于0.0与1.0之间的值.
+		- color:表示在结束位置显示的css颜色值.
+	5. 注：addColorStop() 方法与 createLinearGradient() 或 createRadialGradient() 一起使用。
+		我们可以多次调用 addColorStop() 方法来改变渐变。如果我们不对 gradient 对象使用该方法，那么渐变将不可见。
+		为了获得可见的渐变，至少需要创建一个色标
+
+	6. eg:
+	```
+	var myCavas ...
+	var ctx = ...
+	var gradient = ctx.createLinearGradient(0, 0, 170, 0);
+	gradient.addColorStop(0, "red");
+	gradient.addColorStop("0.2", "orange");
+	gradient.addColorStop("0.5", "yellow");
+	gradient.addColorStop("0.7", "green");
+	ctx.fillStyle = gradient;  //设置填充色为gradient
+	ctx.fiilRec(10, 10, 100, 200);
+	```
+	7. 注:
+		1. createLinearGradient()方法创建的线性渐变是从开始坐标到结束坐标之间按照渐变来,
+			- 这个区间之前就是addColorStop为0时的颜色
+			- 超出这个区间之后的是1的颜色.
+			- <font color=red>没有填充时就已经有渐变色了,填充是将渐变色显示出来</font>
+
+	8. 使用createRadialGra()方法创建放射状/环形的渐变。语法为: ctx.createRadialGradient(x0, y0, r0, x1, y1, r1);
+	9. 参数说明:
+		- x0 表示渐变的开始圆的 x 坐标。
+
+		- y0 表示渐变的开始圆的 y 坐标。
+
+		- r0 表示开始圆的半径。
+
+		- x1 表示渐变的结束圆的 x 坐标。
+
+		- y1 表示渐变的结束圆的 y 坐标。
+
+		- r1 表示结束圆的半径
+
+	10. fill()方法
+		1. 使用fill()方法填充当前图像(路径).默认颜色是黑色,填充另一种颜色/渐变使用fillStyle属性.
+		2. 语法为: ctx.fill();
+		3. 如果路径未关闭,那么fill()方法会从路径结束点到开始点之间添加一条线,以关闭该路径,然后填充该路径.
+
+11. 文字绘制
+	1. fillText(): 使用fillText()方法在画布上绘制实心文本
+		- 语法为```ctx.fillText(text, x, y, maxWidth);```
+		- 参数说明:
+			- text 文本
+			- x: 文本绘制的x坐标
+			- y: 文本绘制的y坐标(相对于画布)
+			- maxWidth: 表示允许的最大文本宽度,以像素计.可选
+
+	2. storkeText(): 在画布上绘制空心文本
+		- 语法为: ```ctx.strokeText(text, x, y, maxWidth);```
+
+	3. font 属性:
+		使用font属性设置或返回画布上的内容的当前字体属性,font属性使用的语法和css font属性相同.
+
+	4. textAlign属性: 使用textAlign属性设置或返回文本内容的当前对齐方式
+		- 语法为: ```ctx.textAlign="center | end | left| right|start";```
+		- 参数说明:
+			- start 默认值，表示文本在指定的位置开始。
+
+			- center 表示文本的中心被放置在指定的位置。
+
+			- end 表示文本在指定的位置结束。
+
+			- left 表示文本左对齐。
+
+			- right 表示文本右对齐。
+
+		- 注意: 使用fillText或者stokeText在实际的画布上绘制并定位文本.
+
+	5. textBaseline属性: 设置或返回绘制文本时当前文本基线
+		- 语法为: ```ctx.textBaseline("alphabetic|top|handing|middle|ideographic|bottom")```
+		- 参数:
+		    - alphabetic 表示文本基线是普通的字母基线。默认值。
+
+			- top 表示文本基线是 em 方框的顶端。
+
+			- hanging 表示文本基线是悬挂基线。
+
+			- middle 表示文本基线是 em 方框的正中。
+
+			- ideographic 表示文本基线是表意基线。
+
+			- bottom 表示文本基线是 em 方框的底端。
+
+12. 图片绘制
+	1. 使用drawImage()方法在画布上绘制图像,画布或视频,drawImage()也能够绘制图像的某些部分,或增加减少图像的尺寸.
+	2. canvas绘制图像的基本格式为:
+	```
+	var img = new Image();
+	image.src = "xxx";
+	image.onload = function() {
+		ctx.drawImage();
+	}
+	```
+
+	3. 三种语法:
+		1. 在画布上定位图像:
+			- ctx.drawImage(img, x, y);
+
+		2. 在画布上定位图像,并规定图像的宽度和高度:
+			- ctx.drawImage(img, x, y, width, height);
+
+		3. 剪切图像,并在画布上定位被剪切的部分:
+			- ctx.drawImage(img, sx, sy, swidth, wheight, x, y, width, height);
+
+	4. 参数说明:
+		- img 规定要使用的图像、画布或视频。
+
+		- sx 表示开始剪切的 x 坐标位置。可选值。
+
+		- sy 表示开始剪切的 y 坐标位置。可选值。
+
+		- swidth 表示被剪切图像的宽度。可选值。
+
+		- sheight 表示被剪切图像的高度。可选值。
+
+		- x 表示在画布上放置图像的 x 坐标位置。
+
+		- y 表示在画布上放置图像的 y 坐标位置。
+
+		- width 表示要使用的图像的宽度（伸展或缩小图像）。可选值。
+
+		- height 表示要使用的图像的高度，（伸展或缩小图像）。可选值
+
+### 表单属性
+1. datalist
+2. autocomplete属性: 
+	1. 规定表单是否应该自动完成功能.
+		自动完成允许浏览器预测对字段的输入，当用户在字段开始键入时，浏览器基于之前键入过的值，应该显示出在字段中填写的选项。
+		当 autocomplete 属性值为 on 时表示启用自动完成功能，为 off 时表示关闭。
+		autocomplete 属性适用于 `<form>`，以及下面的 `<input>` 类型：text, search, url, telephone, email, password, datepickers, range 以及 color。
+
+	2. eg:
+	```
+	 <form action="#" method="get" autocomplete="on">
+	 Name:<input type="text" name="name" /><br />
+	 E-mail: <input type="email" name="email" autocomplete="off" /><br />
+	 <input type="submit"  value="提交" />
+	 </form>
+	```
+
+3. autofocus:
+	1. autofocus 属性规定在页面加载时，域自动地获得焦点。适用于所有`<input>` 标签的类型。
+
+4. form属性:
+	1. form 属性规定输入域所属的一个或多个表单。
+	2. form 属性适用于所有 `<input>` 标签的类型。
+	3. form 属性必须引用所属表单的 id。
+	4. eg
+	```
+	<body>
+        <form action="#" method="get" id="user_form">
+            First name:<input type="text" name="fname" />
+            <input type="submit" value="提交" />
+        </form>
+
+        <p>下面的输入域在 form 元素之外，但仍然是表单的一部分，
+            也就是说提交按钮会把 first name 和 last name的值都提交。</p>
+
+        Last name: <input type="text" name="lname" form="user_form" />
+    </body>	
+	```
+	5. 如果需要引用一个以上的表单,请使用空格分隔的列表.
+
+5. multiple属性:
+	1. multiple 属性规定输入域中可选择多个值，适用于以下类型的`<input>` 标签：email 和 file。
+
+6. novalidate 属性
+	1. novalidate 属性规定在提交表单时不应该验证 form 或 input 域。
+	2. 适用于 `<form>`，以及下面的 `<input>` 类型：text, search, url, telephone, email, password, datepickers, range 以及 color。
+
+7. pattern 属性
+	1. pattern 属性规定用于验证 input 域的模式（pattern）。
+	2. 模式（pattern） 是正则表达式。
+	3. pattern 属性适用于以下类型的`<input>` 标签：text, search, url, telephone, email 以及 password。
+	4. eg
+	```
+	<form action="#" method="get"  >
+		Name: <input type="text" name="name"
+		pattern="[A-z]{4}" title="请输入四个字母" />
+		<input type="submit" value="提交" />
+	</form>
+	```
+
+8. placeholder属性:
+	1. placeholder 属性提供一种提示（hint），描述输入域所期待的值。
+	2. 适用于以下类型的`<input>` 标签：text, search, url, telephone, email 以及 password。
+	3. 提示（hint）会在输入域为空时显示出现，会在输入域获得焦点时消失。
+
+9. required:
+	1. required 属性规定必须在提交之前填写输入域（不能为空）。
+	2. 适用于以下类型的`<input>` 标签：text, search, url, telephone, email, password, date pickers, number, checkbox, radio 以及 file。
+
+### 输入类型
+1. Input 类型 - email
+	email 类型用于应该包含 e-mail 地址的输入域。在提交表单时，会自动验证 email 域的值。
+
+2. Input 类型 - url
+	url 类型用于应该包含 URL 地址的输入域。在提交表单时，会自动验证 url 域的值。
+
+3. Input 类型 - number
+	number 类型用于应该包含数值的输入域。属性 max 设定允许输入的最大值，属性 min 设定允许输入的最小值，
+	属性 value 设定默认值，属性 step 设定合法的数字间隔（比如 step 的值为 2，则合法的数字为 -2,0,2,4 等）。
+
+4. Input 类型 - range
+	range 类型用于应该包含一定范围内数字值的输入域。range 类型显示为滑动条。同样的 range 也有 max，min，value，step 属性与上面所讲的 number 中的一致。
+
+5. Input 类型 - Date Pickers（日期选择器）
+> HTML5 拥有多个可供选取日期和时间的新输入类型：
+
+    - date - 选取日、月、年
+    - month - 选取月、年
+    - week - 选取周和年
+    - time - 选取时间（小时和分钟）
+    - datetime - 选取时间、日、月、年（UTC 时间）
+    - datetime-local - 选取时间、日、月、年（本地时间）
+
+6. Input 类型 - search
+	search 类型用于搜索域，比如站点搜索或 Google 搜索。search 域显示为常规的文本域。
+
+7. Input 类型 - color
+	color 类型用于选择颜色。
+
+### web Storage
+> 浏览器处于安全考虑，是不允许网页脚本访问本地文件系统的。但有时候我们需要在客户端浏览器上持久化的保存内容，
+> 为了解决这个问题，HTML5 加入了本地存储和本地数据库。
+
+1. HTML5 支持两种新的 Web Storage：永久性的本地存储（localStorage）和会话级别的本地存储（sessionStorage）。
+	所谓 Web Storage 就是指在 Web 上储存数据的功能，而这里的储存，是针对客户端本地而言的。
+
+2. loclStorage
+> localStorage 方法将数据保存在客户端本地的硬件设备中（通常是指硬盘，但也可以是其他硬件设备），
+> 即使浏览器关闭了，该数据依然存在，下次打开浏览器访问网站的时候仍然可以继续使用，也就是我们所说的永久性的本地存储。
+> 而且数据不会随着 Http 请求发送到后台服务器，存储数据的大小也基本不用考虑，因为在 HTML5 的标准中要求浏览器至少要支持到 4MB
+
+	1. 保存添加数据例子：
+	```
+	//方法1向本地存储中添加一个名为name,值为"syl"的key-value对象
+	localStorage.setItem("name","syl");
+	//方法2
+	localStorage["price"] = 1314;
+	//方法3
+	localStorage.amount = 520;
+	```
+
+	2. 使用 setItem 方法保存数据时，将第一个参数 key 指定为键名，将第二个参数 value 指定为键值，
+		保存时不允许保存相同的键名，保存后可以修改键值，但不允许改键名（只能重新取键名，然后再保存键值）。
+
+	3. 读取数据：localStorage.getItem(key);
+		- 使用 getItem 方法读取数据时，将参数指定为键名，返回键值。
+
+	4. 删除单个数据：localStorage.removeItem(key);
+		- 通过 key 删除本地数据。
+
+	5. 清空数据：localStorage.clear();
+
+3. sessionStorage
+> sessionStorage 方法将数据保存在 session 对象中，所谓 session 直译过来就是会话，
+> 再通俗一点讲就是指用户在浏览某个网站时，从进入网站到关闭浏览器的这段时间，session 对象可以用来保存在这段时间内所要求保存的任何数据。
+> 我们称之为会话级别的本地存储。
+
+	1. 当浏览器窗口被关闭时，session 对象保存的数据会被删除。
+	2. sessionStorage 方法的使用与 localStorage 方法的使用类似
+
+4. Web Storage 作为简易数据库使用的方法
+> 主要核心思想就是使用 json 格式作为文本保存来保存对象，获取该对象时再通过 json 格式来获取
+
+5. Web Sql 数据库
+> Web SQL 数据库 API 并不是 HTML5 规范的一部分，
+> 但是它是一个独立的规范，引入了一组使用 SQL 操作客户端数据库的 APIs。
+
+	1. 操作本地数据库的最基本的步骤是：
+
+		1. openDatabase 方法：创建一个访问数据库的对象。
+
+		2. 使用第一步创建的数据库访问对象来执行 transaction 方法，
+			通过此方法可以设置一个开启事务成功的事件响应方法，在事件响应方法中可以执行 SQL.
+
+		3. 通过 executeSql 方法执行查询，当然查询可以是：CRUD。
+
+	2. 打开数据库: 我们可以使用 openDatabase() 方法来打开已存的数据库，如果数据库不存在，则会创建一个新的数据库：
+		1. 代码如下
+
+		```
+		var db = openDatabase("student", "1.0", "学生表", 1024 * 1024, function () { });
+		```
+
+		2. 参数说明：
+
+			- 第一个参数是数据库名称。
+
+			- 第二个参数是数据库的版本号。
+
+			- 第三个参数是描述文本。
+
+			- 第四个参数是设置分配的数据库的大小（单位是 kb）。
+
+			- 第五个参数是回调函数，创建回调会在创建数据库后被调用（可以省略）。
+
+	3. 事务处理
+	> 在访问数据库的时候，还需要调用 transaction 方法，用来执行事务处理，
+	> 使用事务处理可以防止在对数据库进行访问和执行有关操作的时候受到外界的干扰，因为在 web 页面上，
+	同时可能会有很多人都在对页面进行访问，如果在访问数据库的时候，正在操作的数据被别的用户给修改了，
+	会引发很多意想不到的结果，因为可以用事物处理来达到操作完了之前，阻止其他用户访问数据库的目的。
+
+		1. 代码如下所示：
+		```
+		db.transaction(function (tx) {  
+		   tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
+		});
+		```
+
+		2. transaction 方法使用一个回调函数作为参数，在这个函数中，执行访问数据库的语句。
+
+	4. executeSql 方法执行查询
+		1. 代码:
+		```tx.executeSql(sqlQuery,[value1,value2..],dataHandler,errorHandler)```
+
+		2. 参数说明：
+			- sqlQuery：需要具体执行的 sql 语句，可以是 create、select、update、delete。
+
+			- [value1,value2..]：sql 语句中所有使用到的参数的数组，
+				在 executeSql 方法中，将 sql 语句中所要使用的参数先用 “?” 代替，
+				然后依次将这些参数组成数组放在第二个参数中。比如：
+
+				```tx.executeSql("UPDATE people set age=? where name=?;",[age,name]);```
+
+		3. dataHandler：执行成功时调用的回调函数，通过该函数可以获得查询结果集。
+			1. 该回调函数的传递方法如下所示：
+
+			```
+			function dataHandler(transaction,results){
+				//执行sql语句成功时的处理
+			}
+			```
+
+			2. 该回调函数有两个参数，第一个参数为 transaction 对象，
+				第二个参数为执行查询操作时返回的查询到的结果数据集对象。
+
+		4. errorHandler：执行失败时调用的回调函数。
+			1. 该回调函数的传递方法如下所示：
+
+			```
+			function errorHandler(transaction,errmsg){
+				//执行sql语句出错时的处理
+			}
+			```
+			2. 该回调函数有两个参数，第一个参数为 transaction 对象，第二个参数为执行发生错误时的文字说明。		
