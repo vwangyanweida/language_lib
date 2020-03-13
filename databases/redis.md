@@ -1,12 +1,19 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [sds](#sds)
-* [链表](#链表)
-* [hash](#hash)
-* [跳跃表](#跳跃表)
+* [redis 数据结构](#redis-数据结构)
+	* [sds](#sds)
+	* [链表](#链表)
+	* [hash](#hash)
+	* [跳跃表](#跳跃表)
+	* [ziplist 压缩表](#ziplist-压缩表)
+* [命令](#命令)
+	* [持久化](#持久化)
+		* [RDB](#rdb)
+		* [AOF 持久化](#aof-持久化)
 
 <!-- vim-markdown-toc -->
+## redis 数据结构
 ### sds 
 1. sds的数据结构:
 	```
@@ -369,3 +376,163 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 
 	} zskiplist;
 	```
+
+### ziplist 压缩表
+1. ziplist中实体对象结构:
+	```
+	/*
+	 * 保存 ziplist 节点信息的结构
+	 */
+	typedef struct zlentry {
+
+		// prevrawlen ：前置节点的长度
+		// prevrawlensize ：编码 prevrawlen 所需的字节大小
+		unsigned int prevrawlensize, prevrawlen;
+
+		// len ：当前节点值的长度
+		// lensize ：编码 len 所需的字节大小
+		unsigned int lensize, len;
+
+		// 当前节点 header 的大小
+		// 等于 prevrawlensize + lensize
+    unsigned int headersize;
+
+    // 当前节点值所使用的编码类型
+    unsigned char encoding;
+
+    // 指向当前节点的指针
+    unsigned char *p;
+
+	} zlentry;
+	```
+
+2. 图解 
+	```
+	/* 
+	空白 ziplist 示例图
+
+	area        |<---- ziplist header ---->|<-- end -->|
+
+	size          4 bytes   4 bytes 2 bytes  1 byte
+				+---------+--------+-------+-----------+
+	component   | zlbytes | zltail | zllen | zlend     |
+				|         |        |       |           |
+	value       |  1011   |  1010  |   0   | 1111 1111 |
+				+---------+--------+-------+-----------+
+										   ^
+										   |
+								   ZIPLIST_ENTRY_HEAD
+										   &
+	address                        ZIPLIST_ENTRY_TAIL
+										   &
+								   ZIPLIST_ENTRY_END
+
+	非空 ziplist 示例图
+
+	area        |<---- ziplist header ---->|<----------- entries ------------->|<-end->|
+
+	size          4 bytes  4 bytes  2 bytes    ?        ?        ?        ?     1 byte
+				+---------+--------+-------+--------+--------+--------+--------+-------+
+	component   | zlbytes | zltail | zllen | entry1 | entry2 |  ...   | entryN | zlend |
+				+---------+--------+-------+--------+--------+--------+--------+-------+
+										   ^                          ^        ^
+	address                                |                          |        |
+									ZIPLIST_ENTRY_HEAD                |   ZIPLIST_ENTRY_END
+																	  |
+															ZIPLIST_ENTRY_TAIL
+	*/
+	```
+
+## 命令
+### 持久化
+#### RDB
+1. RDB 生成:
+	1. 有两个Redis命令可以用于生成RDB文件
+		- SAVE: 阻塞
+		- BGSAVE: 子进程并发处理
+
+	2. 代码: rdb.c/rdbSave 函数
+
+2. 因为AOF文件的更新频率通常比RDB文件的更新频率高,所以
+	- 如果服务器开启了AOF持久化功能,那么服务器会优先使用AOF文件来还原数据库状态
+	- 只有AOF关闭时,服务器才会使用RDB文件来还原数据库状态.
+
+3. RDB文件的载入工作是在服务器启动时自动执行的,所以redis没有专门用来载入RDB文件的命令
+4. BGSAVE和BGREWRITEAOF和save之间并发时的各种情景
+5. BGSAVE间隔执行:配置时的三个配置
+	- save 900 1
+	- save 300 1
+	- save 60 10000
+
+6. dirty
+	dirty计数器记录距离上一次成功执行save命令或者BGSAVE命令之后,服务器对数据库状态(服务器中所有的数据库)进行了多少次修改(包括写入,删除,更新等操作)
+
+7. lastsave
+	lastsave属性是一个unix时间戳,记录了服务器上一次成功执行save命令或者BGSAVE命令的时间
+
+8. RDB文件结构
+	1. | REDIS | db_version | databases | EOF | `check_sum` |
+
+	2. databases 部分结构:
+		| SELECTDB | `db_number` | `key_value_pairs` |
+
+	3. `key_value_pairs`结构
+		| TYPE | key | value |
+		
+	4. 带有过期键的	`key_value_pairs`
+		| EXPIRETIME_MS | ms | TYPE | key | value |
+
+#### AOF 持久化
+1. AOF持久化的实现: AOF持久化功能的实现可以分为三个步骤:
+	- 命令追加(append)
+	- 文件写入
+	- 文件同步(sync)
+
+2. 命令追加(append)
+	当AOF持久化功能处于打开状态时,服务器执行完一个写命令后,会以协议格式将被执行的写命令追加到服务器状态的`aof_buf`缓冲区的末尾:
+	```
+	struct redisServer {
+		//...
+		sds aof_buf;
+	}
+	```
+
+3. Redis的服务器进程就是一个事件循环,这个循环中的文件事件负责接受客户端的命令请求,以及向客户端发送命令回复,
+	而时间事件则负责执行像severCron函数这样需要定时运行的函数.
+
+4. 文件事件可能会执行写命令,使得一些内容被追加到aof_buf缓冲区,每次服务器结束一个事件循环之前,他都会调用flushAppendOnlyFile函数,
+	考虑是否将aof_buf缓冲区中的内容写入和保存到AOF文件里面.
+	```
+	def eventloop():
+		while True:
+			processFileEvents()
+
+			processTimeEvents()
+
+			flushAppendOnlyFile()
+	```
+
+5. appendfsync配置选项:
+	- always
+	- everysec
+	- no
+
+6. 文件的写入和同步
+	为了提高文件的写入效率,在现代操作系统中,当用户调用write函数,将一些数据写入到文件的时候,操作系统通常会将写入数据暂时保存在一个内存缓冲区里面,
+等到缓冲区的空间被填满,或者超过了指定的时限之后,才真正地将缓冲区中的数据写入到磁盘立里面.
+
+	<font color=red>这种做法虽然提高了效率,但也为写入数据带来了安全问题,为此系统提供了fsync和fdatasync两个同步函数</font>,
+他们可以强制让操作系统立即将缓冲区中的数据写入到硬盘里面,从而确保写入数据的安全性.
+	
+7. AOF文件的载入和数据还原
+	- 创建爱你一个布袋网络链接的为客户端
+	- 从AOF文件分析并读取一条命令
+	- 使用伪客户端执行读取的命令
+	- 重复2,3 知道AOF文件中的所有写命令都被处理完为止
+
+8. AOF 重写:
+	1. 实现
+		- AOF重写不需要对原来的AOF文件进行任何操作,这个功能是通过读取服务器当前的数据库状态实现的.
+		- 首先从数据库读取键现在的值,然后用一条命令记录键值对,代替之前记录这个键值对的多条命令,这就是AOF重写的实现原理.
+
+	2. AOF重写缓冲区的作用: p148
