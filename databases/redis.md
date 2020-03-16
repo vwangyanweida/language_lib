@@ -1,20 +1,290 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [redis 数据结构](#redis-数据结构)
-	* [sds](#sds)
-	* [链表](#链表)
-	* [hash](#hash)
-	* [跳跃表](#跳跃表)
-	* [ziplist 压缩表](#ziplist-压缩表)
-* [命令](#命令)
-	* [持久化](#持久化)
-		* [RDB](#rdb)
-		* [AOF 持久化](#aof-持久化)
+* [redis设计与实现]
+	* [toc]
+		* [数据结构]
+		* [单机数据库的实现]
+		* [多机数据库的实现]
+		* [独立功能的实现]
+* [redis 笔记]
+	* [持久化]
+		* [RDB]
+		* [AOF 持久化]
+* [redis 源码解析]
+	* [redis 数据结构]
+		* [sds]
+		* [链表]
+		* [hash]
+		* [跳跃表]
+		* [ziplist 压缩表]
 
 <!-- vim-markdown-toc -->
-## redis 数据结构
-### sds 
+
+## redis设计与实现
+### toc
+#### 数据结构
+1. 简单动态字符串
+	- sds定义
+
+2. 链表
+	- 链表和链节点的实现
+	- api
+
+3. 字典
+	- 字典的实现
+	- 哈希算法
+	- 解决键冲突
+	- rehash
+	- 渐进式rehash
+	- api
+
+4. 跳跃表
+	- 跳跃表实现
+	- api
+
+5. 整数集合
+	- 整数集合的实现
+	- 升级
+	- 升级的好处
+	- 降级
+	- api
+
+6. 压缩列表
+	- 压缩列表的构成
+	- 压缩列表节点的构成
+	- 连锁更新
+	- aip
+
+7. 对象
+	- 对象的类型与编码
+	- 字符串对象
+	- 列表对象
+	- 哈希对象
+	- 集合对象
+	- 有序集合对象
+	- 类型检查与命令多态
+	- 内存回收
+	- 对象共享
+	- 对象的空转时长
+
+#### 单机数据库的实现
+8. 数据库
+	- 服务器中的数据库
+	- 切换数据库
+	- 数据键空间
+	- 设置键的生存时间或过期时间
+	- 过期键删除策略
+	- Redis的过期键删除策略
+	- AOF,RDB和复制功能对过期键的处理
+	- 数据库通知
+
+9. RDB持久化
+	- RDB文件的创建与载入
+	- 自动间隔性保存
+	- RDB文件结构
+	- 分析RDB文件
+	
+10. AOF持久化
+	- AOF持久化的实现
+	- AOF文件的载入与数据还原
+	- AOF重写
+
+11. 事件
+	- 文件事件
+	- 时间事件
+	- 事件的调度与执行
+	
+12. 客户端
+	- 客户端属性
+	- 客户端的创建与关闭
+
+13. 服务器
+	- 命令请求的执行过程
+		- 发送命令请求
+		- 读取命令请求
+		- 命令执行器:
+			1. 查找命令
+			2. 执行预备操作
+			3. 调用命令的实现函数
+			4. 执行后续工作
+		- 将命令回复发送给客户端
+		- 客户端接受并打印命令回复
+
+	- serverCron函数
+		- 更新服务器时间缓存
+		- 更新LRU时钟
+		- 更新服务器每秒执行命令次数
+	- 初始化服务器
+	
+#### 多机数据库的实现
+14. 复制
+	- 旧版赋值功能的实现
+	- 旧版赋值功能的缺陷
+	- 新版复制功能的实现
+	- 部分重同步的实现
+	- PSYNC命令的实现
+	- 复制的实现
+	- 心跳检测
+
+15. Sentinel
+	- 启动并初始化Sentinel
+	- 获取主服务器信息
+	- 获取从服务器信息
+	- 向主服务器和从服务器发送信息
+	- 接受来自主服务武器和从服务器的频道信息
+	- 检测主观下线状态
+	- 检测客观下线状态
+	- 选举领头Sentinel
+	- 故障转移
+
+16. 集群
+	- 节点
+	- 槽指派
+	- 在集群中执行命令
+	- 重新分片
+	- ASK错误
+	- 复制与故障转移
+	- 消息
+
+#### 独立功能的实现
+17. 发布与订阅
+	- 频道的订阅与退订
+	- 模式的订阅与退订
+	- 发送消息
+	- 查看订阅信息
+
+18. 事务
+	- 事务的实现
+	- WATCH命令的实现
+	- 事务的ACID性质
+	
+19. Lua脚本
+
+20. 排序
+	- SORT<key>命令的实现
+	- ALPHA选项的实现
+	- ASC选项和DESC选项的实现
+	- BY选项的实现
+	- 带有ALPHA选项的BY选项的实现
+	- LIMIT选项的实现
+	- GET选项的实现
+	- STORE选项的实现
+	- 多个选项的顺序执行
+
+21. 二进制位数组
+	- 位数组的表示
+	- GETBIT 命令的实现
+	- SETBIT 命令的实现
+	- BITCOUNT 命令的实现
+	- BITOP 命令的实现
+
+22. 慢查询日志
+	- 慢查询日志的保存
+	- 慢查询日志的阅览也删除
+	- 添加新日志
+
+23. 监视器
+	- 成为监视器
+	- 向监视器发送命令信息
+	
+## redis 笔记
+### 持久化
+#### RDB
+1. RDB 生成:
+	1. 有两个Redis命令可以用于生成RDB文件
+		- SAVE: 阻塞
+		- BGSAVE: 子进程并发处理
+
+	2. 代码: rdb.c/rdbSave 函数
+
+2. 因为AOF文件的更新频率通常比RDB文件的更新频率高,所以
+	- 如果服务器开启了AOF持久化功能,那么服务器会优先使用AOF文件来还原数据库状态
+	- 只有AOF关闭时,服务器才会使用RDB文件来还原数据库状态.
+
+3. RDB文件的载入工作是在服务器启动时自动执行的,所以redis没有专门用来载入RDB文件的命令
+4. BGSAVE和BGREWRITEAOF和save之间并发时的各种情景
+5. BGSAVE间隔执行:配置时的三个配置
+	- save 900 1
+	- save 300 1
+	- save 60 10000
+
+6. dirty
+	dirty计数器记录距离上一次成功执行save命令或者BGSAVE命令之后,服务器对数据库状态(服务器中所有的数据库)进行了多少次修改(包括写入,删除,更新等操作)
+
+7. lastsave
+	lastsave属性是一个unix时间戳,记录了服务器上一次成功执行save命令或者BGSAVE命令的时间
+
+8. RDB文件结构
+	1. | REDIS | db_version | databases | EOF | `check_sum` |
+
+	2. databases 部分结构:
+		| SELECTDB | `db_number` | `key_value_pairs` |
+
+	3. `key_value_pairs`结构
+		| TYPE | key | value |
+		
+	4. 带有过期键的	`key_value_pairs`
+		| EXPIRETIME_MS | ms | TYPE | key | value |
+
+#### AOF 持久化
+1. AOF持久化的实现: AOF持久化功能的实现可以分为三个步骤:
+	- 命令追加(append)
+	- 文件写入
+	- 文件同步(sync)
+
+2. 命令追加(append)
+	当AOF持久化功能处于打开状态时,服务器执行完一个写命令后,会以协议格式将被执行的写命令追加到服务器状态的`aof_buf`缓冲区的末尾:
+	```
+	struct redisServer {
+		//...
+		sds aof_buf;
+	}
+	```
+
+3. Redis的服务器进程就是一个事件循环,这个循环中的文件事件负责接受客户端的命令请求,以及向客户端发送命令回复,
+	而时间事件则负责执行像severCron函数这样需要定时运行的函数.
+
+4. 文件事件可能会执行写命令,使得一些内容被追加到`aof_buf`缓冲区,每次服务器结束一个事件循环之前,他都会调用flushAppendOnlyFile函数,
+	考虑是否将aof_buf缓冲区中的内容写入和保存到AOF文件里面.
+	```
+	def eventloop():
+		while True:
+			processFileEvents()
+
+			processTimeEvents()
+
+			flushAppendOnlyFile()
+	```
+
+5. appendfsync配置选项:
+	- always
+	- everysec
+	- no
+
+6. 文件的写入和同步
+	为了提高文件的写入效率,在现代操作系统中,当用户调用write函数,将一些数据写入到文件的时候,操作系统通常会将写入数据暂时保存在一个内存缓冲区里面,
+等到缓冲区的空间被填满,或者超过了指定的时限之后,才真正地将缓冲区中的数据写入到磁盘立里面.
+
+	<font color=red>这种做法虽然提高了效率,但也为写入数据带来了安全问题,为此系统提供了fsync和fdatasync两个同步函数</font>,
+他们可以强制让操作系统立即将缓冲区中的数据写入到硬盘里面,从而确保写入数据的安全性.
+	
+7. AOF文件的载入和数据还原
+	- 创建爱你一个布袋网络链接的为客户端
+	- 从AOF文件分析并读取一条命令
+	- 使用伪客户端执行读取的命令
+	- 重复2,3 知道AOF文件中的所有写命令都被处理完为止
+
+8. AOF 重写:
+	1. 实现
+		- AOF重写不需要对原来的AOF文件进行任何操作,这个功能是通过读取服务器当前的数据库状态实现的.
+		- 首先从数据库读取键现在的值,然后用一条命令记录键值对,代替之前记录这个键值对的多条命令,这就是AOF重写的实现原理.
+
+	2. AOF重写缓冲区的作用: p148
+
+## redis 源码解析
+### redis 数据结构
+#### sds 
 1. sds的数据结构:
 	```
 	typedef char *sds;
@@ -55,7 +325,7 @@
 	}
 	```
 
-### 链表
+#### 链表
 1. 链表的数据结构:
 	```
 	typedef struct listNode {
@@ -112,45 +382,45 @@
 	/* Functions implemented as macros */
 	// 返回给定链表所包含的节点数量
 	// T = O(1)
-	#define listLength(l) ((l)->len)
+	#define listLength(l)((l)->len)
 	// 返回给定链表的表头节点
 	// T = O(1)
-	#define listFirst(l) ((l)->head)
+	#define listFirst(l)((l)->head)
 	// 返回给定链表的表尾节点
 	// T = O(1)
-	#define listLast(l) ((l)->tail)
+	#define listLast(l)((l)->tail)
 	// 返回给定节点的前置节点
 	// T = O(1)
-	#define listPrevNode(n) ((n)->prev)
+	#define listPrevNode(n)((n)->prev)
 	// 返回给定节点的后置节点
 	// T = O(1)
-	#define listNextNode(n) ((n)->next)
+	#define listNextNode(n)((n)->next)
 	// 返回给定节点的值
 	// T = O(1)
-	#define listNodeValue(n) ((n)->value)
+	#define listNodeValue(n)((n)->value)
 
 	// 将链表 l 的值复制函数设置为 m
 	// T = O(1)
-	#define listSetDupMethod(l,m) ((l)->dup = (m))
+	#define listSetDupMethod(l,m) ((l)->dup =(m))
 	// 将链表 l 的值释放函数设置为 m
 	// T = O(1)
-	#define listSetFreeMethod(l,m) ((l)->free = (m))
+	#define listSetFreeMethod(l,m) ((l)->free =(m))
 	// 将链表的对比函数设置为 m
 	// T = O(1)
-	#define listSetMatchMethod(l,m) ((l)->match = (m))
+	#define listSetMatchMethod(l,m) ((l)->match =(m))
 
 	// 返回给定链表的值复制函数
 	// T = O(1)
-	#define listGetDupMethod(l) ((l)->dup)
+	#define listGetDupMethod(l)((l)->dup)
 	// 返回给定链表的值释放函数
 	// T = O(1)
-	#define listGetFree(l) ((l)->free)
+	#define listGetFree(l)((l)->free)
 	// 返回给定链表的值对比函数
 	// T = O(1)
-	#define listGetMatchMethod(l) ((l)->match)
+	#define listGetMatchMethod(l)((l)->match)
 	```
 
-### hash 
+#### hash 
 1. 结构
 	```
 	/*
@@ -281,16 +551,16 @@
 	/*
 	 * 哈希表的初始大小
 	 */
-	#define DICT_HT_INITIAL_SIZE     4
+	#define DICT_HT_INITIAL_SIZE    
 
 	/* ------------------------------- Macros ------------------------------------*/
 	// 释放给定字典节点的值
-	#define dictFreeVal(d, entry) \
+	#define dictFreeVal(d, entry)\
 		if ((d)->type->valDestructor) \
 			(d)->type->valDestructor((d)->privdata, (entry)->v.val)
 
 	// 设置给定字典节点的值
-	#define dictSetVal(d, entry, _val_) do { \
+	#define dictSetVal(d, entry, _val_) do {\
 		if ((d)->type->valDup) \
 			entry->v.val = (d)->type->valDup((d)->privdata, _val_); \
 		else \
@@ -298,20 +568,20 @@
 	} while(0)
 
 	// 将一个有符号整数设为节点的值
-	#define dictSetSignedIntegerVal(entry, _val_) \
+	#define dictSetSignedIntegerVal(entry, _val_)\
 		do { entry->v.s64 = _val_; } while(0)
 
 	// 将一个无符号整数设为节点的值
-	#define dictSetUnsignedIntegerVal(entry, _val_) \
+	#define dictSetUnsignedIntegerVal(entry, _val_)\
 		do { entry->v.u64 = _val_; } while(0)
 
 	// 释放给定字典节点的键
-	#define dictFreeKey(d, entry) \
+	#define dictFreeKey(d, entry)\
 		if ((d)->type->keyDestructor) \
 			(d)->type->keyDestructor((d)->privdata, (entry)->key)
 
 	// 设置给定字典节点的键
-	#define dictSetKey(d, entry, _key_) do { \
+	#define dictSetKey(d, entry, _key_) do {\
 		if ((d)->type->keyDup) \
 			entry->key = (d)->type->keyDup((d)->privdata, _key_); \
 		else \
@@ -319,7 +589,7 @@
 	} while(0)
 
 	// 比对两个键
-	#define dictCompareKeys(d, key1, key2) \
+	#define dictCompareKeys(d, key1, key2)\
 		(((d)->type->keyCompare) ? \
 			(d)->type->keyCompare((d)->privdata, key1, key2) : \
 			(key1) == (key2))
@@ -329,7 +599,7 @@
 	1. rehashing时,将ht[0]->table[h]的kv转移到ht[1]tale[k]时,当ht[0]开始转移时,ht[0]的table[h]的所有还未转移的kv都访问不到了,知道table[h]这一个数组的所有
 kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有发生异常,如果转移过程中,有别的线程读取正在转移的哪一行,会发生找不到.
 
-### 跳跃表
+#### 跳跃表
 1. 结构:
 	```
 	/* ZSETs use a specialized version of Skiplists */
@@ -377,7 +647,7 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 	} zskiplist;
 	```
 
-### ziplist 压缩表
+#### ziplist 压缩表
 1. ziplist中实体对象结构:
 	```
 	/*
@@ -443,96 +713,3 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 	*/
 	```
 
-## 命令
-### 持久化
-#### RDB
-1. RDB 生成:
-	1. 有两个Redis命令可以用于生成RDB文件
-		- SAVE: 阻塞
-		- BGSAVE: 子进程并发处理
-
-	2. 代码: rdb.c/rdbSave 函数
-
-2. 因为AOF文件的更新频率通常比RDB文件的更新频率高,所以
-	- 如果服务器开启了AOF持久化功能,那么服务器会优先使用AOF文件来还原数据库状态
-	- 只有AOF关闭时,服务器才会使用RDB文件来还原数据库状态.
-
-3. RDB文件的载入工作是在服务器启动时自动执行的,所以redis没有专门用来载入RDB文件的命令
-4. BGSAVE和BGREWRITEAOF和save之间并发时的各种情景
-5. BGSAVE间隔执行:配置时的三个配置
-	- save 900 1
-	- save 300 1
-	- save 60 10000
-
-6. dirty
-	dirty计数器记录距离上一次成功执行save命令或者BGSAVE命令之后,服务器对数据库状态(服务器中所有的数据库)进行了多少次修改(包括写入,删除,更新等操作)
-
-7. lastsave
-	lastsave属性是一个unix时间戳,记录了服务器上一次成功执行save命令或者BGSAVE命令的时间
-
-8. RDB文件结构
-	1. | REDIS | db_version | databases | EOF | `check_sum` |
-
-	2. databases 部分结构:
-		| SELECTDB | `db_number` | `key_value_pairs` |
-
-	3. `key_value_pairs`结构
-		| TYPE | key | value |
-		
-	4. 带有过期键的	`key_value_pairs`
-		| EXPIRETIME_MS | ms | TYPE | key | value |
-
-#### AOF 持久化
-1. AOF持久化的实现: AOF持久化功能的实现可以分为三个步骤:
-	- 命令追加(append)
-	- 文件写入
-	- 文件同步(sync)
-
-2. 命令追加(append)
-	当AOF持久化功能处于打开状态时,服务器执行完一个写命令后,会以协议格式将被执行的写命令追加到服务器状态的`aof_buf`缓冲区的末尾:
-	```
-	struct redisServer {
-		//...
-		sds aof_buf;
-	}
-	```
-
-3. Redis的服务器进程就是一个事件循环,这个循环中的文件事件负责接受客户端的命令请求,以及向客户端发送命令回复,
-	而时间事件则负责执行像severCron函数这样需要定时运行的函数.
-
-4. 文件事件可能会执行写命令,使得一些内容被追加到aof_buf缓冲区,每次服务器结束一个事件循环之前,他都会调用flushAppendOnlyFile函数,
-	考虑是否将aof_buf缓冲区中的内容写入和保存到AOF文件里面.
-	```
-	def eventloop():
-		while True:
-			processFileEvents()
-
-			processTimeEvents()
-
-			flushAppendOnlyFile()
-	```
-
-5. appendfsync配置选项:
-	- always
-	- everysec
-	- no
-
-6. 文件的写入和同步
-	为了提高文件的写入效率,在现代操作系统中,当用户调用write函数,将一些数据写入到文件的时候,操作系统通常会将写入数据暂时保存在一个内存缓冲区里面,
-等到缓冲区的空间被填满,或者超过了指定的时限之后,才真正地将缓冲区中的数据写入到磁盘立里面.
-
-	<font color=red>这种做法虽然提高了效率,但也为写入数据带来了安全问题,为此系统提供了fsync和fdatasync两个同步函数</font>,
-他们可以强制让操作系统立即将缓冲区中的数据写入到硬盘里面,从而确保写入数据的安全性.
-	
-7. AOF文件的载入和数据还原
-	- 创建爱你一个布袋网络链接的为客户端
-	- 从AOF文件分析并读取一条命令
-	- 使用伪客户端执行读取的命令
-	- 重复2,3 知道AOF文件中的所有写命令都被处理完为止
-
-8. AOF 重写:
-	1. 实现
-		- AOF重写不需要对原来的AOF文件进行任何操作,这个功能是通过读取服务器当前的数据库状态实现的.
-		- 首先从数据库读取键现在的值,然后用一条命令记录键值对,代替之前记录这个键值对的多条命令,这就是AOF重写的实现原理.
-
-	2. AOF重写缓冲区的作用: p148
