@@ -1,3 +1,14 @@
+
+<!-- vim-markdown-toc GFM -->
+
+* [命令大全](#命令大全)
+* [笔记](#笔记)
+* [聚合](#聚合)
+	* [group](#group)
+	* [mapreduce](#mapreduce)
+* [运维](#运维)
+
+<!-- vim-markdown-toc -->
 ## 命令大全
 ## 笔记
 1. 优点
@@ -28,7 +39,6 @@
 	- collection不方便如此查找的话,使用getCollection破解同名
 
 7. js 中,x.y 和x[y]完全等价
-
 8. 批量导入只对多个文档插入同一个集合有效,不支持多个集合
 9. 导入数据使用import 而不是批量导入
 10. monogdb的4M文档要求
@@ -52,9 +62,14 @@
 18. 服务端执行命令的两种方法:
 	- db.runCommand()
 	- db.$cmd.findOne({"command":1})
+- js中,for (var i in iter) 如果iter是数组,那么i就是数组索引,如果iter是字典对象,那么i就是字典的key
+
+- <font color=red>find查找时,field在条件前面作为key,因为同一个field可能有多个条件,每个条件是一个kv.</font>
+- <font color=red>update更改是,更改器在field前面作为key,因为更改时肯定是针对一个field,不可能对同一个field多次改变,field在后面更直观</font>
 
 ## 聚合
-
+### group
+### mapreduce
 
 ## 运维
 1. 备份

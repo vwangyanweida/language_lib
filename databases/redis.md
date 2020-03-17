@@ -1,29 +1,29 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [redis设计与实现]
-	* [toc]
-		* [数据结构]
-		* [单机数据库的实现]
-		* [多机数据库的实现]
-		* [独立功能的实现]
-* [redis 笔记]
-	* [持久化]
-		* [RDB]
-		* [AOF 持久化]
-* [redis 源码解析]
-	* [redis 数据结构]
-		* [sds]
-		* [链表]
-		* [hash]
-		* [跳跃表]
-		* [ziplist 压缩表]
+* [redis设计与实现 24](#redis设计与实现-24)
+	* [toc 25](#toc-25)
+		* [数据结构 26](#数据结构-26)
+		* [单机数据库的实现 71](#单机数据库的实现-71)
+		* [多机数据库的实现 120](#多机数据库的实现-120)
+		* [独立功能的实现 150](#独立功能的实现-150)
+* [redis 笔记 191](#redis-笔记-191)
+	* [持久化 192](#持久化-192)
+		* [RDB 193](#rdb-193)
+		* [AOF 持久化 230](#aof-持久化-230)
+* [redis 源码解析 285](#redis-源码解析-285)
+	* [redis 数据结构 286](#redis-数据结构-286)
+		* [sds  287](#sds--287)
+		* [链表 328](#链表-328)
+		* [hash  423](#hash--423)
+		* [跳跃表 602](#跳跃表-602)
+		* [ziplist 压缩表 650](#ziplist-压缩表-650)
 
 <!-- vim-markdown-toc -->
 
-## redis设计与实现
-### toc
-#### 数据结构
+## redis设计与实现 24
+### toc 25
+#### 数据结构 26
 1. 简单动态字符串
 	- sds定义
 
@@ -68,7 +68,7 @@
 	- 对象共享
 	- 对象的空转时长
 
-#### 单机数据库的实现
+#### 单机数据库的实现 71
 8. 数据库
 	- 服务器中的数据库
 	- 切换数据库
@@ -117,7 +117,7 @@
 		- 更新服务器每秒执行命令次数
 	- 初始化服务器
 	
-#### 多机数据库的实现
+#### 多机数据库的实现 120
 14. 复制
 	- 旧版赋值功能的实现
 	- 旧版赋值功能的缺陷
@@ -128,15 +128,47 @@
 	- 心跳检测
 
 15. Sentinel
-	- 启动并初始化Sentinel
-	- 获取主服务器信息
-	- 获取从服务器信息
-	- 向主服务器和从服务器发送信息
-	- 接受来自主服务武器和从服务器的频道信息
-	- 检测主观下线状态
-	- 检测客观下线状态
-	- 选举领头Sentinel
-	- 故障转移
+	1. sentinel(哨岗,哨兵)是Redis的高可用行(high availability)解决方案: 
+		- 有一个或多个Sentinel实例(instance)组成的Sentinel系统可以监听多个主服务器,以及这些主服务器下的所有从服务器,
+		- 并在被监视的主服务器进入下线状态时,自动将下线主服务器的某个从服务器升级为新的主服务器,
+		- 然后由新的主服务器代替已下线的主服务器继续处理命令请求.
+	
+	2. 故障转移:
+		> 当主服务器server1进入下线状态,当下线时间超过用户设定的下线时长上限时,Sentinel系统就会执行故障转移.
+
+		1. 首先,挑选一个server1的从服务器,并将它升级为新的主服务器
+		2. sentinel系统回想server1的所有从服务器发送新的复制指令,让它们成为新的主服务器的从服务器,当所有从服务器都开始复制新的主服务器时,故障转移操作执行完毕
+		3. sentinel会继续监视下线的Server1,并在它重新上线时,将他设置为新的主服务器的从服务器
+			
+
+	3. 启动并初始化Sentinel
+		1. 命令: 效果相同
+			- redis-sentinel /path/to/your/sentinel.conf
+			- redis-server /path/to/your/sentinel.conf --sentinel
+
+		2. 启动步骤
+			- 初始化服务器
+			- 将普通的Redis服务器使用的代码替换成为sentinel专用代码
+			- 初始化sentinel状态
+				- sentinelState 结构体
+				- sentinelRedisInstance 结构体/可以是主服务器,也可以是从服务器,还可以是sentinel实例
+				
+			- 根据配置文件,初始化sentinel的监视主服务器列表
+			- 创建连向主服务器的网络连接
+				
+
+		- 获取主服务器信息
+		- 获取从服务器信息
+		- 向主服务器和从服务器发送信息
+		- 接受来自主服务武器和从服务器的频道信息
+		- 检测主观下线状态
+		- 检测客观下线状态
+		- 选举领头Sentinel
+		- 故障转移
+
+	3. 总结:
+		1. 监听对象
+			- sentinel先监听主服务器,然后根据主服务器的info,获得从服务器的ip和端口,继续监听从服务器,并周期性更新
 
 16. 集群
 	- 节点
@@ -147,7 +179,7 @@
 	- 复制与故障转移
 	- 消息
 
-#### 独立功能的实现
+#### 独立功能的实现 150
 17. 发布与订阅
 	- 频道的订阅与退订
 	- 模式的订阅与退订
@@ -188,9 +220,9 @@
 	- 成为监视器
 	- 向监视器发送命令信息
 	
-## redis 笔记
-### 持久化
-#### RDB
+## redis 笔记 191
+### 持久化 192
+#### RDB 193
 1. RDB 生成:
 	1. 有两个Redis命令可以用于生成RDB文件
 		- SAVE: 阻塞
@@ -227,7 +259,7 @@
 	4. 带有过期键的	`key_value_pairs`
 		| EXPIRETIME_MS | ms | TYPE | key | value |
 
-#### AOF 持久化
+#### AOF 持久化 230
 1. AOF持久化的实现: AOF持久化功能的实现可以分为三个步骤:
 	- 命令追加(append)
 	- 文件写入
@@ -282,9 +314,9 @@
 
 	2. AOF重写缓冲区的作用: p148
 
-## redis 源码解析
-### redis 数据结构
-#### sds 
+## redis 源码解析 285
+### redis 数据结构 286
+#### sds  287
 1. sds的数据结构:
 	```
 	typedef char *sds;
@@ -325,7 +357,7 @@
 	}
 	```
 
-#### 链表
+#### 链表 328
 1. 链表的数据结构:
 	```
 	typedef struct listNode {
@@ -382,45 +414,45 @@
 	/* Functions implemented as macros */
 	// 返回给定链表所包含的节点数量
 	// T = O(1)
-	#define listLength(l)((l)->len)
+	#definelistLength(l)((l)->len)
 	// 返回给定链表的表头节点
 	// T = O(1)
-	#define listFirst(l)((l)->head)
+	#definelistFirst(l)((l)->head)
 	// 返回给定链表的表尾节点
 	// T = O(1)
-	#define listLast(l)((l)->tail)
+	#definelistLast(l)((l)->tail)
 	// 返回给定节点的前置节点
 	// T = O(1)
-	#define listPrevNode(n)((n)->prev)
+	#definelistPrevNode(n)((n)->prev)
 	// 返回给定节点的后置节点
 	// T = O(1)
-	#define listNextNode(n)((n)->next)
+	#definelistNextNode(n)((n)->next)
 	// 返回给定节点的值
 	// T = O(1)
-	#define listNodeValue(n)((n)->value)
+	#definelistNodeValue(n)((n)->value)
 
 	// 将链表 l 的值复制函数设置为 m
 	// T = O(1)
-	#define listSetDupMethod(l,m) ((l)->dup =(m))
+	#define listSetDupMethod(l,m) ((l)->dup=(m))
 	// 将链表 l 的值释放函数设置为 m
 	// T = O(1)
-	#define listSetFreeMethod(l,m) ((l)->free =(m))
+	#define listSetFreeMethod(l,m) ((l)->free=(m))
 	// 将链表的对比函数设置为 m
 	// T = O(1)
-	#define listSetMatchMethod(l,m) ((l)->match =(m))
+	#define listSetMatchMethod(l,m) ((l)->match=(m))
 
 	// 返回给定链表的值复制函数
 	// T = O(1)
-	#define listGetDupMethod(l)((l)->dup)
+	#definelistGetDupMethod(l)((l)->dup)
 	// 返回给定链表的值释放函数
 	// T = O(1)
-	#define listGetFree(l)((l)->free)
+	#definelistGetFree(l)((l)->free)
 	// 返回给定链表的值对比函数
 	// T = O(1)
-	#define listGetMatchMethod(l)((l)->match)
+	#definelistGetMatchMethod(l)((l)->match)
 	```
 
-#### hash 
+#### hash  423
 1. 结构
 	```
 	/*
@@ -551,16 +583,16 @@
 	/*
 	 * 哈希表的初始大小
 	 */
-	#define DICT_HT_INITIAL_SIZE    
+	#define DICT_HT_INITIAL_SIZE   
 
 	/* ------------------------------- Macros ------------------------------------*/
 	// 释放给定字典节点的值
-	#define dictFreeVal(d, entry)\
+	#define dictFreeVal(d,entry)\
 		if ((d)->type->valDestructor) \
 			(d)->type->valDestructor((d)->privdata, (entry)->v.val)
 
 	// 设置给定字典节点的值
-	#define dictSetVal(d, entry, _val_) do {\
+	#define dictSetVal(d, entry, _val_) do{\
 		if ((d)->type->valDup) \
 			entry->v.val = (d)->type->valDup((d)->privdata, _val_); \
 		else \
@@ -568,20 +600,20 @@
 	} while(0)
 
 	// 将一个有符号整数设为节点的值
-	#define dictSetSignedIntegerVal(entry, _val_)\
+	#define dictSetSignedIntegerVal(entry,_val_)\
 		do { entry->v.s64 = _val_; } while(0)
 
 	// 将一个无符号整数设为节点的值
-	#define dictSetUnsignedIntegerVal(entry, _val_)\
+	#define dictSetUnsignedIntegerVal(entry,_val_)\
 		do { entry->v.u64 = _val_; } while(0)
 
 	// 释放给定字典节点的键
-	#define dictFreeKey(d, entry)\
+	#define dictFreeKey(d,entry)\
 		if ((d)->type->keyDestructor) \
 			(d)->type->keyDestructor((d)->privdata, (entry)->key)
 
 	// 设置给定字典节点的键
-	#define dictSetKey(d, entry, _key_) do {\
+	#define dictSetKey(d, entry, _key_) do{\
 		if ((d)->type->keyDup) \
 			entry->key = (d)->type->keyDup((d)->privdata, _key_); \
 		else \
@@ -589,7 +621,7 @@
 	} while(0)
 
 	// 比对两个键
-	#define dictCompareKeys(d, key1, key2)\
+	#define dictCompareKeys(d, key1,key2)\
 		(((d)->type->keyCompare) ? \
 			(d)->type->keyCompare((d)->privdata, key1, key2) : \
 			(key1) == (key2))
@@ -599,7 +631,7 @@
 	1. rehashing时,将ht[0]->table[h]的kv转移到ht[1]tale[k]时,当ht[0]开始转移时,ht[0]的table[h]的所有还未转移的kv都访问不到了,知道table[h]这一个数组的所有
 kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有发生异常,如果转移过程中,有别的线程读取正在转移的哪一行,会发生找不到.
 
-#### 跳跃表
+#### 跳跃表 602
 1. 结构:
 	```
 	/* ZSETs use a specialized version of Skiplists */
@@ -647,7 +679,7 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 	} zskiplist;
 	```
 
-#### ziplist 压缩表
+#### ziplist 压缩表 650
 1. ziplist中实体对象结构:
 	```
 	/*
