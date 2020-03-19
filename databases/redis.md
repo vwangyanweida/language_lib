@@ -6,18 +6,19 @@
 		* [数据结构 26](#数据结构-26)
 		* [单机数据库的实现 71](#单机数据库的实现-71)
 		* [多机数据库的实现 120](#多机数据库的实现-120)
-		* [独立功能的实现 150](#独立功能的实现-150)
-* [redis 笔记 191](#redis-笔记-191)
-	* [持久化 192](#持久化-192)
-		* [RDB 193](#rdb-193)
-		* [AOF 持久化 230](#aof-持久化-230)
-* [redis 源码解析 285](#redis-源码解析-285)
-	* [redis 数据结构 286](#redis-数据结构-286)
-		* [sds  287](#sds--287)
-		* [链表 328](#链表-328)
-		* [hash  423](#hash--423)
-		* [跳跃表 602](#跳跃表-602)
-		* [ziplist 压缩表 650](#ziplist-压缩表-650)
+		* [独立功能的实现 182](#独立功能的实现-182)
+* [redis笔记 223](#redis笔记-223)
+	* [持久化 224](#持久化-224)
+		* [RDB 225](#rdb-225)
+		* [AOF持久化 262](#aof持久化-262)
+* [redis源码解析 317](#redis源码解析-317)
+	* [redis数据结构 318](#redis数据结构-318)
+		* [sds 319](#sds-319)
+		* [链表 360](#链表-360)
+		* [hash 455](#hash-455)
+		* [跳跃表 634](#跳跃表-634)
+		* [ziplist压缩表 682](#ziplist压缩表-682)
+		* [sentinel](#sentinel)
 
 <!-- vim-markdown-toc -->
 
@@ -150,21 +151,78 @@
 			- 初始化服务器
 			- 将普通的Redis服务器使用的代码替换成为sentinel专用代码
 			- 初始化sentinel状态
-				- sentinelState 结构体
-				- sentinelRedisInstance 结构体/可以是主服务器,也可以是从服务器,还可以是sentinel实例
-				
 			- 根据配置文件,初始化sentinel的监视主服务器列表
-			- 创建连向主服务器的网络连接
-				
+				- sentinelState 结构体
+					- masters: 记录了所有被sentinel监视的主服务器的相关信息
+						- 字典的键是主服务器的名字:
+						- 字典的值是sentinelRedisInstance 结构体, 可以是主服务器,也可以是从服务器,还可以是sentinel实例
 
+			- 创建连向主服务器的网络连接
+				1. 对于每个被sentinel监视的主服务器, Sentinel会创建两个连向主服务器的异步网络连接
+					- 命令连接:这个连接专门用于向主服务器发送命令,并接受命令回复
+					- 订阅连接诶: 这个连接专门用于订阅主服务器的__sentinel__:hello频道.
+				
 		- 获取主服务器信息
+			- 默认每十秒一次的频率,通过命令连接像别监视的主服务器发送info命令,并通过分析info命令的回复来获取主服务器的当前信息
+			- INFO命令可以分析出来两方面信息:
+				- 主服务器本身的信息
+				- 主服务器属下所有从服务器的信息.Sentinel无须用户提供从服务器信息,就可以自动发现从服务器.
+			- 从服务器信息保存在主服务器instance结构中的slaves字典内.
+			- sentinelState.masters -> (master)sentinelRedisInstance.slaves -> (slaves)sentinelRedisInstance
+			- 主服务器的flags是SRI_MASTER, 从服务器的flags是SRI_SLAVE
+			- 主服务器的名字是配置文件是配置文件所设置,从服务器名字是由ip和port自动设置的.
+
 		- 获取从服务器信息
+			- sentinel 获取了从服务器信息后,会为每一个从服务器建立命令和订阅两个链接,和主服务器一样.
+			- 默认每十秒一次的频率,通过命令连接向被监视的从服务器发送info命令,并通过分析info命令的回复来获取从服务器的当前信息
+
 		- 向主服务器和从服务器发送信息
+			- sentinel默认会通过命令链接,每2秒一次发送一下格式命令:
+				`PUBLISH __sentinel__:hello "<s_ip>, <s_port>, <s_runid>, <s_epoch>, <m_name>, <m_ip>, <m_port>, <m_epoch>"`
+
 		- 接受来自主服务武器和从服务器的频道信息
+			- sentinel通过订阅连接发送一下命令:
+				`SUBSCRIBE __sentinel__:hello`
+				
+			- sentinel通过命令连接发送hello频道信息,又通过订阅连接接受hello频道的信息,以获取所有监视服务器的sentinel信息
+			- sentinel之间各自创建一个命令连接,不需要订阅连接.因为他们通过info获取其他sentinel信息,仅仅需要命令连接即可
+
 		- 检测主观下线状态
+			- 每秒固定频率给所有连接发送ping
+			- 有效回复:
+				- +PONT, -LOADING, -MASTERDOWN
+			- 无效回复:
+				- 除了上面三个所有回复
+				- 没有回复超时之前
+
+			- down-after-milliseconds: 进入主观下线的时间长度. 如果进入主观下线,flags上打开`SRI_S_DOWN`标识.
+
 		- 检测客观下线状态
+			1. SENTINEL is-master-down-by-addr 命令,询问其他sentinel是否同意将主服务器下线
+			2. SENTINEL is-master-down-by-addr的回复:
+				1. <down_state>
+				2. <leader_runid>
+				3. <leader_epoch>
+			3. 统计其他sentinel发送的命令回复,当达到下线标准时:将主服务器实例的flags打开SRI_O_DOWN标识,标识主服务器已经进入客观下线状态
+
 		- 选举领头Sentinel
-		- 故障转移
+			1. 选举领头sentinel的规则和方法
+				1. 所有sentinel都有资格
+				2. 每次选举,无论是否成功,epoch都会自增一次
+				3. 每个纪元每个sentinel只能选举一次局部领头sentinel的机会,一旦设置,这个纪元不能更改
+				4. 每个发现主服务器客观下线的sentinel都会要求其他sentinel将自己设置为局部领头sentinel
+				5. dagn sentinel is-master-down-by-addr中runid参数不是*是源sentinel的运行id时,表示要求其他sentinel将自己设置为局部领头sentinel
+				6. sentinel设置局部领头的原则是先到先得:
+				7. 接受到sentinel is-master-down-by-addr的sentinel,返回信息中leader_runid和leader_epoch记录自己选举的领头sentinel
+				8. 发送is-master-down-by-addr的源sentinel会检查目标sentinel回复的信息
+				9. 某个sentinel被半数以上的sentinel设置为局部领头,他就会成为局部领头sentinel
+				10. 因为需要半数以上,所以只会有一个局部领头sentinel
+				11. 给定时限没有选出领头sentinel,会等待一段时间之后,再次进行选举,直至选出.
+
+		- 故障转移: 选出局部领头sentinel,它会对已下线主服务器执行故障转移操作:
+			1. 在已下线主服务器属下的所有从服务器里面,挑选出一个从服务器,并将它转换为主服务器: no one slave
+			2. 让已经下线主服务器属下的所欲从服务器改为复制新的主服务器
+			3. 将已下线主服务器设置为新的主服务器的从服务器,当这个旧的主服务器从新上线时,它就会成为新的主服务器的从服务器.
 
 	3. 总结:
 		1. 监听对象
@@ -172,14 +230,39 @@
 
 16. 集群
 	- 节点
+		1. 连接各个节点的命令:cluster meet <IP> <port>
+		2. 启动服务器  ->  cluster-enabled -> 开启服务器的集群模式成为一个节点 or 开启服务器单机模式成为一个普通的redis服务器
+		3. 结构:
+			- struct clusterNode
+			- clusterLink
+			- clusterState
+
+		4. cluster meet命令的实现
+		```
+																			发送meet 消息
+		                                                    |       | ----------------------------> |       |
+					发送命令:cluster meet <B_ip> <B_port>   |       |         返回pong消息          |       |
+		客户端  ------------------------------------------> | 节点A | <---------------------------- | 节点B |
+		                                                    |       |        返回ping消息           |       | 
+															|		| ----------------------------> |       |
+		```
+
 	- 槽指派
+		1. Redis 集群通过分片的方式来保存数据库中的键值对: 集群的整个数据库被分为16384个槽(slot)
+		2. 当数据库的16384个槽都有节点在处理时,集群处于上线状态,如果任何一个槽没有被处理,集群处于下线状
+		3. 通过向节点发送cluster addslot命令,可以将一个或多个槽指派给节点负责:
+		```
+		cluster addslots <slot> [slot ...]
+
+		127.0.0.1:7000> cluster addslots 0 1 2 3 ... 5000  //将0-5000指派给7000服务器
+		```
 	- 在集群中执行命令
 	- 重新分片
 	- ASK错误
 	- 复制与故障转移
 	- 消息
 
-#### 独立功能的实现 150
+#### 独立功能的实现 182
 17. 发布与订阅
 	- 频道的订阅与退订
 	- 模式的订阅与退订
@@ -220,9 +303,9 @@
 	- 成为监视器
 	- 向监视器发送命令信息
 	
-## redis 笔记 191
-### 持久化 192
-#### RDB 193
+## redis笔记 223
+### 持久化 224
+#### RDB 225
 1. RDB 生成:
 	1. 有两个Redis命令可以用于生成RDB文件
 		- SAVE: 阻塞
@@ -259,7 +342,7 @@
 	4. 带有过期键的	`key_value_pairs`
 		| EXPIRETIME_MS | ms | TYPE | key | value |
 
-#### AOF 持久化 230
+#### AOF持久化 262
 1. AOF持久化的实现: AOF持久化功能的实现可以分为三个步骤:
 	- 命令追加(append)
 	- 文件写入
@@ -314,9 +397,9 @@
 
 	2. AOF重写缓冲区的作用: p148
 
-## redis 源码解析 285
-### redis 数据结构 286
-#### sds  287
+## redis源码解析 317
+### redis数据结构 318
+#### sds 319
 1. sds的数据结构:
 	```
 	typedef char *sds;
@@ -357,7 +440,7 @@
 	}
 	```
 
-#### 链表 328
+#### 链表 360
 1. 链表的数据结构:
 	```
 	typedef struct listNode {
@@ -452,7 +535,7 @@
 	#definelistGetMatchMethod(l)((l)->match)
 	```
 
-#### hash  423
+#### hash 455
 1. 结构
 	```
 	/*
@@ -631,7 +714,7 @@
 	1. rehashing时,将ht[0]->table[h]的kv转移到ht[1]tale[k]时,当ht[0]开始转移时,ht[0]的table[h]的所有还未转移的kv都访问不到了,知道table[h]这一个数组的所有
 kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有发生异常,如果转移过程中,有别的线程读取正在转移的哪一行,会发生找不到.
 
-#### 跳跃表 602
+#### 跳跃表 634
 1. 结构:
 	```
 	/* ZSETs use a specialized version of Skiplists */
@@ -679,7 +762,7 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 	} zskiplist;
 	```
 
-#### ziplist 压缩表 650
+#### ziplist压缩表 682
 1. ziplist中实体对象结构:
 	```
 	/*
@@ -745,3 +828,71 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 	*/
 	```
 
+#### sentinel
+1. sentinelState 结构体:
+```
+struct sentinelState {
+
+	//当前济源,用于实现故障转移
+	uint 64_t current_epoch
+
+	//保存了所有这个sentinel监视的主服务器,字典的键是主服务器的名字
+	//字典的值是一个指向sentinelRedisInstance结构的指针
+	dict *masters;
+
+	//是否进入TILT模式
+	int tilt;
+
+	//目前正在执行的脚本数量
+	int running_scripts;
+
+	//进入TILT模式的时间
+	mstime_t tilt_start_time;
+
+	//最后一次执行时间处理器的时间
+	mstime_t previous_time;
+
+	//一个FIFO队列,包含了所有需要执行的用户脚本
+	list *scripts_queue;
+} sentinel;
+```
+2. sentinelRedisInstance 结构体:
+```
+typedef struct sentinelRedisInstance {
+	
+	//标识值,记录了实例的类型,以及该实例的当前状态
+	int flags;
+
+	//实例的名字
+	//主服务器的名字由用户在配置文件中设置
+	//从服务器以及sentinel的名字有sentinel自动设置
+	//格式为ip:port, 例如"127.0.0.1:26379"
+	char *name;
+
+	//实例运行的ID
+	char *runid;
+
+	//配置纪元,用于实现故障转移
+	uint_64_t config_epoch
+
+	//实例的地址
+	sentinelAddr *addr;
+
+	//SENTINEL down-after-milliseconds选项设定的值
+	//实例无响应多少毫秒之后才会被判断为主观下线(subjectively down)
+
+	//SENTTINEL monitor <master-name> <IP> <port> <quorum> 选项中的quorum参数
+	//判断这个实例为客观下线(objecttively down) 所需的支持投票数量
+	int quorum;
+
+	//SENTTINEL parallel-syncs <master-name> <number> 选项的值
+	//在执行故障转移操作时,可以同时对新的主服务器进行同步的从服务器的数量
+	int parallel_syncs;
+
+	//SENTTINEL failover-timeout <master-name> <ms> 选项的值
+	//刷新故障迁移状态的最大时限
+	mstime_t failover_timeout;
+
+	//...
+} sentinelRedisInstance;
+```
