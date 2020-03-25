@@ -1,30 +1,30 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [redis设计与实现 24](#redis设计与实现-24)
-	* [toc 25](#toc-25)
-		* [数据结构 26](#数据结构-26)
-		* [单机数据库的实现 71](#单机数据库的实现-71)
-		* [多机数据库的实现 120](#多机数据库的实现-120)
-		* [独立功能的实现 182](#独立功能的实现-182)
-* [redis笔记 223](#redis笔记-223)
-	* [持久化 224](#持久化-224)
-		* [RDB 225](#rdb-225)
-		* [AOF持久化 262](#aof持久化-262)
-* [redis源码解析 317](#redis源码解析-317)
-	* [redis数据结构 318](#redis数据结构-318)
-		* [sds 319](#sds-319)
-		* [链表 360](#链表-360)
-		* [hash 455](#hash-455)
-		* [跳跃表 634](#跳跃表-634)
-		* [ziplist压缩表 682](#ziplist压缩表-682)
-		* [sentinel](#sentinel)
+* [redis设计与实现]
+	* [toc]
+		* [数据结构]
+		* [单机数据库的实现]
+		* [多机数据库的实现]
+		* [独立功能的实现]
+* [redis笔记]
+	* [持久化]
+		* [RDB]
+		* [AOF持久化]
+* [redis源码解析]
+	* [redis数据结构]
+		* [sds]
+		* [链表]
+		* [hash]
+		* [跳跃表]
+		* [ziplist压缩表]
+		* [sentinel]
 
 <!-- vim-markdown-toc -->
 
-## redis设计与实现 24
-### toc 25
-#### 数据结构 26
+## redis设计与实现
+### toc
+#### 数据结构
 1. 简单动态字符串
 	- sds定义
 
@@ -69,7 +69,7 @@
 	- 对象共享
 	- 对象的空转时长
 
-#### 单机数据库的实现 71
+#### 单机数据库的实现
 8. 数据库
 	- 服务器中的数据库
 	- 切换数据库
@@ -118,7 +118,7 @@
 		- 更新服务器每秒执行命令次数
 	- 初始化服务器
 	
-#### 多机数据库的实现 120
+#### 多机数据库的实现
 14. 复制
 	- 旧版赋值功能的实现
 	- 旧版赋值功能的缺陷
@@ -262,7 +262,7 @@
 	- 复制与故障转移
 	- 消息
 
-#### 独立功能的实现 182
+#### 独立功能的实现
 17. 发布与订阅
 	- 频道的订阅与退订
 	- 模式的订阅与退订
@@ -303,9 +303,9 @@
 	- 成为监视器
 	- 向监视器发送命令信息
 	
-## redis笔记 223
-### 持久化 224
-#### RDB 225
+## redis笔记
+### 持久化
+#### RDB
 1. RDB 生成:
 	1. 有两个Redis命令可以用于生成RDB文件
 		- SAVE: 阻塞
@@ -342,7 +342,7 @@
 	4. 带有过期键的	`key_value_pairs`
 		| EXPIRETIME_MS | ms | TYPE | key | value |
 
-#### AOF持久化 262
+#### AOF持久化
 1. AOF持久化的实现: AOF持久化功能的实现可以分为三个步骤:
 	- 命令追加(append)
 	- 文件写入
@@ -397,9 +397,9 @@
 
 	2. AOF重写缓冲区的作用: p148
 
-## redis源码解析 317
-### redis数据结构 318
-#### sds 319
+## redis源码解析
+### redis数据结构
+#### sds
 1. sds的数据结构:
 	```
 	typedef char *sds;
@@ -440,7 +440,7 @@
 	}
 	```
 
-#### 链表 360
+#### 链表
 1. 链表的数据结构:
 	```
 	typedef struct listNode {
@@ -535,7 +535,7 @@
 	#definelistGetMatchMethod(l)((l)->match)
 	```
 
-#### hash 455
+#### hash
 1. 结构
 	```
 	/*
@@ -714,7 +714,7 @@
 	1. rehashing时,将ht[0]->table[h]的kv转移到ht[1]tale[k]时,当ht[0]开始转移时,ht[0]的table[h]的所有还未转移的kv都访问不到了,知道table[h]这一个数组的所有
 kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有发生异常,如果转移过程中,有别的线程读取正在转移的哪一行,会发生找不到.
 
-#### 跳跃表 634
+#### 跳跃表
 1. 结构:
 	```
 	/* ZSETs use a specialized version of Skiplists */
@@ -762,7 +762,7 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 	} zskiplist;
 	```
 
-#### ziplist压缩表 682
+#### ziplist压缩表
 1. ziplist中实体对象结构:
 	```
 	/*
@@ -780,13 +780,13 @@ kv都转移完才可以找到,但是因为redis是单线程,所以redis才没有
 
 		// 当前节点 header 的大小
 		// 等于 prevrawlensize + lensize
-    unsigned int headersize;
+    unsigned intheadersize;
 
-    // 当前节点值所使用的编码类型
-    unsigned char encoding;
+    //当前节点值所使用的编码类型
+    unsigned charencoding;
 
-    // 指向当前节点的指针
-    unsigned char *p;
+    //指向当前节点的指针
+    unsigned char*p;
 
 	} zlentry;
 	```
