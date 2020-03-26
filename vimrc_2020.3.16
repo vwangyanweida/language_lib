@@ -27,7 +27,7 @@ set wildmode=longest,list " Ex命令自动补全采用bash方式"
 
 "会用markdown的toc插件时,vim不能实现跳转,所以在目录项后面加入行数,方便跳转.
 map <F8> :g/^#/s/$/\=' ' . line(".")<CR>
-map <F9>  :%s/\(^#.* .*\) \d*/\1/g<CR>
+map <F9>  :%s/\(^#.* .*\) \d\+/\1/g<CR>
 
 " omnicppcomplete
 imap <F3> <C-X><C-O>
@@ -114,9 +114,11 @@ map <CR> :call SkipLine()<CR>
 func! SkipLine()
 	let i = getline(".")
 	"注意,正则表达式用双引号时,匹配的都是空
-	let e = matchlist(i, '^\* .* \(\d*\)]$')
+	let e = matchlist(i, '^\s*\* \[.* \(\d\+\)\]$')
 	if len(e)
 		exec ":" . e[1]
+	else
+		echom "无法跳跃"
 	endif
 endfunc
 
