@@ -1,0 +1,10 @@
+1. 异步的方法都有
+	async_read
+	read
+	async_write
+	wrie
+
+	read_util
+	write_util
+
+	或者自定义结束处理函数或者结束标志completed函数
