@@ -272,4 +272,48 @@ var app6 = new Vue({
 这些property改变时,视图将会产生"响应",及匹配更新为新的值.
 
 3. 值得注意的是,只有当实例被创建时就已经存在于data中的property才是响应式的.
-如果Vue创建后加入的新的值,是不会触发任何视图更新的.
+	- 如果Vue创建后加入的新的值,是不会触发任何视图更新的.
+	- 如果需要的值一开始是空值,那么创建一个空的初始property
+
+4. Object.freeze(obj): 阻止修改现有的property,这意味着响应系统无法再追踪变化.
+
+5. 除了数据property,Vue实例还暴露了一些有用的实例property与方法,它们都有前缀$,以便与用户定义的property区分开来.
+```
+var data = {a:1}
+var vm = new Vue({
+	el: '#example',
+	data: data
+})
+
+vm.$data === data // => true
+vm.$el === document.getElementById("example") // => true
+
+vm.$watch('a', function(newValue, oldValue) {
+			//这个回调将在'vm.a' 改变后调用
+})
+```
+### 生命周期
+1. 生命周期的钩子:
+	- created: 用来在一个实例被创建之后执行代码
+	- mounted:
+	- updated:
+	- destroyed:
+
+2. 例子
+```
+new Vue({
+	data: {
+		a: 1
+	},
+	created: function() {
+		console.log('a is:' + this.a)
+	}
+})
+```
+
+3. 不要在选项property或回调上使用**箭头函数**,比如created:() => console.log(this.a) 或
+vm.$watch('a', newValue=>this.myMethod());
+因为箭头函数并没有this,this会作为变量一直向上词法作用域查找,直至找到为止.经常导致错误.
+
+4. vue实例生命周期
+![图片](vue_实例生命周期.png)
