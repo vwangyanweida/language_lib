@@ -1,3 +1,16 @@
+
+<!-- vim-markdown-toc GFM -->
+
+* [表单输入绑定]
+	* [基础用法]
+	* [文本]
+	* [多行文本]
+	* [复选框]
+	* [选择框]
+	* [复选框]
+	* [单选按钮]
+
+<!-- vim-markdown-toc -->
 ## 表单输入绑定
 ### 基础用法
 1. 你可以用 v-model 指令在表单 <input>、<textarea> 及 <select> 元素上创建双向数据绑定。
@@ -53,7 +66,7 @@ Multiline message is:
 [ ] {{ checked }}
 ```
 
-多个复选框，绑定到同一个数组：
+2. 多个复选框，绑定到同一个数组：
 
 ```
 <div id='example-3'>
@@ -74,11 +87,11 @@ new Vue({
   }
 })
 
-[ ] Jack [ ] John [ ] Mike
+[ Jack  John  Mike]
 Checked names: {{ checkedNames }}
 ```
 
- 单选按钮
+3. 单选按钮:绑定到value
 
 ```
 <div id="example-4">
@@ -103,9 +116,8 @@ new Vue({
 Picked: {{ picked }}
 ```
 
- 选择框
-单选时：
-
+### 选择框
+1. 单选时：
 ```
 <div id="example-5">
   <select v-model="selected">
@@ -127,10 +139,14 @@ new Vue({
 [请选择] Selected: {{ selected }}
 ```
 
-如果 v-model 表达式的初始值未能匹配任何选项，<select> 元素将被渲染为“未选中”状态。在 iOS 中，这会使用户无法选择第一个选项。
-因为这样的情况下，iOS 不会触发 change 事件。因此，更推荐像上面这样提供一个值为空的禁用选项。
+	1. 如果 v-model 表达式的初始值未能匹配任何选项，<select> 元素将被渲染为“未选中”状态。
+	在 iOS 中，这会使用户无法选择第一个选项。
+因为这样的情况下，iOS 不会触发 change 事件。
+	因此，更推荐像上面这样提供一个值为空的禁用选项。
 
-多选时 (绑定到一个数组)：
+	2. <font color=red>单选框的checked和select的selected是空间的两个属性</font>
+
+2. 多选时 (绑定到一个数组)：
 
 ```
 <div id="example-6">
@@ -158,7 +174,7 @@ new Vue({
 Selected: {{ selected }}
 ```
 
-用 v-for 渲染的动态选项：
+3. 用 v-for 渲染的动态选项：
 
 ```
 <select v-model="selected">
@@ -183,9 +199,9 @@ new Vue({
 [{{ option.text }}] Selected: {{ selected }}
 ```
 
- 值绑定
-
-对于单选按钮，复选框及选择框的选项，v-model 绑定的值通常是静态字符串 (对于复选框也可以是布尔值)：
+4. 值绑定
+	1. <font color=green>对于单选按钮，复选框及选择框的选项，v-model 绑定的值通常是静态字符串
+(对于复选框也可以是布尔值)</font>：
 
 ```
 <!-- 当选中时，`picked` 为字符串 "a" -->
@@ -200,9 +216,10 @@ new Vue({
 </select>
 ```
 
-但是有时我们可能想把值绑定到 Vue 实例的一个动态 property 上，这时可以用 v-bind 实现，并且这个 property 的值可以不是字符串。
+	2. 但是有时我们可能想把值绑定到 Vue 实例的一个动态 property 上，
+	这时可以用 v-bind 实现，并且这个 property 的值可以不是字符串。
 
- 复选框
+### 复选框
 
 ```
 <input
@@ -218,10 +235,12 @@ vm.toggle === 'yes'
 vm.toggle === 'no'
 ```
 
-这里的 true-value 和 false-value attribute 并不会影响输入控件的 value attribute，因为浏览器在提交表单时并不会包含未被选中的
-复选框。如果要确保表单中这两个值中的一个能够被提交，(即“yes”或“no”)，请换用单选按钮。
+	这里的 true-value 和 false-value attribute 并不会影响输入控件的 value attribute，
+	因为浏览器在提交表单时并不会包含未被选中的复选框。
+如果要确保表单中这两个值中的一个能够被提交，(即“yes”或“no”)，
+请换用单选按钮。
 
- 单选按钮
+### 单选按钮
 
 ```
 <input type="radio" v-model="pick" v-bind:value="a">
