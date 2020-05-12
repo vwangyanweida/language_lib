@@ -3,16 +3,18 @@
 
 * [表单输入绑定]
 	* [基础用法]
-	* [文本]
-	* [多行文本]
-	* [复选框]
-	* [选择框]
-	* [复选框]
-	* [单选按钮]
+		* [文本]
+		* [多行文本]
+		* [复选框]
+		* [选择框]
+	* [值绑定]
+		* [复选框]
+		* [单选按钮]
+		* [修饰符]
 
 <!-- vim-markdown-toc -->
-## 表单输入绑定
-### 基础用法
+# 表单输入绑定
+## 基础用法
 1. 你可以用 v-model 指令在表单 <input>、<textarea> 及 <select> 元素上创建双向数据绑定。
 <font color=red>它会根据控件类型自动选取正确的方法来更新元素。</font>
 尽管有些神奇，但 v-model 本质上不过是语法糖。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。
@@ -199,8 +201,8 @@ new Vue({
 [{{ option.text }}] Selected: {{ selected }}
 ```
 
-4. 值绑定
-	1. <font color=green>对于单选按钮，复选框及选择框的选项，v-model 绑定的值通常是静态字符串
+## 值绑定
+1. <font color=green>对于单选按钮，复选框及选择框的选项，v-model 绑定的值通常是静态字符串
 (对于复选框也可以是布尔值)</font>：
 
 ```
@@ -216,8 +218,8 @@ new Vue({
 </select>
 ```
 
-	2. 但是有时我们可能想把值绑定到 Vue 实例的一个动态 property 上，
-	这时可以用 v-bind 实现，并且这个 property 的值可以不是字符串。
+2. 但是有时我们可能想把值绑定到 Vue 实例的一个动态 property 上，
+这时可以用 v-bind 实现，并且这个 property 的值可以不是字符串。
 
 ### 复选框
 
@@ -241,15 +243,17 @@ vm.toggle === 'no'
 请换用单选按钮。
 
 ### 单选按钮
-
+1. v-bind 动态绑定属性
 ```
 <input type="radio" v-model="pick" v-bind:value="a">
 
 // 当选中时
 vm.pick === vm.a
+```
 
- 选择框的选项
+2. 选择框的选项
 
+```
 <select v-model="selected">
     <!-- 内联对象字面量 -->
   <option v-bind:value="{ number: 123 }">123</option>
@@ -260,28 +264,31 @@ typeof vm.selected // => 'object'
 vm.selected.number // => 123
 ```
 
- 修饰符
+### 修饰符
+1. .lazy
+	在默认情况下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步 (除了上述输入法组合文字时)。
+	
+	你可以添加 lazy 修饰符，从而转为在 change 事件_之后_进行同步：
 
 ```
- .lazy
-
-在默认情况下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步 (除了上述输入法组合文字时)。你可以添加 lazy 修饰符
-，从而转为在 change 事件_之后_进行同步：
-
 <!-- 在“change”时而非“input”时更新 -->
 <input v-model.lazy="msg">
+```
 
- .number
+2. .number
 
-如果想自动将用户的输入值转为数值类型，可以给 v-model 添加 number 修饰符：
+	如果想自动将用户的输入值转为数值类型，可以给 v-model 添加 number 修饰符：
 
+```
 <input v-model.number="age" type="number">
-
+```
 这通常很有用，因为即使在 type="number" 时，HTML 输入元素的值也总会返回字符串。如果这个值无法被 parseFloat() 解析，则会返回
 原始的值。
 
- .trim
+3. .trim
 
-如果要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符：
+	如果要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符：
 
+```
 <input v-model.trim="msg">
+```
