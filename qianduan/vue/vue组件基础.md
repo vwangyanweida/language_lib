@@ -1,8 +1,7 @@
 ## 组件基础
-1. 基本示例
-
-这里有一个 Vue 组件的示例：
-
+### 基本示例
+1. 这里有一个 Vue 组件的示例：
+```
 // 定义一个名为 button-counter 的新组件
 Vue.component('button-counter', {
   data: function () {
@@ -12,15 +11,17 @@ Vue.component('button-counter', {
   },
   template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 })
+```
 
-组件是可复用的 Vue 实例，且带有一个名字：在这个例子中是 <button-counter>。我们可以在一个通过 new Vue 创建的 Vue 根实例中，
-把这个组件作为自定义元素来使用：
-
+2. 组件是可复用的 Vue 实例，且带有一个名字：在这个例子中是 <button-counter>。
+我们可以在一个通过 new Vue 创建的 Vue 根实例中，把这个组件作为自定义元素来使用：
+```
 <div id="components-demo">
   <button-counter></button-counter>
 </div>
 
 new Vue({ el: '#components-demo' })
+```
 
 因为组件是可复用的 Vue 实例，所以它们与 new Vue 接收相同的选项，例如 data、computed、watch、methods 以及生命周期钩子等。仅
 有的例外是像 el 这样根实例特有的选项。
