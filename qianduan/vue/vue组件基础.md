@@ -1,3 +1,18 @@
+
+<!-- vim-markdown-toc GFM -->
+
+* [组件基础]
+	* [基本示例]
+	* [组件的复用]
+	* [组件的组织]
+	* [通过 Prop 向子组件传递数据]
+	* [单个根元素]
+	* [监听子组件事件]
+	* [通过插槽分发内容 slot]
+	* [动态组件: is属性]
+	* [解析 DOM 模板时的注意事项]
+
+<!-- vim-markdown-toc -->
 ## 组件基础
 ### 基本示例
 1. 这里有一个 Vue 组件的示例：
@@ -37,115 +52,139 @@ new Vue({ el: '#components-demo' })
 </div>
 ```
 
-	注意当点击按钮时，每个组件都会各自独立维护它的 count。因为你每用一次组件，就会有一个它的新实例被创建。
+2. <font color=red>注意当点击按钮时，每个组件都会各自独立维护它的 count</font>。
+因为你每用一次组件，就会有一个它的新实例被创建。
 
- data 必须是一个函数
+3. data 必须是一个函数
+	1. 当我们定义这个 <button-counter> 组件时，你可能会发现它的 data 并不是像这样直接提供一个对象：
+	```
+	data: {
+	  count: 0
+	}
+	```
 
-当我们定义这个 <button-counter> 组件时，你可能会发现它的 data 并不是像这样直接提供一个对象：
+	2. 取而代之的是，一个组件的 data 选项必须是一个函数，
+	<font color=green>因此每个实例可以维护一份被返回对象的独立的拷贝</font>：
 
-data: {
-  count: 0
-}
+	```
+	data: function () {
+	  return {
+		count: 0
+	  }
+	}
+	```
 
-取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+	3. 如果 Vue 没有这条规则，点击一个按钮就可能会像如下代码一样影响到其它所有实例：
 
-data: function () {
-  return {
-    count: 0
-  }
-}
+	4. <font color=green> 组件拥有不完整的vue实例对象,它的data属性等于调用组件定义的data()返回的对象空间</font>
 
-如果 Vue 没有这条规则，点击一个按钮就可能会像如下代码一样影响到其它所有实例：
+### 组件的组织
+1.通常一个应用会以一棵嵌套的组件树的形式来组织：
+	1. component tree
+		![组件树](组件树.png)
 
- 组件的组织
+	2. 例如，你可能会有页头、侧边栏、内容区等组件，每个组件又包含了其它的像导航链接、博文之类的组件。
 
-通常一个应用会以一棵嵌套的组件树的形式来组织：
+2. 为了能在模板中使用，
+	1. 这些组件必须先注册以便 Vue 能够识别。
+	2. 这里有两种组件的注册类型：全局注册和局部注册。
+	3. 至此，我们的组件都只是通过 Vue.component 全局注册的：
 
-Component Tree
+	```
+	Vue.component('my-component-name', {
+	  // ... options ...
+	})
+	```
 
-例如，你可能会有页头、侧边栏、内容区等组件，每个组件又包含了其它的像导航链接、博文之类的组件。
+	4. 全局注册的组件可以用在其被注册之后的任何 (通过 new Vue) 新创建的 Vue 根实例，
+	也包括其组件树中的所有子组件的模板中。
 
-为了能在模板中使用，这些组件必须先注册以便 Vue 能够识别。这里有两种组件的注册类型：全局注册和局部注册。至此，我们的组件都只
-是通过 Vue.component 全局注册的：
+### 通过 Prop 向子组件传递数据
+	早些时候，我们提到了创建一个博文组件的事情。问题是如果你不能向这个组件传递某一篇博文的标题或内容之类的我
+们想展示的数据的话，它是没有办法使用的。这也正是 prop 的由来。
 
-Vue.component('my-component-name', {
-  // ... options ...
-})
+1. Prop 是你可以在组件上注册的一些自定义 attribute。当一个值传递给一个 prop attribute 的时候，
+它就变成了那个组件实例的一个property。
 
-全局注册的组件可以用在其被注册之后的任何 (通过 new Vue) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中。
-
-到目前为止，关于组件注册你需要了解的就这些了，如果你阅读完本页内容并掌握了它的内容，我们会推荐你再回来把组件注册读完。
-
- 通过 Prop 向子组件传递数据
-
-早些时候，我们提到了创建一个博文组件的事情。问题是如果你不能向这个组件传递某一篇博文的标题或内容之类的我们想展示的数据的话
-，它是没有办法使用的。这也正是 prop 的由来。
-
-Prop 是你可以在组件上注册的一些自定义 attribute。当一个值传递给一个 prop attribute 的时候，它就变成了那个组件实例的一个
-property。为了给博文组件传递一个标题，我们可以用一个 props 选项将其包含在该组件可接受的 prop 列表中：
-
+2. 为了给博文组件传递一个标题，我们可以用一个 props 选项将其包含在该组件可接受的 prop 列表中：
+```
 Vue.component('blog-post', {
   props: ['title'],
   template: '<h3>{{ title }}</h3>'
 })
+```
 
-一个组件默认可以拥有任意数量的 prop，任何值都可以传递给任何 prop。在上述模板中，你会发现我们能够在组件实例中访问这个值，就
-像访问 data 中的值一样。
+3. 一个组件默认可以拥有任意数量的 prop，任何值都可以传递给任何 prop。
+在上述模板中，你会发现我们能够在组件实例中访问这个值，就像访问 data 中的值一样。
 
-一个 prop 被注册之后，你就可以像这样把数据作为一个自定义 attribute 传递进来：
+4. 一个 prop 被注册之后，你就可以像这样把数据作为一个自定义 attribute 传递进来：
+	1. 基础
+	```
+	<blog-post title="My journey with Vue"></blog-post>
+	<blog-post title="Blogging with Vue"></blog-post>
+	<blog-post title="Why Vue is so fun"></blog-post>
+	```
 
-<blog-post title="My journey with Vue"></blog-post>
-<blog-post title="Blogging with Vue"></blog-post>
-<blog-post title="Why Vue is so fun"></blog-post>
+	2. 然而在一个典型的应用中，你可能在 data 里有一个博文的数组：
 
-然而在一个典型的应用中，你可能在 data 里有一个博文的数组：
+	```
+	new Vue({
+	  el: '#blog-post-demo',
+	  data: {
+		posts: [
+		  { id: 1, title: 'My journey with Vue' },
+		  { id: 2, title: 'Blogging with Vue' },
+		  { id: 3, title: 'Why Vue is so fun' }
+		]
+	  }
+	})
+	```
 
-new Vue({
-  el: '#blog-post-demo',
-  data: {
-    posts: [
-      { id: 1, title: 'My journey with Vue' },
-      { id: 2, title: 'Blogging with Vue' },
-      { id: 3, title: 'Why Vue is so fun' }
-    ]
-  }
-})
+	3. 并想要为每篇博文渲染一个组件：
 
-并想要为每篇博文渲染一个组件：
+	```
+	<blog-post
+	  v-for="post in posts"
+	  v-bind:key="post.id"
+	  v-bind:title="post.title"
+	></blog-post>
+	```
 
-<blog-post
-  v-for="post in posts"
-  v-bind:key="post.id"
-  v-bind:title="post.title"
-></blog-post>
+5. 如上所示，你会发现我们<font color=red>可以使用 v-bind 来动态传递 prop</font>。这在你一开始不清楚要渲染的具体内容，
+比如从一个 API 获取博文列表的时候，是非常有用的。
 
-如上所示，你会发现我们可以使用 v-bind 来动态传递 prop。这在你一开始不清楚要渲染的具体内容，比如从一个 API 获取博文列表的时
-候，是非常有用的。
+### 单个根元素
+1. 当构建一个 <blog-post> 组件时，你的模板最终会包含的东西远不止一个标题：
 
-到目前为止，关于 prop 你需要了解的大概就这些了，如果你阅读完本页内容并掌握了它的内容，我们会推荐你再回来把 prop 读完。
-
- 单个根元素
-
-当构建一个 <blog-post> 组件时，你的模板最终会包含的东西远不止一个标题：
-
+```
 <h3>{{ title }}</h3>
+```
 
-最最起码，你会包含这篇博文的正文：
+2. 最最起码，你会包含这篇博文的正文：
 
+```
 <h3>{{ title }}</h3>
 <div v-html="content"></div>
+```
 
-然而如果你在模板中尝试这样写，Vue 会显示一个错误，并解释道 every component must have a single root element (每个组件必须只
-有一个根元素)。你可以将模板的内容包裹在一个父元素内，来修复这个问题，例如：
+3. 然而如果你在模板中尝试这样写，Vue 会显示一个错误，并解释道 every component must have a single root element 
+(每个组件必须只有一个根元素)。你可以将模板的内容包裹在一个父元素内，来修复这个问题，例如：
 
+```
 <div class="blog-post">
   <h3>{{ title }}</h3>
   <div v-html="content"></div>
 </div>
+```
 
-看起来当组件变得越来越复杂的时候，我们的博文不只需要标题和内容，还需要发布日期、评论等等。为每个相关的信息定义一个 prop 会
-变得很麻烦：
+	1. 注意:
+		<font color=green>注意,每个组件只能有一个根元素,指的是只能有一个html的根元素,而不是vue实例的根元素,
+	不能有兄弟节点,只能有后代节点</font>
 
+4. 看起来当组件变得越来越复杂的时候，我们的博文不只需要标题和内容，还需要发布日期、评论等等。
+为每个相关的信息定义一个 prop 会变得很麻烦：
+
+```
 <blog-post
   v-for="post in posts"
   v-bind:key="post.id"
@@ -154,9 +193,11 @@ new Vue({
   v-bind:publishedAt="post.publishedAt"
   v-bind:comments="post.comments"
 ></blog-post>
+```
 
-所以是时候重构一下这个 <blog-post> 组件了，让它变成接受一个单独的 post prop：
+5. 所以是时候重构一下这个 <blog-post> 组件了，让它变成接受一个单独的 post prop：
 
+```
 <blog-post
   v-for="post in posts"
   v-bind:key="post.id"
@@ -172,230 +213,261 @@ Vue.component('blog-post', {
     </div>
   `
 })
+```
 
-上述的这个和一些接下来的示例使用了 JavaScript 的模板字符串来让多行的模板更易读。它们在 IE 下并没有被支持，所以如果你需要在
-不 (经过 Babel 或 TypeScript 之类的工具) 编译的情况下支持 IE，请使用折行转义字符取而代之。
+	1. 上述的这个和一些接下来的示例使用了 JavaScript 的模板字符串来让多行的模板更易读。它们在 IE 下并没有被支持，
+所以如果你需要在不 (经过 Babel 或 TypeScript 之类的工具) 编译的情况下支持 IE，请使用折行转义字符取而代之。
 
-现在，不论何时为 post 对象添加一个新的 property，它都会自动地在 <blog-post> 内可用。
+	2. 现在，不论何时为 post 对象添加一个新的 property，它都会自动地在 <blog-post> 内可用。
 
- 监听子组件事件
+### 监听子组件事件
+1. 在我们开发 <blog-post> 组件时，它的一些功能可能要求我们和父级组件进行沟通。
+例如我们可能会引入一个辅助功能来放大博文的字号，同时让页面的其它部分保持默认的字号。
 
-在我们开发 <blog-post> 组件时，它的一些功能可能要求我们和父级组件进行沟通。例如我们可能会引入一个辅助功能来放大博文的字号，
-同时让页面的其它部分保持默认的字号。
+	1. 在其父组件中，我们可以通过添加一个 postFontSize 数据 property 来支持这个功能：
 
-在其父组件中，我们可以通过添加一个 postFontSize 数据 property 来支持这个功能：
+	```
+	new Vue({
+	  el: '#blog-posts-events-demo',
+	  data: {
+		posts: [/* ... */],
+		postFontSize: 1
+	  }
+	})
+	```
 
-new Vue({
-  el: '#blog-posts-events-demo',
-  data: {
-    posts: [/* ... */],
-    postFontSize: 1
-  }
-})
+	2. 它可以在模板中用来控制所有博文的字号：
 
-它可以在模板中用来控制所有博文的字号：
+	```
+	<div id="blog-posts-events-demo">
+	  <div :style="{ fontSize: postFontSize + 'em' }">
+		<blog-post
+		  v-for="post in posts"
+		  v-bind:key="post.id"
+		  v-bind:post="post"
+		></blog-post>
+	  </div>
+	</div>
+	```
 
-<div id="blog-posts-events-demo">
-  <div :style="{ fontSize: postFontSize + 'em' }">
-    <blog-post
-      v-for="post in posts"
-      v-bind:key="post.id"
-      v-bind:post="post"
-    ></blog-post>
-  </div>
-</div>
+	3. 现在我们在每篇博文正文之前添加一个按钮来放大字号：
 
-现在我们在每篇博文正文之前添加一个按钮来放大字号：
+	```
+	Vue.component('blog-post', {
+	  props: ['post'],
+	  template: `
+		<div class="blog-post">
+		  <h3>{{ post.title }}</h3>
+		  <button>
+			Enlarge text
+		  </button>
+		  <div v-html="post.content"></div>
+		</div>
+	  `
+	})
+	```
 
-Vue.component('blog-post', {
-  props: ['post'],
-  template: `
-    <div class="blog-post">
-      <h3>{{ post.title }}</h3>
-      <button>
-        Enlarge text
-      </button>
-      <div v-html="post.content"></div>
-    </div>
-  `
-})
+	4. 问题是这个按钮不会做任何事：
 
-问题是这个按钮不会做任何事：
+	```
+	<button>
+	  Enlarge text
+	</button>
+	```
 
-<button>
-  Enlarge text
-</button>
+	5. 当点击这个按钮时，我们需要告诉父级组件放大所有博文的文本。
+	幸好 Vue 实例提供了一个自定义事件的系统来解决这个问题。父级组件可以像处理 native DOM 
+	事件一样通过 v-on 监听子组件实例的任意事件：
 
-当点击这个按钮时，我们需要告诉父级组件放大所有博文的文本。幸好 Vue 实例提供了一个自定义事件的系统来解决这个问题。父级组件可
-以像处理 native DOM 事件一样通过 v-on 监听子组件实例的任意事件：
+	```
+	<blog-post
+	  ...
+	  v-on:enlarge-text="postFontSize += 0.1"
+	></blog-post>
+	```
 
-<blog-post
-  ...
-  v-on:enlarge-text="postFontSize += 0.1"
-></blog-post>
+	6. 同时子组件可以通过调用内建的 $emit 方法并传入事件名称来触发一个事件：
 
-同时子组件可以通过调用内建的 $emit 方法并传入事件名称来触发一个事件：
+	```
+	<button v-on:click="$emit('enlarge-text')">
+	  Enlarge text
+	</button>
+	```
 
-<button v-on:click="$emit('enlarge-text')">
-  Enlarge text
-</button>
+	有了这个 v-on:enlarge-text="postFontSize += 0.1" 监听器，父级组件就会接收该事件并更新 postFontSize 的值。
 
-有了这个 v-on:enlarge-text="postFontSize += 0.1" 监听器，父级组件就会接收该事件并更新 postFontSize 的值。
+2. 使用事件抛出一个值
+有的时候用一个事件来抛出一个特定的值是非常有用的。例如我们可能想让 <blog-post> 组件决定它的文本要放大多少。
 
- 使用事件抛出一个值
+	1. <font color=red>这时可以使用$emit 的第二个参数来提供这个值</font>：
 
-有的时候用一个事件来抛出一个特定的值是非常有用的。例如我们可能想让 <blog-post> 组件决定它的文本要放大多少。这时可以使用
-$emit 的第二个参数来提供这个值：
+	```
+	<button v-on:click="$emit('enlarge-text', 0.1)">
+	  Enlarge text
+	</button>
+	```
 
-<button v-on:click="$emit('enlarge-text', 0.1)">
-  Enlarge text
-</button>
+	2. 然后当在父级组件监听这个事件的时候，<font color=red>我们可以通过 $event 访问到被抛出的这个值</font>：
 
-然后当在父级组件监听这个事件的时候，我们可以通过 $event 访问到被抛出的这个值：
+	```
+	<blog-post
+	  ...
+	  v-on:enlarge-text="postFontSize += $event"
+	></blog-post>
+	```
 
-<blog-post
-  ...
-  v-on:enlarge-text="postFontSize += $event"
-></blog-post>
+	3. 或者，如果这个事件处理函数是一个方法：
 
-或者，如果这个事件处理函数是一个方法：
+	```
+	<blog-post
+	  ...
+	  v-on:enlarge-text="onEnlargeText"
+	></blog-post>
+	```
 
-<blog-post
-  ...
-  v-on:enlarge-text="onEnlargeText"
-></blog-post>
+	4. <font color=green>那么这个值将会作为第一个参数传入这个方法</font>：
 
-那么这个值将会作为第一个参数传入这个方法：
+	```
+	methods: {
+	  onEnlargeText: function (enlargeAmount) {
+		this.postFontSize += enlargeAmount
+	  }
+	}
+	```
 
-methods: {
-  onEnlargeText: function (enlargeAmount) {
-    this.postFontSize += enlargeAmount
-  }
-}
+3. 在组件上使用 v-model自定义事件也可以用于创建支持 v-model 的自定义输入组件。
+	1. 记住：
 
- 在组件上使用 v-model
+	<input v-model="searchText">
 
-自定义事件也可以用于创建支持 v-model 的自定义输入组件。记住：
+	等价于：
 
-<input v-model="searchText">
+	```
+	<input
+	  v-bind:value="searchText"
+	  v-on:input="searchText = $event.target.value"
+	>
+	```
 
-等价于：
+	2. 当用在组件上时，v-model 则会这样：
 
-<input
-  v-bind:value="searchText"
-  v-on:input="searchText = $event.target.value"
->
+	```
+	<custom-input
+	  v-bind:value="searchText"
+	  v-on:input="searchText = $event"
+	></custom-input>
+	```
 
-当用在组件上时，v-model 则会这样：
+4. 为了让它正常工作，这个组件内的 <input> 必须：
 
-<custom-input
-  v-bind:value="searchText"
-  v-on:input="searchText = $event"
-></custom-input>
+	- 将其 value attribute 绑定到一个名叫 value 的 prop 上
+	- 在其 input 事件被触发时，将新的值通过自定义的 input 事件抛出
 
-为了让它正常工作，这个组件内的 <input> 必须：
+	- 总结:
+		1. <font color=green>之所以这样,是因为v-model对不同的html元素有不同的input事件方法
+	(组件上是"v-on:input='searchText=$event'",所以发射事件信号时,组件需要将信号参数换成$event.targe.value)
 
-  • 将其 value attribute 绑定到一个名叫 value 的 prop 上
-  • 在其 input 事件被触发时，将新的值通过自定义的 input 事件抛出
+		2. html原生的元素因为input触发的函数会自己取$event.target.value,所以不用重新发射信号.</font>
+		
+		3. 一切的原因就是上面两种不同的v-model处理方式:是直接将$event赋值给绑定的对象还是
+		取出$event.target.value赋值给绑定对象.
 
-写成代码之后是这样的：
+5. 写成代码之后是这样的：
 
+```
 Vue.component('custom-input', {
   props: ['value'],
   template: `
-    <input
-      v-bind:value="value"
+	<input
+	  v-bind:value="value"
       v-on:input="$emit('input', $event.target.value)"
     >
   `
 })
+```
 
-现在 v-model 就应该可以在这个组件上完美地工作起来了：
+6. 现在 v-model 就应该可以在这个组件上完美地工作起来了：
 
+```
 <custom-input v-model="searchText"></custom-input>
+```
 
-到目前为止，关于组件自定义事件你需要了解的大概就这些了，如果你阅读完本页内容并掌握了它的内容，我们会推荐你再回来把自定义事
-件读完。
+### 通过插槽分发内容 slot
+1. 和 HTML 元素一样，我们经常需要向一个组件传递内容，
+	1. 像这样：
 
- 通过插槽分发内容
+	```
+	<alert-box>
+	  Something bad happened.
+	</alert-box>
+	```
 
-和 HTML 元素一样，我们经常需要向一个组件传递内容，像这样：
+	2. 可能会渲染出这样的东西：
 
-<alert-box>
-  Something bad happened.
-</alert-box>
+	Error! Something bad happened.
 
-可能会渲染出这样的东西：
+	3. 幸好，Vue 自定义的 <slot> 元素让这变得非常简单：
 
-Something bad happened.
+	```
+	Vue.component('alert-box', {
+	  template: `
+		<div class="demo-alert-box">
+		  <strong>Error!</strong>
+		  <slot></slot>
+		</div>
+	  `
+	})
+	```
 
-幸好，Vue 自定义的 <slot> 元素让这变得非常简单：
+### 动态组件: is属性
+1. 有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
 
-Vue.component('alert-box', {
-  template: `
-    <div class="demo-alert-box">
-      <strong>Error!</strong>
-      <slot></slot>
-    </div>
-  `
-})
-
-如你所见，我们只要在需要的地方加入插槽就行了——就这么简单！
-
-到目前为止，关于插槽你需要了解的大概就这些了，如果你阅读完本页内容并掌握了它的内容，我们会推荐你再回来把插槽读完。
-
- 动态组件
-
-有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
-
-{{ tab }}
-
-上述内容可以通过 Vue 的 <component> 元素加一个特殊的 is attribute 来实现：
-
+2. 上述内容可以通过 Vue 的 <component> 元素加一个特殊的 is attribute 来实现：
+```
 <!-- 组件会在 `currentTabComponent` 改变时改变 -->
 <component v-bind:is="currentTabComponent"></component>
+```
 
-在上述示例中，currentTabComponent 可以包括
+3. 在上述示例中，currentTabComponent 可以包括
 
-  • 已注册组件的名字，或
-  • 一个组件的选项对象
+	- 已注册组件的名字，或
+	- 一个组件的选项对象
 
-你可以在这里查阅并体验完整的代码，或在这个版本了解绑定组件选项对象，而不是已注册组件名的示例。
+4. 请留意，这个 attribute 可以用于常规 HTML 元素，但这些元素将被视为组件，
+这意味着所有的 attribute 都会作为 DOM attribute 被绑定。对于像 value 这样的 property，
+若想让其如预期般工作，你需要使用 .prop 修饰器。
 
-请留意，这个 attribute 可以用于常规 HTML 元素，但这些元素将被视为组件，这意味着所有的 attribute 都会作为 DOM attribute 被绑
-定。对于像 value 这样的 property，若想让其如预期般工作，你需要使用 .prop 修饰器。
+5. <font color=green>总结:</font>
+	1. ps: vue组件的属性和html原生属性冲突时,加上.prop
 
-到目前为止，关于动态组件你需要了解的大概就这些了，如果你阅读完本页内容并掌握了它的内容，我们会推荐你再回来把动态和异步组件
-读完。
+### 解析 DOM 模板时的注意事项
+1. 有些 HTML 元素，诸如 <ul>、<ol>、<table> 和 <select>，对于哪些元素可以出现在其内部是有严格限制的。
+而有些元素，诸如 <li>、<tr> 和 <option>，只能出现在其它某些特定的元素内部。
 
- 解析 DOM 模板时的注意事项
+2. 这会导致我们使用这些有约束条件的元素时遇到一些问题。例如：
 
-有些 HTML 元素，诸如 <ul>、<ol>、<table> 和 <select>，对于哪些元素可以出现在其内部是有严格限制的。而有些元素，诸如 <li>、
-<tr> 和 <option>，只能出现在其它某些特定的元素内部。
-
-这会导致我们使用这些有约束条件的元素时遇到一些问题。例如：
-
+```
 <table>
   <blog-post-row></blog-post-row>
 </table>
+```
 
-这个自定义组件 <blog-post-row> 会被作为无效的内容提升到外部，并导致最终渲染结果出错。幸好这个特殊的 is attribute 给了我们一
-个变通的办法：
+3. 这个自定义组件 <blog-post-row> 会被作为无效的内容提升到外部，并导致最终渲染结果出错。
+幸好这个特殊的 is attribute 给了我们一个变通的办法：
 
+```
 <table>
   <tr is="blog-post-row"></tr>
 </table>
+```
 
-需要注意的是如果我们从以下来源使用模板的话，这条限制是不存在的：
+4. 需要注意的是如果我们从以下来源使用模板的话，这条限制是不存在的：
 
-  • 字符串 (例如：template: '...')
-  • 单文件组件 (.vue)
-  • <script type="text/x-template">
+	- 字符串 (例如：template: '...')
+	- 单文件组件 (.vue)
+	- <script type="text/x-template">
 
-到这里，你需要了解的解析 DOM 模板时的注意事项——实际上也是 Vue 的全部必要内容，大概就是这些了。恭喜你！接下来还有很多东西要
-去学习，不过首先，我们推荐你先休息一下，试用一下 Vue，自己随意做些好玩的东西。
-
-如果你感觉已经掌握了这些知识，我们推荐你再回来把完整的组件指南，包括侧边栏中组件深入章节的所有页面读完。
+5.总结:
+	1. 有些元素不能单独出现时:ul,tr,使用is属性.
 
 ← 表单输入绑定组件注册 →
-发现错误？想参与编辑？在 GitHub 上编辑此页！

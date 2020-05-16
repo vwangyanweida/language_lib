@@ -1,152 +1,33 @@
- 
-vue logo Vue.js
 
-  • [                    ]
-  • 学习
-      □ 文档
+<!-- vim-markdown-toc GFM -->
 
-      □ 
-          ☆ 教程
-          ☆ API
-          ☆ 风格指南
-          ☆ 示例
-          ☆ Cookbook
-      □ 视频教程
+* [Prop]
+	* [总结]
+	* [Prop 的大小写 (camelCase vs kebab-case)]
+	* [Prop 类型]
+	* [传递静态或动态 Prop]
+		* [传入一个数字]
+		* [传入一个布尔值]
+		* [传入一个数组]
+		* [传入一个对象]
+		* [传入一个对象的所有 property]
+	* [单向数据流]
+	* [Prop 验证]
+		* [类型检查]
+	* [非 Prop 的 Attribute]
+		* [替换/合并已有的 Attribute]
+		* [禁用 Attribute 继承]
 
-      □ 
-          ☆ Vue Mastery (英文)
-          ☆ Vue School (英文)
-          ☆ DCloud 视频教程
-  • 生态系统
-      □ 帮助
+<!-- vim-markdown-toc -->
+## Prop
 
-      □ 
-          ☆ 论坛
-          ☆ 聊天室
-          ☆ 聚会
-      □ 工具
+### 总结
 
-      □ 
-          ☆ Devtools
-          ☆ Vue CLI
-          ☆ Vue Loader
-      □ 核心插件
+### Prop 的大小写 (camelCase vs kebab-case)
+1. HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着当你使用 DOM 中的模板时，
+<font color=red>camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名</font>：
 
-      □ 
-          ☆ Vue Router
-          ☆ Vuex
-          ☆ Vue 服务端渲染
-      □ 信息
-
-      □ 
-          ☆ 周刊
-          ☆ Roadmap
-          ☆ 活动
-          ☆ Twitter
-          ☆ 博客
-          ☆ 工作
-  • 团队
-  • 资源列表
-      □ 合作伙伴
-      □ 主题
-      □ Awesome Vue
-      □ 浏览和 Vue 相关的包
-  • 支持 Vue
-      □ 一次性赞助
-      □ 周期性赞助
-      □ 贴纸
-      □ 周边
-      □ T 恤商店
-  • 多语言
-      □ English
-      □ 日本語
-      □ Русский
-      □ 한국어
-      □ Português
-      □ Français
-      □ Tiếng Việt
-      □ Español
-      □ Bahasa Indonesia
-  • 参与翻译
-
-特别赞助商
-[dcloud]
-[imooc-spon]
-
-教程 [2.x ]
-
-  • 基础
-
-  • 安装
-  • 介绍
-  • Vue 实例
-  • 模板语法
-  • 计算属性和侦听器
-  • Class 与 Style 绑定
-  • 条件渲染
-  • 列表渲染
-  • 事件处理
-  • 表单输入绑定
-  • 组件基础
-  • 深入了解组件
-
-  • 组件注册
-  • Prop
-  • 自定义事件
-  • 插槽
-  • 动态组件 & 异步组件
-  • 处理边界情况
-  • 过渡 & 动画
-
-  • 进入/离开 & 列表过渡
-  • 状态过渡
-  • 可复用性 & 组合
-
-  • 混入
-  • 自定义指令
-  • 渲染函数 & JSX
-  • 插件
-  • 过滤器
-  • 工具
-
-  • 单文件组件
-  • 单元测试
-  • TypeScript 支持
-  • 生产环境部署
-  • 规模化
-
-  • 路由
-  • 状态管理
-  • 服务端渲染
-  • 安全
-  • 内在
-
-  • 深入响应式原理
-  • 迁移
-
-  • 从 Vue 1.x 迁移
-  • 从 Vue Router 0.7.x 迁移
-  • 从 Vuex 0.6.x 迁移到 1.0
-  • 更多
-
-  • 对比其他框架
-  • 加入 Vue.js 社区
-  • 认识团队
-
-广告 Vue.js实战项目开发教程
-
-Prop
-
-TPshop 中国免费商城系统 - 搜豹商城系统 - 免费50小时 Vue 视频教程立即查看 >
-
-
-    该页面假设你已经阅读过了组件基础。如果你还对组件不太了解，推荐你先阅读它。
-
- Prop 的大小写 (camelCase vs kebab-case)
-
-HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着当你使用 DOM 中的模板时，
-camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名：
-
+```
 Vue.component('blog-post', {
   // 在 JavaScript 中是 camelCase 的
   props: ['postTitle'],
@@ -155,18 +36,19 @@ Vue.component('blog-post', {
 
 <!-- 在 HTML 中是 kebab-case 的 -->
 <blog-post post-title="hello!"></blog-post>
+```
 
-重申一次，如果你使用字符串模板，那么这个限制就不存在了。
+2. 重申一次，如果你使用字符串模板，那么这个限制就不存在了。
 
- Prop 类型
+### Prop 类型
+1. 到这里，我们只看到了以字符串数组形式列出的 prop：
 
-到这里，我们只看到了以字符串数组形式列出的 prop：
+	props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
 
-props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+2. 但是，通常你希望每个 prop 都有指定的值类型。
+	这时，你可以以对象形式列出 prop，这些 property 的名称和值分别是 prop 各自的名称 和类型：
 
-但是，通常你希望每个 prop 都有指定的值类型。这时，你可以以对象形式列出 prop，这些 property 的名称和值分别是 prop 各自的名称
-和类型：
-
+```
 props: {
   title: String,
   likes: Number,
@@ -176,18 +58,21 @@ props: {
   callback: Function,
   contactsPromise: Promise // or any other constructor
 }
+```
 
-这不仅为你的组件提供了文档，还会在它们遇到错误的类型时从浏览器的 JavaScript 控制台提示用户。你会在这个页面接下来的部分看到
-类型检查和其它 prop 验证。
+3. 这不仅为你的组件提供了文档，还会在它们遇到错误的类型时从浏览器的 JavaScript 控制台提示用户。
+你会在这个页面接下来的部分看到类型检查和其它 prop 验证。
 
- 传递静态或动态 Prop
+### 传递静态或动态 Prop
+1. 像这样，你已经知道了可以像这样给 prop 传入一个静态的值：
 
-像这样，你已经知道了可以像这样给 prop 传入一个静态的值：
-
+```
 <blog-post title="My journey with Vue"></blog-post>
+```
 
-你也知道 prop 可以通过 v-bind 动态赋值，例如：
+2. 你也知道 prop 可以通过 v-bind 动态赋值，例如：
 
+```
 <!-- 动态赋予一个变量的值 -->
 <blog-post v-bind:title="post.title"></blog-post>
 
@@ -195,20 +80,28 @@ props: {
 <blog-post
   v-bind:title="post.title + ' by ' + post.author.name"
 ></blog-post>
+```
 
-在上述两个示例中，我们传入的值都是字符串类型的，但实际上任何类型的值都可以传给一个 prop。
+3. 在上述两个示例中，我们传入的值都是字符串类型的，但实际上任何类型的值都可以传给一个 prop。
 
- 传入一个数字
+4. <font color=green>所有传递的值类型不为string的,都需要使用bind绑定,以使vue解释器明白后面是一个js表达式而不是string.</font>
 
+#### 传入一个数字
+1. eg
+```
 <!-- 即便 `42` 是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
 <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
 <blog-post v-bind:likes="42"></blog-post>
 
 <!-- 用一个变量进行动态赋值。-->
 <blog-post v-bind:likes="post.likes"></blog-post>
+```
 
- 传入一个布尔值
+2. <font color=green>默认直接用prop赋值值类型默认成为字符串,如果不是字符串需要用bind绑定</font>
 
+#### 传入一个布尔值
+1. eg
+```
 <!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
 <blog-post is-published></blog-post>
 
@@ -218,18 +111,24 @@ props: {
 
 <!-- 用一个变量进行动态赋值。-->
 <blog-post v-bind:is-published="post.isPublished"></blog-post>
+```
 
- 传入一个数组
+2. 字符串,包括空'',都是true.
 
+#### 传入一个数组
+1. eg
+```
 <!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
 <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
 <blog-post v-bind:comment-ids="[234, 266, 273]"></blog-post>
 
 <!-- 用一个变量进行动态赋值。-->
 <blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+```
 
- 传入一个对象
+#### 传入一个对象
 
+```
 <!-- 即便对象是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
 <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
 <blog-post
@@ -241,31 +140,38 @@ props: {
 
 <!-- 用一个变量进行动态赋值。-->
 <blog-post v-bind:author="post.author"></blog-post>
+```
 
- 传入一个对象的所有 property
+#### 传入一个对象的所有 property
+1. 如果你想要将一个对象的所有 property 都作为 prop 传入，你可以使用不带参数的 v-bind 
+(取代 v-bind:prop-name)。例如，对于一个给定的对象 post：
 
-如果你想要将一个对象的所有 property 都作为 prop 传入，你可以使用不带参数的 v-bind (取代 v-bind:prop-name)。例如，对于一个给
-定的对象 post：
-
+```
 post: {
   id: 1,
   title: 'My Journey with Vue'
 }
+```
 
 下面的模板：
 
+```
 <blog-post v-bind="post"></blog-post>
+```
 
 等价于：
 
+```
 <blog-post
   v-bind:id="post.id"
   v-bind:title="post.title"
 ></blog-post>
+```
 
- 单向数据流
+2.<font color=green>一般v-bind:冒号后面跟着绑定的属性,但是如果没有用冒号指出绑定的属性,就意味着绑定所传对象的所有属性.类似与v-for.</font> 
 
-所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防
+### 单向数据流
+1. 所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防
 止从子组件意外变更父级组件的状态，从而导致你的应用的数据流向难以理解。
 
 额外的，每次父级组件发生变更时，子组件中所有的 prop 都将会刷新为最新的值。这意味着你不应该在一个子组件内部改变 prop。如果你
@@ -276,32 +182,37 @@ post: {
  1. 这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用。在这种情况下，最好定义一个本地的
     data property 并将这个 prop 用作其初始值：
 
+```
     props: ['initialCounter'],
     data: function () {
       return {
         counter: this.initialCounter
       }
     }
+```
 
  2. 这个 prop 以一种原始的值传入且需要进行转换。在这种情况下，最好使用这个 prop 的值来定义一个计算属性：
 
+```
     props: ['size'],
     computed: {
       normalizedSize: function () {
         return this.size.trim().toLowerCase()
       }
     }
+```
 
 注意在 JavaScript 中对象和数组是通过引用传入的，所以对于一个数组或对象类型的 prop 来说，在子组件中改变变更这个对象或数组本
 身将会影响到父组件的状态。
 
- Prop 验证
+### Prop 验证
 
 我们可以为组件的 prop 指定验证要求，例如你知道的这些类型。如果有一个需求没有被满足，则 Vue 会在浏览器控制台中警告你。这在开
 发一个会被别人用到的组件时尤其有帮助。
 
 为了定制 prop 的验证方式，你可以为 props 中的值提供一个带有验证需求的对象，而不是一个字符串数组。例如：
 
+```
 Vue.component('my-component', {
   props: {
     // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
@@ -335,13 +246,14 @@ Vue.component('my-component', {
     }
   }
 })
+```
 
 当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
 
 注意那些 prop 会在一个组件实例创建之前进行验证，所以实例的 property (如 data、computed 等) 在 default 或 validator 函数中是
 不可用的。
 
- 类型检查
+#### 类型检查
 
 type 可以是下列原生构造函数中的一个：
 
@@ -356,22 +268,26 @@ type 可以是下列原生构造函数中的一个：
 
 额外的，type 还可以是一个自定义的构造函数，并且通过 instanceof 来进行检查确认。例如，给定下列现成的构造函数：
 
+```
 function Person (firstName, lastName) {
   this.firstName = firstName
   this.lastName = lastName
 }
+```
 
 你可以使用：
 
+```
 Vue.component('blog-post', {
   props: {
     author: Person
   }
 })
+```
 
 来验证 author prop 的值是否是通过 new Person 创建的。
 
- 非 Prop 的 Attribute
+### 非 Prop 的 Attribute
 
 一个非 prop 的 attribute 是指传向一个组件，但是该组件并没有相应 prop 定义的 attribute。
 
@@ -381,22 +297,28 @@ Vue.component('blog-post', {
 例如，想象一下你通过一个 Bootstrap 插件使用了一个第三方的 <bootstrap-date-input> 组件，这个插件需要在其 <input> 上用到一个
 data-date-picker attribute。我们可以将这个 attribute 添加到你的组件实例上：
 
+```
 <bootstrap-date-input data-date-picker="activated"></bootstrap-date-input>
+```
 
 然后这个 data-date-picker="activated" attribute 就会自动添加到 <bootstrap-date-input> 的根元素上。
 
- 替换/合并已有的 Attribute
+####  替换/合并已有的 Attribute
 
 想象一下 <bootstrap-date-input> 的模板是这样的：
 
+```
 <input type="date" class="form-control">
+```
 
 为了给我们的日期选择器插件定制一个主题，我们可能需要像这样添加一个特别的类名：
 
+```
 <bootstrap-date-input
   data-date-picker="activated"
   class="date-picker-theme-dark"
 ></bootstrap-date-input>
+```
 
 在这种情况下，我们定义了两个不同的 class 的值：
 
@@ -407,24 +329,29 @@ data-date-picker attribute。我们可以将这个 attribute 添加到你的组�
 "date" 并把它破坏！庆幸的是，class 和 style attribute 会稍微智能一些，即两边的值会被合并起来，从而得到最终的值：
 form-control date-picker-theme-dark。
 
- 禁用 Attribute 继承
+#### 禁用 Attribute 继承
 
 如果你不希望组件的根元素继承 attribute，你可以在组件的选项中设置 inheritAttrs: false。例如：
 
+```
 Vue.component('my-component', {
   inheritAttrs: false,
   // ...
 })
+```
 
 这尤其适合配合实例的 $attrs property 使用，该 property 包含了传递给一个组件的 attribute 名和 attribute 值，例如：
 
+```
 {
   required: true,
   placeholder: 'Enter your username'
 }
+```
 
 有了 inheritAttrs: false 和 $attrs，你就可以手动决定这些 attribute 会被赋予哪个元素。在撰写基础组件的时候是常会用到的：
 
+```
 Vue.component('base-input', {
   inheritAttrs: false,
   props: ['label', 'value'],
@@ -439,16 +366,18 @@ Vue.component('base-input', {
     </label>
   `
 })
+```
 
 注意 inheritAttrs: false 选项不会影响 style 和 class 的绑定。
 
 这个模式允许你在使用基础组件的时候更像是使用原始的 HTML 元素，而不会担心哪个元素是真正的根元素：
 
+```
 <base-input
   v-model="username"
   required
   placeholder="Enter your username"
 ></base-input>
+```
 
-← 组件注册自定义事件 →
-发现错误？想参与编辑？在 GitHub 上编辑此页！
+自定义事件 →
