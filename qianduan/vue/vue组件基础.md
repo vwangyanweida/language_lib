@@ -78,6 +78,9 @@ new Vue({ el: '#components-demo' })
 
 	4. <font color=green> 组件拥有不完整的vue实例对象,它的data属性等于调用组件定义的data()返回的对象空间</font>
 
+	5. <font color=green>这样做的目的是为了给每一个使用组件的元素一个独立的命名空间,像是用了闭包一样,
+	隔离了各个元素的相互影响.</font>
+
 ### 组件的组织
 1.通常一个应用会以一棵嵌套的组件树的形式来组织：
 	1. component tree
