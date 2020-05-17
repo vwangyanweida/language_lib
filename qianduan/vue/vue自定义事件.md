@@ -24,10 +24,10 @@
 	```
 
 2. 不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或 property 名，
-所以就没有理由使用 camelCase 或 PascalCase 了。并且 v-on 事件监听器在 DOM 模板中会被自动转换为全小写 
+所以就没有理由使用 camelCase(驼峰式) 或 PascalCase(大驼峰式) 了。并且 v-on 事件监听器在 DOM 模板中会被自动转换为全小写 
 (因为 HTML 是大小写不敏感的)，所以 v-on:myEvent 将会变成 v-on:myevent——导致 myEvent 不可能被监听到。
 
-因此，我们推荐你始终使用 kebab-case 的事件名。
+3. 结论:<font color=green>因此，我们推荐你始终使用 kebab-case(短横线隔开式) 的事件名</font>。
 
 ### 自定义组件的 v-model
 > 2.2.0+ 新增
