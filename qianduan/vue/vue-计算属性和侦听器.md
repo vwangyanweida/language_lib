@@ -25,6 +25,7 @@
 你必须看一段时间才能意识到，这里是想要显示变量 message 的翻转字符串。
 当你想要在模板中多包含此处的翻转字符串时，就会更加难以处理。
 所以，对于任何复杂逻辑，你都应当使用计算属性。
+
 ### 基础例子
 1. eg
 
@@ -111,52 +112,51 @@ methods: {
 
 ### 计算属性 vs 侦听属性
 1. Vue 提供了一种更通用的方式来观察和响应 Vue 实例上的数据变动：侦听属性。当你有一些数据需要随着其它数据变动而变动时，你很容易
-滥用 watch——特别是如果你之前使用过 AngularJS。然而，通常更好的做法是使用计算属性而不是命令式的 watch 回调。细想一下这个例子
-：
+滥用 watch——特别是如果你之前使用过 AngularJS。然而，通常更好的做法是使用计算属性而不是命令式的 watch 回调。
+	1. 细想一下这个例子:
 
-```
-<div id="demo">{{ fullName }}</div>
+	```
+	<div id="demo">{{ fullName }}</div>
 
-var vm = new Vue({
-  el: '#demo',
-  data: {
-    firstName: 'Foo',
-    lastName: 'Bar',
-    fullName: 'Foo Bar'
-  },
-  watch: {
-    firstName: function (val) {
-      this.fullName = val + ' ' + this.lastName
-    },
-    lastName: function (val) {
-      this.fullName = this.firstName + ' ' + val
-    }
-  }
-})
-```
+	var vm = new Vue({
+	  el: '#demo',
+	  data: {
+		firstName: 'Foo',
+		lastName: 'Bar',
+		fullName: 'Foo Bar'
+	  },
+	  watch: {
+		firstName: function (val) {
+		  this.fullName = val + ' ' + this.lastName
+		},
+		lastName: function (val) {
+		  this.fullName = this.firstName + ' ' + val
+		}
+	  }
+	})
+	```
 
-上面代码是命令式且重复的。将它与计算属性的版本进行比较：
+	2. 上面代码是命令式且重复的。将它与计算属性的版本进行比较：
 
-```
-var vm = new Vue({
-  el: '#demo',
-  data: {
-    firstName: 'Foo',
-    lastName: 'Bar'
-  },
-  computed: {
-    fullName: function () {
-      return this.firstName + ' ' + this.lastName
-    }
-  }
-})
-```
+	```
+	var vm = new Vue({
+	  el: '#demo',
+	  data: {
+		firstName: 'Foo',
+		lastName: 'Bar'
+	  },
+	  computed: {
+		fullName: function () {
+		  return this.firstName + ' ' + this.lastName
+		}
+	  }
+	})
+	```
 
-好得多了，不是吗？
+	好得多了，不是吗？
 
 ### 计算属性的 setter
-
-计算属性默认只有 getter，不过在需要时你也可以提供一个 setter：
+1. 计算属性默认只有 getter，不过在需要时你也可以提供一个 setter：
 
 ```
 // ...
@@ -180,9 +180,9 @@ computed: {
 现在再运行 vm.fullName = 'John Doe' 时，setter 会被调用，vm.firstName 和 vm.lastName 也会相应地被更新。
 
 ### 侦听器
-
-虽然计算属性在大多数情况下更合适，但有时也需要一个自定义的侦听器。这就是为什么 Vue 通过 watch 选项提供了一个更通用的方法，
-来响应数据的变化。当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的。
+1. 虽然计算属性在大多数情况下更合适，但有时也需要一个自定义的侦听器。
+这就是为什么 Vue 通过 watch 选项提供了一个更通用的方法，来响应数据的变化。
+当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的。
 
 例如：
 
