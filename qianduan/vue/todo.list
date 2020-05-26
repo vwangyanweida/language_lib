@@ -1,0 +1,8 @@
+1. slot 中slot解构,父级作用域为slot bind的属性命名,是否会覆盖子组件的属性值.
+	- 不会: 父级作用域的赋值是将子组件的命名空间起一个别名,它指向的就是slot的所有属性,
+		- slot依然要bind需要传递到父作用域空间的值
+		- 父作用域依然可以使用slot的整个作用域属性,通过<aa slot.default="slotprops">, slotprops其实是slot属性空间的别名.
+
+2. () => import() 语法:
+3. promise 语法
+4. webpack 的require()语法.

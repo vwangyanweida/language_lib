@@ -40,7 +40,8 @@ var example1 = new Vue({
 })
 ```
 
-2. 在 v-for 块中，我们可以访问所有父作用域的 property。v-for 还支持一个可选的第二个参数，<font color=green>即当前项的索引</font>。
+2. 在 v-for 块中，我们可以访问所有父作用域的 property。v-for 还支持一个可选的第二个参数，
+<font color=green>即当前项的索引</font>。
 
 ```
 <ul id="example-2">
@@ -99,7 +100,7 @@ new Vue({
 {{ name }}: {{ value }}
 ```
 
-还可以用第三个参数作为索引：
+3. 还可以用第三个参数作为索引：
 
 ```
 <div v-for="(value, name, index) in object">
@@ -109,7 +110,7 @@ new Vue({
 {{ index }}. {{ name }}: {{ value }}
 ```
 
-在遍历对象时，会按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下都一致。
+4. 在遍历对象时，会按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下都一致。
 
 ### 维护状态
 1. 当 Vue 正在更新使用 v-for 渲染的元素列表时，它默认使用“就地更新”的策略。
@@ -138,60 +139,59 @@ new Vue({
 
 ### 数组更新检测
 #### 变更方法
+1. 变更方法，顾名思义，会变更调用了这些方法的原始数组。
+2. Vue 将被侦听的数组的变更方法进行了包裹，所以它们也将会触发视图更新。这些被包裹过的方法包括：
 
-Vue 将被侦听的数组的变更方法进行了包裹，所以它们也将会触发视图更新。这些被包裹过的方法包括：
+	- push()
+	- pop()
+	- shift(): 从头取出一个,和pop相对
+	- unshift(): 从头部添加一个,和push相对
+	- splice()
+	- sort()
+	- reverse()
 
-  • push()
-  • pop()
-  • shift()
-  • unshift()
-  • splice()
-  • sort()
-  • reverse()
-
-你可以打开控制台，然后对前面例子的 items 数组尝试调用变更方法。比如 example1.items.push({ message: 'Baz' })。
+2. 你可以打开控制台，然后对前面例子的 items 数组尝试调用变更方法。比如 example1.items.push({ message: 'Baz' })。
 
 #### 替换数组
+> 相比之下，也有非变更方法，例如 filter()、concat() 和 slice()。
 
-变更方法，顾名思义，会变更调用了这些方法的原始数组。相比之下，也有非变更方法，例如 filter()、concat() 和 slice()。它们不会
-变更原始数组，而总是返回一个新数组。当使用非变更方法时，可以用新数组替换旧数组：
+1. 它们不会变更原始数组，而总是返回一个新数组。当使用非变更方法时，可以用新数组替换旧数组：
 
-```
-example1.items = example1.items.filter(function (item) {
-  return item.message.match(/Foo/)
-})
-```
+	```
+	example1.items = example1.items.filter(function (item) {
+	  return item.message.match(/Foo/)
+	})
+	```
 
-你可能认为这将导致 Vue 丢弃现有 DOM 并重新渲染整个列表。幸运的是，事实并非如此。Vue 为了使得 DOM 元素得到最大范围的重用而实
-现了一些智能的启发式方法，所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作。
+2. 你可能认为这将导致 Vue 丢弃现有 DOM 并重新渲染整个列表。幸运的是，事实并非如此。
+<font color=green>Vue 为了使得 DOM 元素得到最大范围的重用而实现了一些智能的启发式方法</font>，
+所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作。
 
 #### 注意事项
-
-由于 JavaScript 的限制，Vue 不能检测数组和对象的变化。深入响应式原理中有相关的讨论。
+1. <font color=red>由于 JavaScript 的限制，Vue 不能检测数组和对象的变化。深入响应式原理中有相关的讨论</font>。
 
 #### 显示过滤/排序后的结果
+1. 有时，我们想要显示一个数组经过过滤或排序后的版本，而不实际变更或重置原始数据。
+在这种情况下，可以创建一个计算属性，来返回过滤或排序后的数组。
 
-有时，我们想要显示一个数组经过过滤或排序后的版本，而不实际变更或重置原始数据。在这种情况下，可以创建一个计算属性，来返回过
-滤或排序后的数组。
+	1. 例如：
 
-例如：
+	```
+	<li v-for="n in evenNumbers">{{ n }}</li>
 
-```
-<li v-for="n in evenNumbers">{{ n }}</li>
+	data: {
+	  numbers: [ 1, 2, 3, 4, 5 ]
+	},
+	computed: {
+	  evenNumbers: function () {
+		return this.numbers.filter(function (number) {
+		  return number % 2 === 0
+		})
+	  }
+	}
+	```
 
-data: {
-  numbers: [ 1, 2, 3, 4, 5 ]
-},
-computed: {
-  evenNumbers: function () {
-    return this.numbers.filter(function (number) {
-      return number % 2 === 0
-    })
-  }
-}
-```
-
-在计算属性不适用的情况下 (例如，在嵌套 v-for 循环中) 你可以使用一个方法：
+2. 在计算属性不适用的情况下 (例如，在嵌套 v-for 循环中) 你可以使用一个方法：
 
 ```
 <ul v-for="set in sets">
@@ -211,8 +211,7 @@ methods: {
 ```
 
 ### 在 v-for 里使用值范围
-
-v-for 也可以接受整数。在这种情况下，它会把模板重复对应次数。
+1. v-for 也可以接受整数。在这种情况下，它会把模板重复对应次数。类似与range,可迭代对象.
 
 ```
 <div>
@@ -227,8 +226,7 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 ```
 
 ### 在 <template> 上使用 v-for
-
-类似于 v-if，你也可以利用带有 v-for 的 <template> 来循环渲染一段包含多个元素的内容。比如：
+1. 类似于 v-if，你也可以利用带有 v-for 的 <template> 来循环渲染一段包含多个元素的内容。比如：
 
 ```
 <ul>
@@ -240,11 +238,10 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 ```
 
 ### v-for 与 v-if 一同使用
+1. <font color=red>注意我们不推荐在同一元素上使用 v-if 和 v-for。更多细节可查阅风格指南</font>。
 
-注意我们不推荐在同一元素上使用 v-if 和 v-for。更多细节可查阅风格指南。
-
-当它们处于同一节点，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中。当你只想为部分项渲染节点时
-，这种优先级的机制会十分有用，如下：
+2. 当它们处于同一节点，<font color=red>v-for 的优先级比 v-if 更高</font>，
+这意味着 v-if 将分别重复运行于每个 v-for 循环中。当你只想为部分项渲染节点时，这种优先级的机制会十分有用，如下：
 
 ```
 <li v-for="todo in todos" v-if="!todo.isComplete">
@@ -254,7 +251,8 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 
 上面的代码将只渲染未完成的 todo。
 
-而如果你的目的是有条件地跳过循环的执行，那么可以将 v-if 置于外层元素 (或 <template>) 上。如：
+3. <font color=green>而如果你的目的是有条件地跳过循环的执行，那么可以将 v-if 置于外层元素 (或 <template>) 上</font>。
+如：
 
 ```
 <ul v-if="todos.length">
@@ -266,18 +264,17 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 ```
 
 ### 在组件上使用 v-for
-
-    这部分内容假定你已经了解组件相关知识。你也完全可以先跳过它，以后再回来查看。
-
-在自定义组件上，你可以像在任何普通元素上一样使用 v-for。
+1. 在自定义组件上，你可以像在任何普通元素上一样使用 v-for。
 
 ```
 <my-component v-for="item in items" :key="item.id"></my-component>
 ```
 
-    2.2.0+ 的版本里，当在组件上使用 v-for 时，key 现在是必须的。
+2. 2.2.0+ 的版本里，<font color=red>当在组件上使用 v-for 时，key 现在是必须的</font>。
 
-然而，任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把迭代数据传递到组件里，我们要使用 prop：
+3. 然而，<font color=red>任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域</font>。
+为了把迭代数据传递到组件里，我们要使用 prop：
+<font color=green>(等于说是为组件添加了一个属性,而属性值正好等于父作用域的值.js似乎都是引用传递,而不是值传递.)</font>
 
 ```
 <my-component
@@ -288,9 +285,10 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 ></my-component>
 ```
 
-不自动将 item 注入到组件里的原因是，这会使得组件与 v-for 的运作紧密耦合。明确组件数据的来源能够使组件在其他场合重复使用。
+	不自动将 item 注入到组件里的原因是，这会使得组件与 v-for 的运作紧密耦合。
+明确组件数据的来源能够使组件在其他场合重复使用。
 
-下面是一个简单的 todo 列表的完整例子：
+4. 下面是一个简单的 todo 列表的完整例子：
 
 ```
 <div id="todo-list-example">
@@ -315,9 +313,14 @@ v-for 也可以接受整数。在这种情况下，它会把模板重复对应�
 </div>
 ```
 
-注意这里的 is="todo-item" attribute。这种做法在使用 DOM 模板时是十分必要的，因为在 <ul> 元素内只有 <li> 元素会被看作有效内
-容。这样做实现的效果与 <todo-item> 相同，但是可以避开一些潜在的浏览器解析错误。查看 DOM 模板解析说明来了解更多信息。
+	1. 注意这里的 is="todo-item" attribute。这种做法在使用 DOM 模板时是十分必要的，
+	因为在 <ul> 元素内只有 <li> 元素会被看作有效内容。
+	
+	2. 这样做实现的效果与 <todo-item> 相同，但是可以避开一些潜在的浏览器解析错误。
+	
+	3. 查看 DOM 模板解析说明来了解更多信息。
 
+5. 
 ```
 Vue.component('todo-item', {
   template: '\
@@ -360,5 +363,3 @@ new Vue({
   }
 })
 ```
-
-Add a todo [                    ] Add

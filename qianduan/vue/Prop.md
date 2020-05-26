@@ -384,4 +384,3 @@ Vue.component('base-input', {
 ></base-input>
 ```
 
-自定义事件 →
