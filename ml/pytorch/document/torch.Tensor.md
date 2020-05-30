@@ -1,15 +1,3 @@
-PyTorch中文文档
-[                    ]
-  • 主页
-  • 说明
-      □ 自动求导机制
-      □ CUDA语义
-      □ 扩展PyTorch
-      □ 多进程最佳实践
-      □ 序列化语义
-  • PACKAGE参考
-      □ torch
-      □ torch.Tensor
           ☆ torch.Tensor
               ○ abs() → Tensor
               ○ abs_() → Tensor

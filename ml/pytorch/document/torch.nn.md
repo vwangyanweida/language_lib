@@ -1,63 +1,26 @@
-PyTorch中文文档
-[                    ]
-  • 主页
-  • 说明
-      □ 自动求导机制
-      □ CUDA语义
-      □ 扩展PyTorch
-      □ 多进程最佳实践
-      □ 序列化语义
-  • PACKAGE参考
-      □ torch
-      □ torch.Tensor
-      □ torch.Storage
-      □ torch.nn
-          ☆ torch.nn
-              ○ Parameters
-              ○ Containers（容器）：
-              ○ 卷积层
-              ○ 池化层
-              ○ Non-Linear Activations [source]
-              ○ Normalization layers [source]
-              ○ Recurrent layers
-              ○ Linear layers
-              ○ Dropout layers
-              ○ Sparse layers
-              ○ Distance functions
-              ○ Loss functions
-              ○ Vision layers
-              ○ Multi-GPU layers
-              ○ Utilities
-      □ torch.nn.functional
-      □ torch.autograd
-      □ torch.optim
-      □ torch.nn.init
-      □ torch.multiprocessing
-      □ torch.legacy
-      □ torch.cuda
-      □ torch.utils.ffi
-      □ torch.utils.data
-      □ torch.utils.model_zoo
-  • TORCHVISION参考
-      □ torchvision
-      □ torchvision.datasets
-      □ torchvision.models
-      □ torchvision.transforms
-      □ torchvision.utils
-  • 致谢
 
-  PyTorch中文文档
+<!-- vim-markdown-toc GFM -->
 
-  • Docs »
-  • PACKAGE参考 »
-  • torch.nn
-  • 
+* [torch.nn]
+	* [Parameters]
+	* [Containers（容器）：]
+	* [卷积层]
+	* [池化层]
+	* [Non-Linear Activations [source]]
+	* [Normalization layers [source]]
+	* [Recurrent layers]
+	* [Linear layers]
+	* [Dropout layers]
+	* [Sparse layers]
+	* [Distance functions]
+	* [Loss functions]
+	* [Vision layers]
+	* [Multi-GPU layers]
+	* [Utilities]
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-torch.nn
-
-Parameters
+<!-- vim-markdown-toc -->
+## torch.nn
+### Parameters
 
 class torch.nn.Parameter()
 
@@ -77,7 +40,7 @@ Variable默认requires_grad=False。
 
   • requires_grad (bool, optional) – 默认为True，在BP的过程中会对其求微分。
 
-Containers（容器）：
+### Containers（容器）：
 
 class torch.nn.Module
 
@@ -345,7 +308,7 @@ class torch.nn.Sequential(* args)
 一个时序容器。Modules 会以他们传入的顺序被添加到容器中。当然，也可以传入一个OrderedDict。
 
 为了更容易的理解如何使用Sequential, 下面给出了一个例子:
-
+```
 # Example of using Sequential
 
 model = nn.Sequential(
@@ -361,6 +324,7 @@ model = nn.Sequential(OrderedDict([
           ('conv2', nn.Conv2d(20,64,5)),
           ('relu2', nn.ReLU())
         ]))
+```
 
 class torch.nn.ModuleList(modules=None)[source]
 
@@ -441,7 +405,7 @@ extend(parameters)[source]
 
   • parameters (list) – list of parameters to append
 
-卷积层
+### 卷积层
 
 class torch.nn.Conv1d(in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True)
 
@@ -728,7 +692,7 @@ Example
 >>> input = autograd.Variable(torch.randn(20, 16, 10, 50, 100))
 >>> output = m(input)
 
-池化层
+### 池化层
 
 class torch.nn.MaxPool1d(kernel_size, stride=None, padding=0, dilation=1, return_indices=False, ceil_mode=False)
 
@@ -1205,7 +1169,7 @@ Example：
 >>> input = autograd.Variable(torch.randn(1, 64, 10, 9))
 >>> output = m(input)
 
-Non-Linear Activations [source]
+### Non-Linear Activations [source]
 
     class torch.nn.ReLU(inplace=False) [source]
 
@@ -1548,7 +1512,7 @@ shape：
 >>> print(input)
 >>> print(m(input))
 
-Normalization layers [source]
+### Normalization layers [source]
 
 class torch.nn.BatchNorm1d(num_features, eps=1e-05, momentum=0.1, affine=True) [source]
 
@@ -1646,7 +1610,7 @@ Shape： - 输入：（N, C，D, H, W) - 输出：（N, C, D, H, W）（输入�
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Recurrent layers
+### Recurrent layers
 
 class torch.nn.RNN( args, * kwargs)[source]
 
@@ -1937,7 +1901,7 @@ for i in range(6):
    hx = rnn(input[i], hx)
    output.append(hx)
 
-Linear layers
+### Linear layers
 
 class torch.nn.Linear(in_features, out_features, bias=True)
 
@@ -1966,7 +1930,7 @@ class torch.nn.Linear(in_features, out_features, bias=True)
 >>> output = m(input)
 >>> print(output.size())
 
-Dropout layers
+### Dropout layers
 
 class torch.nn.Dropout(p=0.5, inplace=False)
 
@@ -2042,7 +2006,7 @@ class torch.nn.Dropout3d(p=0.5, inplace=False)
 >>> input = autograd.Variable(torch.randn(20, 16, 4, 32, 32))
 >>> output = m(input)
 
-Sparse layers
+### Sparse layers
 
 class torch.nn.Embedding(num_embeddings, embedding_dim, padding_idx=None, max_norm=None, norm_type=2, scale_grad_by_freq=False, sparse=False)
 
@@ -2103,7 +2067,7 @@ Variable containing:
   0.0706 -2.1962 -0.6276
 [torch.FloatTensor of size 1x4x3]
 
-Distance functions
+### Distance functions
 
 class torch.nn.PairwiseDistance(p=2, eps=1e-06)
 
@@ -2126,7 +2090,7 @@ $$\Vert x \Vert _p := \left( \sum_{i=1}^n \vert x_i \vert ^ p \right) ^ {1/p}$$
 >>> input2 = autograd.Variable(torch.randn(100, 128))
 >>> output = pdist(input1, input2)
 
-Loss functions
+### Loss functions
 
 基本用法：
 
@@ -2352,7 +2316,7 @@ $i\neq y$。可选择的，如果您不想所有的类拥有同样的权重的�
 传入weights后，loss函数变为： $$ loss(x, y) = \frac{1}{x.size(0)}\sum_imax(0, w[y] * (margin - x[y] - x[i]))^p $$ 默认情况
 下，求出的loss会对mini-batch取平均，可以通过设置size_average=False来取消取平均操作。
 
-Vision layers
+### Vision layers
 
 class torch.nn.PixelShuffle(upscale_factor)[source]
 
@@ -2454,7 +2418,7 @@ Variable containing:
   3.0000  3.3333  3.6667  4.0000
 [torch.FloatTensor of size 1x1x4x4]
 
-Multi-GPU layers
+### Multi-GPU layers
 
 class torch.nn.DataParallel(module, device_ids=None, output_device=None, dim=0)[source]
 
@@ -2481,7 +2445,7 @@ batch的大小应该大于所使用的GPU的数量。还应当是GPU个数的整
  net = torch.nn.DataParallel(model, device_ids=[0, 1, 2])
  output = net(input_var)
 
-Utilities
+### Utilities
 
 工具函数
 
@@ -2558,7 +2522,7 @@ Batch中的元素将会以它们长度的逆序排列。
 返回值: 一个tuple，包含被填充后的序列，和batch中序列的长度列表。
 
 例子：
-
+```
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -2585,6 +2549,7 @@ out, _ = rnn(pack, h0)
 # unpack
 unpacked = nn_utils.rnn.pad_packed_sequence(out)
 print(unpacked)
+```
 
 关于packed_sequence
 
