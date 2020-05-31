@@ -6,3 +6,8 @@
 
 	- :g/123/normal Ozheshiyijuxinhang
 
+2. iab
+	1. iab不起作用,后来证实是pathogen的问题,注释掉这一行.
+	2. 去掉pathogen后,minbuffer没法使用,需要minbuffer打开pathogen
+
+3. C-m自动跳转到了指定行,和C-r一样,不知道是否是因为vimrc有什么缓存导致的.

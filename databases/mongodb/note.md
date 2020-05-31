@@ -1,15 +1,3 @@
-
-<!-- vim-markdown-toc GFM -->
-
-* [命令大全](#命令大全)
-* [笔记](#笔记)
-* [聚合](#聚合)
-	* [group](#group)
-	* [mapreduce](#mapreduce)
-* [运维](#运维)
-
-<!-- vim-markdown-toc -->
-## 命令大全
 ## 笔记
 1. 优点
 	- 面向文档,自动分割平衡集群数据,数据库负载,自动重排文档
@@ -66,23 +54,3 @@
 
 - <font color=red>find查找时,field在条件前面作为key,因为同一个field可能有多个条件,每个条件是一个kv.</font>
 - <font color=red>update更改是,更改器在field前面作为key,因为更改时肯定是针对一个field,不可能对同一个field多次改变,field在后面更直观</font>
-
-## 聚合
-### group
-### mapreduce
-
-## 运维
-1. 备份
-	- 冷备
-	- mongodump / mongorestore  热备/冷备
-	- fsync + 写入锁: 写入会阻塞
-		```
-		use admin;
-		db.runCommand({"fsync":1, "lock": 1})
-
-
-		解锁:
-		db.$cmd.sys.unlock.findOne();
-		db.currentop();
-		```
-	- 通过从服务器备份,最好

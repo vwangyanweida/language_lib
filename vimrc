@@ -3,7 +3,7 @@ filetype plugin indent on
 map <C-n> :NERDTree<CR>
 
 " pathongen
-execute pathogen#infect()
+"execute pathogen#infect()
 
 " taglist
 map <C-t> :Tlist<CR>
@@ -18,7 +18,7 @@ let Tlist_Process_File_Always=1 "实时更新tags
 let Tlist_Inc_Winwidth=0
 
 map <F6> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR> :TlistUpdate<CR>
-imap <F6> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR> :TlistUpdate<CR>
+imap <F6> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR> :TlistUpdate<CR>
 set tags=tags " 设置tags搜索路径
 set tags+=./tags " 设置tags搜索路径
 set tags+=/usr/include/c++/tags 
@@ -26,8 +26,8 @@ set tags+=~/.vim/tags/cpp_src/tags " 设置tags搜索路径
 set wildmode=longest,list " Ex命令自动补全采用bash方式"
 
 "会用markdown的toc插件时,vim不能实现跳转,所以在目录项后面加入行数,方便跳转.
-map <F8> :g/^#/s/$/\=' ' . line(".")<CR><CR> :w<CR>
-map <F9>  :%s/\(^#.* .*\) \d\+/\1/g<CR><CR> :w<CR>
+map <F8> :g/^#/s/$/\=' ' . line(".")<CR>
+map <F9>  :%s/\(^#.* .*\) \d\+/\1/g<CR>
 
 " omnicppcomplete
 imap <F3> <C-X><C-O>
@@ -102,7 +102,7 @@ func! CompileRunGcc()
 	exec '!g++ % -std=c++11 -o %<'
 	exec '!time ./%<'
     elseif &filetype == 'python'
-	exec '!time python3.7 %'
+	exec '!time python3 %'
 	elseif &filetype == 'html'
 	exec '!firefox %'
     elseif &filetype == 'sh'
@@ -130,7 +130,8 @@ nmap    w.  :vertical resize +3<CR>
 
 imap <C-c> <font color=red></font><Left><Left><Left><Left><Left><Left><Left>
 imap <C-g> <font color=green></font><Left><Left><Left><Left><Left><Left><Left>
-iab xtime <C-r>=strftime("%Y-%m-%d %H-%M")<cr>
+iab xtime <C-r>=strftime("%H-%M")<cr>
+iab xdate <C-r>=strftime("%Y-%m-%d")<cr>
 map <F4> :call Dot()<CR>
 func! Dot()
 	exec "w"
@@ -140,10 +141,3 @@ endfunc
 
 " 修改Emmet默认快捷键 将默认的<C-y>修改成<C-e>方便操作
 let g:user_emmet_leader_key = '<C-e>'
-
-map <C-g> :call Git()<CR><CR>
-func! Git()
-	exec "w"
-	exec "!git add ."
-	exec "!git commit -m 'vim auto to git file: %'"
-endfunc
